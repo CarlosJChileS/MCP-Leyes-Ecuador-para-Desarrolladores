@@ -1,6 +1,7 @@
 import { lstat, readdir, readFile, realpath, stat } from 'node:fs/promises';
-import { basename, extname, isAbsolute, relative, resolve } from 'node:path';
+import { basename, isAbsolute, relative, resolve } from 'node:path';
 import type { LegalSource, LegalStatus } from './domain.js';
+import { detectLanguage, isScannableTextFile, type DetectedLanguage, type LanguageFamily } from './languages.js';
 
 export type AuditSeverity = 'critical' | 'high' | 'medium' | 'low';
 export type AuditCategory =
@@ -25,6 +26,7 @@ export type AuditFinding = {
   ruleId: string;
   severity: AuditSeverity;
   category: AuditCategory;
+  language: DetectedLanguage;
   path: string;
   line?: number;
   explanation: string;
@@ -51,6 +53,7 @@ export type AuditSummary = {
   scannedDirectories: number;
   skippedEntries: number;
   totalFindings: number;
+  languages: Partial<Record<DetectedLanguage, number>>;
   findingsBySeverity: Record<AuditSeverity, number>;
   findingsByCategory: Record<AuditCategory, number>;
   limits: {
@@ -77,6 +80,8 @@ export type AuditOptions = {
 type ScannedFile = {
   absolutePath: string;
   relativePath: string;
+  language: DetectedLanguage;
+  family: LanguageFamily;
   content: string;
 };
 
@@ -120,47 +125,6 @@ const EXCLUDED_DIRECTORIES = new Set([
   'target',
   'tmp',
   'vendor',
-]);
-
-const ALLOWED_EXTENSIONS = new Set([
-  '.cjs',
-  '.conf',
-  '.config',
-  '.css',
-  '.env',
-  '.html',
-  '.ini',
-  '.java',
-  '.js',
-  '.json',
-  '.jsx',
-  '.md',
-  '.mjs',
-  '.mts',
-  '.php',
-  '.properties',
-  '.py',
-  '.rb',
-  '.sql',
-  '.sh',
-  '.toml',
-  '.ts',
-  '.tsx',
-  '.txt',
-  '.vue',
-  '.xml',
-  '.yaml',
-  '.yml',
-]);
-
-const ALLOWED_BASENAMES = new Set([
-  '.env',
-  '.env.example',
-  '.env.local',
-  'dockerfile',
-  'license',
-  'privacy',
-  'readme',
 ]);
 
 const CATEGORY_ORDER: AuditCategory[] = [
@@ -347,16 +311,48 @@ const PERSONAL_DATA_CODE_SIGNAL_PATTERN = new RegExp(
 );
 const SENSITIVE_LOG_PATTERN =
   /\b(console\.(log|info|debug|warn|error)|logger\.(info|debug|warn|error)|print)\b/i;
+const EXTENDED_LOG_PATTERN = /\b(System\.out\.print(?:ln)?|printf|echo|Write-(Host|Output))\b/i;
 const SENSITIVE_HINT_PATTERN =
   /\b(password|token|secret|api[_-]?key|cookie|session|email|correo|cedula|dni|telefono|phone)\b/i;
 const PERMISSIVE_CORS_PATTERN =
   /(access-control-allow-origin\s*[:=]\s*['"`]\*['"`]|origin\s*:\s*['"`]\*['"`]|cors\s*\(\s*\)|cors\s*\(\s*\{\s*origin\s*:\s*['"`]\*['"`])/i;
 const SENSITIVE_ENDPOINT_PATTERN =
   /\b(app|router)\.(get|post|put|patch|delete)\s*\(\s*['"`]\/(admin|auth|login|users|user|account|profile|payments?|checkout|orders?)\b/i;
+const LANGUAGE_ENDPOINT_PATTERNS = [
+  /@(GetMapping|PostMapping|PutMapping|PatchMapping|DeleteMapping|RequestMapping)\s*\(\s*['"`]\/(admin|auth|login|users?|account|profile|payments?|checkout|orders?)\b/i,
+  /@(app|router)\.(get|post|put|patch|delete)\s*\(\s*['"`]\/(admin|auth|login|users?|account|profile|payments?|checkout|orders?)\b/i,
+  /\bMap(Get|Post|Put|Patch|Delete)\s*\(\s*['"`]\/(admin|auth|login|users?|account|profile|payments?|checkout|orders?)\b/i,
+  /\b(HandleFunc|route|Route|GET|POST|PUT|PATCH|DELETE)\s*\(\s*['"`]\/(admin|auth|login|users?|account|profile|payments?|checkout|orders?)\b/i,
+  /\b(get|post|put|patch|delete)\s+['"`]\/(admin|auth|login|users?|account|profile|payments?|checkout|orders?)\b/i,
+];
 const AUTH_HINT_PATTERN = /\b(auth|authorize|jwt|session|guard|protect|middleware|verify)\b/i;
 const COOKIE_PATTERN = /\b(res\.cookie|set-cookie|document\.cookie)\b/i;
 const SECURE_COOKIE_HINT_PATTERN = /\b(secure|httponly|samesite)\b/i;
 const HTTP_URL_PATTERN = /\bhttp:\/\/(?!localhost\b)(?!127\.0\.0\.1\b)(?!0\.0\.0\.0\b)[^\s'"`]+/i;
+const INSECURE_COOKIE_CONFIG_PATTERN =
+  /\b(cookie|session)\b.*\b(secure|httponly|http_only|samesite|same_site)\b\s*[:=]\s*(false|0|off|no|none)\b/i;
+const INSECURE_TRANSPORT_PATTERNS = [
+  /\brejectUnauthorized\s*:\s*false\b/i,
+  /\bNODE_TLS_REJECT_UNAUTHORIZED\s*=\s*0\b/i,
+  /\bverify\s*[:=]\s*false\b/i,
+  /\bverify_ssl\s*[:=]\s*false\b/i,
+  /\bsslmode\s*=\s*disable\b/i,
+  /\binsecure_skip_verify\s*[:=]\s*true\b/i,
+  /\bInsecureSkipVerify\s*:\s*true\b/i,
+  /\bdanger_accept_invalid_certs\s*\(\s*true\s*\)/i,
+  /\bvalidate_certs\s*[:=]\s*false\b/i,
+  /\bprotocol\s*[:=]\s*['"`]http['"`]/i,
+  /\binsecure\s*[:=]\s*true\b/i,
+];
+const LANGUAGE_CORS_PATTERNS = [
+  /\ballow_origins\s*[:=]\s*\[[^\]]*['"`]\*['"`]/i,
+  /@CrossOrigin\s*\(\s*origins?\s*=\s*['"`]\*['"`]/i,
+  /\b(AllowAnyOrigin|WithOrigins)\s*\(\s*['"`]\*['"`]?\s*\)/i,
+  /\bheaders\s*\[\s*['"`]Access-Control-Allow-Origin['"`]\s*\]\s*=\s*['"`]\*['"`]/i,
+  /\baccess[-_ ]control[-_ ]allow[-_ ]origin\b\s*[:=]\s*['"`]?\*['"`]?/i,
+];
+const CONFIG_FAMILIES = new Set<LanguageFamily>(['config', 'docker', 'terraform']);
+const LOG_FAMILIES = new Set<LanguageFamily>(['javascript', 'python', 'jvm', 'dotnet', 'go', 'rust', 'ruby', 'c-cpp', 'shell']);
 
 export async function auditRepository(repositoryPath: string, options: AuditOptions = {}): Promise<AuditReport> {
   const resolvedOptions = normalizeOptions(options);
@@ -456,7 +452,7 @@ async function walkDirectory(
       continue;
     }
 
-    if (!isAllowedTextFile(entry.name)) {
+    if (!isScannableTextFile(entry.name)) {
       state.skippedEntries += 1;
       continue;
     }
@@ -472,9 +468,14 @@ async function walkDirectory(
       continue;
     }
 
+    const relativePath = toRelativePath(rootRealPath, entryRealPath);
+    const { language, family } = detectLanguage(relativePath);
+
     state.files.push({
       absolutePath: entryRealPath,
-      relativePath: toRelativePath(rootRealPath, entryRealPath),
+      relativePath,
+      language,
+      family,
       content,
     });
   }
@@ -489,32 +490,32 @@ function analyzeFile(file: ScannedFile, findings: AuditFinding[]) {
     const secretValue = findSecretValue(line);
     if (secretValue) {
       findings.push(
-        buildFinding(file.relativePath, lineNumber, RULES.secret, redactSecretLine(line, secretValue), referenceForCategory('secretos')),
+        buildFinding(file, lineNumber, RULES.secret, redactSecretLine(line, secretValue), referenceForCategory('secretos')),
       );
     }
 
     if (hasPersonalDataSignal(line)) {
-      findings.push(buildFinding(file.relativePath, lineNumber, RULES.personalData, shorten(line), referenceForCategory('datos_personales')));
+      findings.push(buildFinding(file, lineNumber, RULES.personalData, shorten(line), referenceForCategory('datos_personales')));
     }
 
-    if (SENSITIVE_LOG_PATTERN.test(line) && SENSITIVE_HINT_PATTERN.test(line)) {
-      findings.push(buildFinding(file.relativePath, lineNumber, RULES.sensitiveLog, shorten(redactSecretLine(line)), referenceForCategory('logs_sensibles')));
+    if (matchesSensitiveLog(file, line)) {
+      findings.push(buildFinding(file, lineNumber, RULES.sensitiveLog, shorten(redactSecretLine(line)), referenceForCategory('logs_sensibles')));
     }
 
-    if (HTTP_URL_PATTERN.test(line)) {
-      findings.push(buildFinding(file.relativePath, lineNumber, RULES.insecureHttp, shorten(line), referenceForCategory('transporte_inseguro')));
+    if (matchesInsecureTransport(file, line)) {
+      findings.push(buildFinding(file, lineNumber, RULES.insecureHttp, shorten(line), referenceForCategory('transporte_inseguro')));
     }
 
-    if (PERMISSIVE_CORS_PATTERN.test(line)) {
-      findings.push(buildFinding(file.relativePath, lineNumber, RULES.permissiveCors, shorten(line), referenceForCategory('cors')));
+    if (matchesPermissiveCors(file, line)) {
+      findings.push(buildFinding(file, lineNumber, RULES.permissiveCors, shorten(line), referenceForCategory('cors')));
     }
 
-    if (COOKIE_PATTERN.test(line) && !SECURE_COOKIE_HINT_PATTERN.test(line)) {
-      findings.push(buildFinding(file.relativePath, lineNumber, RULES.insecureCookie, shorten(redactSecretLine(line)), referenceForCategory('cookies')));
+    if (matchesInsecureCookie(file, line)) {
+      findings.push(buildFinding(file, lineNumber, RULES.insecureCookie, shorten(redactSecretLine(line)), referenceForCategory('cookies')));
     }
 
-    if (SENSITIVE_ENDPOINT_PATTERN.test(line) && !AUTH_HINT_PATTERN.test(line)) {
-      findings.push(buildFinding(file.relativePath, lineNumber, RULES.sensitiveEndpoint, shorten(line), referenceForCategory('endpoints_sensibles')));
+    if (matchesSensitiveEndpoint(file, line)) {
+      findings.push(buildFinding(file, lineNumber, RULES.sensitiveEndpoint, shorten(line), referenceForCategory('endpoints_sensibles')));
     }
   });
 }
@@ -536,6 +537,7 @@ function applyRepositoryRules(context: RuleContext) {
       ruleId: RULES.missingPrivacyDocs.id,
       severity: RULES.missingPrivacyDocs.severity,
       category: RULES.missingPrivacyDocs.category,
+      language: 'unknown',
       path: '.',
       explanation: RULES.missingPrivacyDocs.explanation,
       evidence: 'No se encontró un archivo visible de privacidad o tratamiento de datos dentro del repositorio escaneado.',
@@ -547,18 +549,19 @@ function applyRepositoryRules(context: RuleContext) {
 }
 
 function buildFinding(
-  relativePath: string,
+  file: Pick<ScannedFile, 'relativePath' | 'language'>,
   line: number,
   rule: CategoryRule,
   evidence: string,
   reference: AuditReference,
 ): AuditFinding {
   return {
-    id: `${rule.id}:${relativePath}:${line}`,
+    id: `${rule.id}:${file.relativePath}:${line}`,
     ruleId: rule.id,
     severity: rule.severity,
     category: rule.category,
-    path: relativePath,
+    language: file.language,
+    path: file.relativePath,
     line,
     explanation: rule.explanation,
     evidence,
@@ -577,10 +580,15 @@ function buildSummary(
 ): AuditSummary {
   const findingsBySeverity = Object.fromEntries(SEVERITY_ORDER.map((severity) => [severity, 0])) as Record<AuditSeverity, number>;
   const findingsByCategory = Object.fromEntries(CATEGORY_ORDER.map((category) => [category, 0])) as Record<AuditCategory, number>;
+  const languages: Partial<Record<DetectedLanguage, number>> = {};
 
   for (const finding of findings) {
     findingsBySeverity[finding.severity] += 1;
     findingsByCategory[finding.category] += 1;
+  }
+
+  for (const file of state.files) {
+    languages[file.language] = (languages[file.language] ?? 0) + 1;
   }
 
   return {
@@ -591,6 +599,7 @@ function buildSummary(
     scannedDirectories: state.scannedDirectories,
     skippedEntries: state.skippedEntries,
     totalFindings: findings.length,
+    languages,
     findingsBySeverity,
     findingsByCategory,
     limits: {
@@ -660,17 +669,42 @@ function normalizePositiveInteger(value: number | undefined, fallback: number, n
   return value;
 }
 
-function isAllowedTextFile(fileName: string): boolean {
-  const lowerBase = basename(fileName).toLowerCase();
-  const extension = extname(fileName).toLowerCase();
+function matchesSensitiveLog(file: ScannedFile, line: string): boolean {
+  if (!SENSITIVE_HINT_PATTERN.test(line)) {
+    return false;
+  }
+  return SENSITIVE_LOG_PATTERN.test(line) || (LOG_FAMILIES.has(file.family) && EXTENDED_LOG_PATTERN.test(line));
+}
 
-  if (ALLOWED_EXTENSIONS.has(extension)) {
+function matchesInsecureTransport(file: ScannedFile, line: string): boolean {
+  if (HTTP_URL_PATTERN.test(line)) {
     return true;
   }
-  if (ALLOWED_BASENAMES.has(lowerBase)) {
+  if (CONFIG_FAMILIES.has(file.family)) {
+    return INSECURE_TRANSPORT_PATTERNS.some((pattern) => pattern.test(line));
+  }
+  return INSECURE_TRANSPORT_PATTERNS.some((pattern) => pattern.test(line));
+}
+
+function matchesPermissiveCors(_file: ScannedFile, line: string): boolean {
+  return PERMISSIVE_CORS_PATTERN.test(line) || LANGUAGE_CORS_PATTERNS.some((pattern) => pattern.test(line));
+}
+
+function matchesInsecureCookie(file: ScannedFile, line: string): boolean {
+  if (COOKIE_PATTERN.test(line) && !SECURE_COOKIE_HINT_PATTERN.test(line)) {
     return true;
   }
-  return lowerBase.startsWith('.env');
+  return CONFIG_FAMILIES.has(file.family) && INSECURE_COOKIE_CONFIG_PATTERN.test(line);
+}
+
+function matchesSensitiveEndpoint(_file: ScannedFile, line: string): boolean {
+  if (AUTH_HINT_PATTERN.test(line)) {
+    return false;
+  }
+  if (SENSITIVE_ENDPOINT_PATTERN.test(line)) {
+    return true;
+  }
+  return LANGUAGE_ENDPOINT_PATTERNS.some((pattern) => pattern.test(line));
 }
 
 function looksBinary(content: string): boolean {

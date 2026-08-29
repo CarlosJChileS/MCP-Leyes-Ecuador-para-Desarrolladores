@@ -81,6 +81,30 @@ La salida incluye:
 - `references`: fuentes legales o técnicas asociadas a los hallazgos.
 - `disclaimer`: aviso de que el reporte es preliminar y no constituye certificación ni dictamen.
 
+La detección de archivos es determinista por extensión, nombre especial y patrón de archivo. Cada archivo escaneado recibe un `language`, cada hallazgo hereda ese campo y el resumen incluye `summary.languages` con el conteo por lenguaje, incluido `unknown`.
+
+Lenguajes y formatos reconocidos:
+
+- JavaScript y TypeScript, incluyendo Vue.
+- Python.
+- JVM: Java, Kotlin, Scala, Groovy y Gradle.
+- .NET: C#, F# y VB.NET.
+- Go, Rust, Ruby, C, C++, Swift, Dart, SQL y Shell.
+- Configuración: YAML, JSON, JSONC, TOML, `.env`, INI, CFG, CONF, CONFIG y PROPERTIES.
+- Infraestructura y contenedores: Docker y Terraform.
+- Marcado y documentación: XML, HTML, CSS, Markdown y texto plano.
+- Otros admitidos: PHP.
+
+Archivos especiales reconocidos:
+
+- `Dockerfile`, `Containerfile`, `Dockerfile.*`, `Containerfile.*` y `*.dockerfile` se clasifican como `docker`.
+- `README`, `LICENSE` y `PRIVACY` se tratan como Markdown.
+- `Gemfile` y `Rakefile` se tratan como Ruby.
+- `.env*` se tratan como archivos de configuración.
+- `*.containerfile`, `*.tf`, `*.tfvars` y `*.hcl` se reconocen para Docker y Terraform.
+
+Cuando un archivo de texto no coincide con ninguna regla conocida, la auditoría lo marca como `unknown`. Eso no impide que se escanee, pero sí limita la precisión de las reglas específicas por familia.
+
 Comportamiento de seguridad:
 
 - escanea solo el sistema de archivos local y no ejecuta código;
