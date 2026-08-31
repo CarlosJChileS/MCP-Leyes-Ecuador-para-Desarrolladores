@@ -12,6 +12,7 @@
     "catalog:verify": "tsx src/verify.ts",
     "catalog:import": "tsx src/import-catalog.ts",
     "catalog:review": "tsx src/review-catalog.ts",
+    "catalog:coverage": "tsx src/coverage.ts",
     "test": "vitest"
   },
   "dependencies": {

@@ -1,5 +1,7 @@
 export type LegalStatus = 'vigente' | 'reformado' | 'derogado' | 'pendiente_verificacion';
-export type LegalSource = { id: string; title: string; type: string; issuer: string; jurisdiction: 'Ecuador'; publishedAt: string; verifiedAt: string; status: LegalStatus; url: string; topics: string[]; summary?: string };
+export type LegalEventType = 'publicacion' | 'reforma' | 'derogacion' | 'sustitucion' | 'reglamento' | 'resolucion';
+export type LegalHistoryEvent = { type: LegalEventType; date?: string; officialGazette?: string; title: string; sourceUrl: string; notes?: string };
+export type LegalSource = { id: string; title: string; type: string; issuer: string; jurisdiction: 'Ecuador'; publishedAt: string; verifiedAt: string; status: LegalStatus; url: string; topics: string[]; summary?: string; officialGazette?: { number?: string; edition?: string; page?: string }; history?: LegalHistoryEvent[]; relatedSourceIds?: string[]; verification?: { urlCheckedAt?: string; documentaryReviewedAt?: string; legalReviewedAt?: string; reviewer?: string; notes?: string } };
 export function validateLegalSource(source: unknown): source is LegalSource {
   if (!source || typeof source !== 'object') throw new Error('La fuente debe ser un objeto');
   const s = source as Record<string, unknown>;
@@ -14,5 +16,6 @@ export function validateLegalSource(source: unknown): source is LegalSource {
   };
   if (!validDate(s.publishedAt) || !validDate(s.verifiedAt)) throw new Error('Las fechas deben usar YYYY-MM-DD');
   if (!Array.isArray(s.topics) || s.topics.some((t) => typeof t !== 'string')) throw new Error('Los temas deben ser texto');
+  if (s.history !== undefined && (!Array.isArray(s.history) || s.history.some((event) => !event || typeof event !== 'object' || typeof (event as Record<string, unknown>).title !== 'string' || typeof (event as Record<string, unknown>).sourceUrl !== 'string'))) throw new Error('El historial normativo es inválido');
   return true;
 }

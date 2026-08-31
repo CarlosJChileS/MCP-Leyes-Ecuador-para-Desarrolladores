@@ -88,6 +88,7 @@ npm run catalog:discover
 npm run catalog:verify
 npm run catalog:import
 npm run catalog:review
+npm run catalog:coverage
 ```
 
 Informes:
@@ -96,6 +97,7 @@ Informes:
 - `data/verification-report.json`: accesibilidad y dominio oficial.
 - `data/catalog-pending.json`: referencias oficiales importadas como pendientes de clasificación y revisión jurídica.
 - `data/catalog-review.json`: clasificación preliminar y verificación documental de accesibilidad; no certifica vigencia.
+- `data/coverage-report.json`: tamaño, estados, tipos, temas, historial y revisiones jurídicas documentadas.
 
 `.github/workflows/catalog-monitor.yml` ejecuta semanalmente pruebas, compilación, descubrimiento y verificación. Si encuentra cambios, abre un Pull Request para revisión humana.
 
@@ -110,6 +112,8 @@ Se debe incorporar un catálogo histórico y actualizado del Registro Oficial, c
 - trazabilidad a número, suplemento, fecha y página del Registro Oficial;
 - estados separados para accesibilidad técnica, revisión documental y vigencia jurídica;
 - revisión humana antes de publicar cambios normativos.
+
+El modelo de datos ya admite `officialGazette`, `history`, `relatedSourceIds` y `verification`, para conservar número/edición/página del Registro Oficial, reformas, derogaciones, relaciones y trazabilidad de los revisores.
 
 Este trabajo requiere fuentes oficiales completas, reglas de consolidación y revisión jurídica. No se debe inferir vigencia únicamente desde una URL accesible.
 
