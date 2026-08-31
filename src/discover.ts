@@ -7,11 +7,18 @@ const OFFICIAL_INDEXES = [
   { origin: 'Registro Oficial - índice de legislación', url: 'https://www.registroficial.gob.ec/category/productos/indice/' },
 ];
 
+const MAX_REGISTRY_PAGES = Number.parseInt(process.env.MCP_CATALOG_MAX_PAGES ?? '10', 10);
+const REQUEST_TIMEOUT_MS = 15000;
+
 export async function discoverOfficialSources(): Promise<DiscoveredSource[]> {
   const found = new Map<string, DiscoveredSource>();
   for (const source of OFFICIAL_INDEXES) {
-    const response = await fetch(source.url, { headers: { 'user-agent': 'mcp-leyes-ecuador-source-discovery/0.1' } });
-    if (!response.ok) throw new Error(`No se pudo consultar ${source.url}: HTTP ${response.status}`);
+    const urls = source.origin.startsWith('Registro Oficial')
+      ? [source.url, ...Array.from({ length: Math.max(0, MAX_REGISTRY_PAGES - 1) }, (_, index) => `${source.url.replace(/\/$/, '')}/page/${index + 2}/`)]
+      : [source.url];
+    await Promise.all(urls.map(async (pageUrl) => {
+    const response = await fetch(pageUrl, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS), headers: { 'user-agent': 'mcp-leyes-ecuador-source-discovery/0.1' } }).catch(() => undefined);
+    if (!response?.ok) return;
     const html = await response.text();
     for (const match of html.matchAll(/<a\b[^>]*href=["'](https:\/\/[^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi)) {
       const url = match[1];
@@ -24,6 +31,7 @@ export async function discoverOfficialSources(): Promise<DiscoveredSource[]> {
       const key = `${title.toLowerCase()}|${url}`;
       found.set(key, { title, url, discoveredAt: new Date().toISOString().slice(0, 10), origin: source.origin, status: 'requiere_revision' });
     }
+    }));
   }
   return [...found.values()].sort((a, b) => a.title.localeCompare(b.title, 'es'));
 }
