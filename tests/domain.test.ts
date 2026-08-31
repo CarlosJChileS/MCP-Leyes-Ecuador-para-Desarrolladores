@@ -8,4 +8,7 @@ describe('validateLegalSource', () => {
   it('rejects an incomplete or insecure source', () => {
     expect(() => validateLegalSource({ id: 'x', title: 'x', type: 'ley', issuer: 'x', jurisdiction: 'Ecuador', publishedAt: '2021-01-01', verifiedAt: '2026-08-21', status: 'vigente', url: 'http://example.com', topics: [] })).toThrow();
   });
+  it('rejects impossible calendar dates', () => {
+    expect(() => validateLegalSource({ id: 'x', title: 'x', type: 'ley', issuer: 'x', jurisdiction: 'Ecuador', publishedAt: '2021-02-30', verifiedAt: '2026-08-21', status: 'vigente', url: 'https://example.com', topics: [] })).toThrow();
+  });
 });

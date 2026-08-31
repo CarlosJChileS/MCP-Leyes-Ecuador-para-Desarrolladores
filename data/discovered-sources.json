@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-08-27T21:20:18.532Z",
+  "sources": [
+    {
+      "title": "Ley Orgánica de Protección de Datos Personales",
+      "url": "https://www.registroficial.gob.ec/quinto-suplemento-al-registro-oficial-no-459/",
+      "discoveredAt": "2026-08-27",
+      "origin": "Registro Oficial - Suplemento No. 459",
+      "status": "requiere_revision"
+    },
+    {
+      "title": "Ley de Comercio Electrónico, Firmas Electrónicas y Mensajes de Datos",
+      "url": "https://www.telecomunicaciones.gob.ec/wp-content/uploads/2020/07/LEY-DE-COMERCIO-ELECTRONICO-FIRMAS-Y.pdf",
+      "discoveredAt": "2026-08-27",
+      "origin": "Ministerio de Telecomunicaciones - texto oficial",
+      "status": "requiere_revision"
+    },
+    {
+      "title": "Código Orgánico de la Economía Social de los Conocimientos, Creatividad e Innovación",
+      "url": "https://www.derechosintelectuales.gob.ec/wp-content/uploads/downloads/2021/agosto/a_2_16_codigo_ingenios_agosto_2021.pdf",
+      "discoveredAt": "2026-08-27",
+      "origin": "SENADI - texto oficial",
+      "status": "requiere_revision"
+    }
+  ]
+}

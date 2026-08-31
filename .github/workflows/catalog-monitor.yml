@@ -1,0 +1,47 @@
+name: Monitor del catálogo jurídico
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm test -- --run
+      - run: npm run build
+      - run: npm run catalog:discover
+      - run: npm run catalog:verify
+      - name: Proponer actualización del catálogo
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/catalog-monitor
+          delete-branch: true
+          title: 'chore: actualizar informe del catálogo jurídico'
+          commit-message: 'chore: actualizar informe del catálogo jurídico'
+          body: |
+            Actualización automática generada desde los índices oficiales.
+
+            Revisar manualmente cada referencia antes de incorporarla al catálogo validado o cambiar su estado jurídico.
+          add-paths: |
+            data/discovered-sources.json
+            data/verification-report.json
+      - name: Publicar informes
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-monitor-${{ github.run_id }}
+          path: |
+            data/discovered-sources.json
+            data/verification-report.json
+          retention-days: 90
