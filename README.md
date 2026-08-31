@@ -87,6 +87,7 @@ El catálogo está en `data/normativa.json` y se resuelve relativo al servidor c
 npm run catalog:discover
 npm run catalog:verify
 npm run catalog:import
+npm run catalog:review
 ```
 
 Informes:
@@ -94,6 +95,7 @@ Informes:
 - `data/discovered-sources.json`: referencias pendientes de revisión.
 - `data/verification-report.json`: accesibilidad y dominio oficial.
 - `data/catalog-pending.json`: referencias oficiales importadas como pendientes de clasificación y revisión jurídica.
+- `data/catalog-review.json`: clasificación preliminar y verificación documental de accesibilidad; no certifica vigencia.
 
 `.github/workflows/catalog-monitor.yml` ejecuta semanalmente pruebas, compilación, descubrimiento y verificación. Si encuentra cambios, abre un Pull Request para revisión humana.
 

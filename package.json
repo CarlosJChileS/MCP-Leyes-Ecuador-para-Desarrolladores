@@ -11,6 +11,7 @@
     "catalog:discover": "tsx src/discover.ts",
     "catalog:verify": "tsx src/verify.ts",
     "catalog:import": "tsx src/import-catalog.ts",
+    "catalog:review": "tsx src/review-catalog.ts",
     "test": "vitest"
   },
   "dependencies": {

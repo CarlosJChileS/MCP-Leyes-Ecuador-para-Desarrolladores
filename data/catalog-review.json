@@ -1,0 +1,907 @@
+{
+  "generatedAt": "2026-08-31T12:35:41.663Z",
+  "source": "C:\\Users\\carlo\\Videos\\MCP-Leyes-Ecuador-para-Desarrolladores\\data\\catalog-pending.json",
+  "warning": "La accesibilidad y clasificación no prueban vigencia jurídica.",
+  "sources": [
+    {
+      "id": "pendiente-coordinacion-de-relaciones-interinstitucionales",
+      "title": "Coordinación de Relaciones Interinstitucionales",
+      "type": "referencia_oficial",
+      "issuer": "Asamblea Nacional - leyes aprobadas",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.asambleanacional.gob.ec/relaciones-internacionales-25-06-2024.mp4",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.asambleanacional.gob.ec/relaciones-internacionales-25-06-2024.mp4"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-cumplimiento-de-sentencias",
+      "title": "Cumplimiento de Sentencias",
+      "type": "referencia_oficial",
+      "issuer": "Asamblea Nacional - leyes aprobadas",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.asambleanacional.gob.ec/es/contenido/cumplimiento-de-sentencias",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.asambleanacional.gob.ec/es/contenido/cumplimiento-de-sentencias"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-edicion-constitucional",
+      "title": "EDICIÓN CONSTITUCIONAL",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/267099-2/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/267099-2/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-edicion-especial",
+      "title": "EDICIÓN ESPECIAL",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/261974-2/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/261974-2/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-edicion-juridica",
+      "title": "EDICIÓN JURÍDICA",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/266381-2/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/266381-2/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-indice",
+      "title": "Índice",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/category/productos/indice/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/category/productos/indice/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-indice-mensual",
+      "title": "ÍNDICE MENSUAL",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/265554-2/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/265554-2/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-indice-no-2",
+      "title": "Índice No. 2",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/indice-no-2-32/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/indice-no-2-32/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-indice-no-3",
+      "title": "Índice No. 3",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/indice-no-3-32/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/indice-no-3-32/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-indice-no-4",
+      "title": "Índice No. 4",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/indice-no-4-35/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/indice-no-4-35/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-indice-no-5",
+      "title": "Índice No. 5",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/indice-no-5-45/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/indice-no-5-45/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-indice-no-6",
+      "title": "Índice No. 6",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/indice-no-6-39/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/indice-no-6-39/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-indice-no-7",
+      "title": "Índice No. 7",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/indice-no-7-36/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/indice-no-7-36/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-inicio",
+      "title": "INICIO",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-ivan-mensias",
+      "title": "Ivan Mensias",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/author/ivan-mensias/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/author/ivan-mensias/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-manual-de-documentos-a-publicarse",
+      "title": "MANUAL DE DOCUMENTOS A PUBLICARSE",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://esacc.corteconstitucional.gob.ec/storage/api/v1/10_DWL_FL/e2NhcnBldGE6ICJ3YnByb3YyMDIzIiwgdXVpZDoiMWVkMTZkNDktNTYxMy00NTI3LWIwMWMtMDY5YjE1NzY5MzgzLnBkZiJ9",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://esacc.corteconstitucional.gob.ec/storage/api/v1/10_DWL_FL/e2NhcnBldGE6ICJ3YnByb3YyMDIzIiwgdXVpZDoiMWVkMTZkNDktNTYxMy00NTI3LWIwMWMtMDY5YjE1NzY5MzgzLnBkZiJ9"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-mision-y-vision",
+      "title": "MISIÓN Y VISIÓN",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/quienes-somos/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/quienes-somos/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-moises-gutierrez",
+      "title": "Moises Gutierrez",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/author/moises-gutierrez/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/author/moises-gutierrez/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-noticias-internacionales",
+      "title": "Noticias Internacionales",
+      "type": "referencia_oficial",
+      "issuer": "Asamblea Nacional - leyes aprobadas",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.asambleanacional.gob.ec/es/noticias/relaciones_internacionales",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.asambleanacional.gob.ec/es/noticias/relaciones_internacionales"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-participacion-ciudadana",
+      "title": "Participación Ciudadana",
+      "type": "referencia_oficial",
+      "issuer": "Asamblea Nacional - leyes aprobadas",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://participacion.asambleanacional.gob.ec/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://participacion.asambleanacional.gob.ec/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-plataforma-participa-2-0",
+      "title": "Plataforma Participa 2.0",
+      "type": "referencia_oficial",
+      "issuer": "Asamblea Nacional - leyes aprobadas",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://participa.asambleanacional.gob.ec/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://participa.asambleanacional.gob.ec/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-politicas-de-privacidad",
+      "title": "POLÍTICAS DE PRIVACIDAD",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/267223-2/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/267223-2/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-protocolo",
+      "title": "Protocolo",
+      "type": "referencia_oficial",
+      "issuer": "Asamblea Nacional - leyes aprobadas",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://protocolo.asambleanacional.gob.ec/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://protocolo.asambleanacional.gob.ec/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-quienes-somos",
+      "title": "QUIENES SOMOS",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/quienes-somos/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/quienes-somos/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-registro-oficial",
+      "title": "Registro Oficial",
+      "type": "referencia_oficial",
+      "issuer": "Asamblea Nacional - leyes aprobadas",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-registro-oficial-2",
+      "title": "REGISTRO OFICIAL",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/245427-2/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/245427-2/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-sistema-de-consulta-de-datos-parlamentarios",
+      "title": "Sistema de Consulta de Datos Parlamentarios",
+      "type": "referencia_oficial",
+      "issuer": "Asamblea Nacional - leyes aprobadas",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://datos.asambleanacional.gob.ec/home",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": false,
+        "httpStatus": 404,
+        "finalUrl": "https://datos.asambleanacional.gob.ec/home"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-solicitudes-de-informacion-tramitadas",
+      "title": "Solicitudes de Información Tramitadas",
+      "type": "referencia_oficial",
+      "issuer": "Asamblea Nacional - leyes aprobadas",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://fiscalizacion.asambleanacional.gob.ec/ ",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://fiscalizacion.asambleanacional.gob.ec/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-suplemento",
+      "title": "SUPLEMENTO",
+      "type": "referencia_oficial",
+      "issuer": "Registro Oficial - índice de legislación",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://www.registroficial.gob.ec/255776-2/",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://www.registroficial.gob.ec/255776-2/"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    },
+    {
+      "id": "pendiente-votaciones-del-pleno",
+      "title": "Votaciones del Pleno",
+      "type": "referencia_oficial",
+      "issuer": "Asamblea Nacional - leyes aprobadas",
+      "jurisdiction": "Ecuador",
+      "publishedAt": "2026-08-31",
+      "verifiedAt": "2026-08-31",
+      "status": "pendiente_verificacion",
+      "url": "https://colabora.asambleanacional.gob.ec/s/3HWYXRqyW4sx8dk",
+      "topics": [
+        "pendiente de clasificación"
+      ],
+      "summary": "Referencia descubierta en un índice oficial; requiere identificar tipo, fecha, número de Registro Oficial, reformas y vigencia.",
+      "documentaryVerification": {
+        "reachable": true,
+        "httpStatus": 200,
+        "finalUrl": "https://colabora.asambleanacional.gob.ec/s/3HWYXRqyW4sx8dk"
+      },
+      "legalReview": {
+        "status": "requiere_revision_juridica",
+        "missing": [
+          "fecha_publicación_confirmada",
+          "numero_registro_oficial",
+          "reformas",
+          "derogaciones",
+          "vigencia_consolidada"
+        ]
+      }
+    }
+  ]
+}
