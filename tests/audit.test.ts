@@ -163,4 +163,55 @@ describe('auditRepository', () => {
 
     await expect(auditRepository(join(workspaceRoot, 'missing-repo'))).rejects.toThrow();
   });
+
+  it('applies status overrides from .mcp-audit.json and lets explicit options override config limits', async () => {
+    const secret = 'sk_live_override12345678';
+    const { repoRoot } = await createRepoFixture({
+      '.mcp-audit.json': JSON.stringify({
+        limits: {
+          maxDepth: 1,
+        },
+        statuses: {
+          findings: {
+            byRuleId: {
+              'secret-exposed': 'no cumple',
+            },
+            byCategory: {
+              documentacion: 'no aplica',
+            },
+          },
+          controls: {
+            byId: {
+              'control-secretos': 'cumple',
+            },
+            byCategory: {
+              documentacion: 'no aplica',
+            },
+          },
+        },
+      }, null, 2),
+      'nested/deeper/src/app.ts': `export const apiKey = "${secret}";\n`,
+    });
+
+    const report = await auditRepository(repoRoot, { maxDepth: 5 });
+    const secretFinding = report.findings.find((finding: any) => finding.ruleId === 'secret-exposed');
+    const docsFinding = report.findings.find((finding: any) => finding.ruleId === 'missing-privacy-docs');
+    const secretControl = report.controls.find((control: any) => control.id === 'control-secretos');
+    const docsControl = report.controls.find((control: any) => control.id === 'control-documentacion');
+
+    expect(secretFinding).toMatchObject({
+      path: 'nested/deeper/src/app.ts',
+      status: 'no cumple',
+    });
+    expect(docsFinding).toMatchObject({
+      status: 'no aplica',
+    });
+    expect(secretControl).toMatchObject({
+      status: 'cumple',
+    });
+    expect(docsControl).toMatchObject({
+      status: 'no aplica',
+    });
+    expect(report.summary.limits.maxDepth).toBe(5);
+  });
 });
