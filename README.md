@@ -28,6 +28,10 @@ Las fuentes de descubrimiento son los índices oficiales de la [Asamblea Naciona
 
 Recursos: `legal://normativa` y `legal://normativa/{id}`. Prompt: `revision-privacidad`.
 
+## Idiomas
+
+Las herramientas aceptan `language: "es"` (predeterminado) o `language: "en"`. Las respuestas de evaluación, checklist, mensajes y descargos se generan en el idioma seleccionado. Los títulos y textos de las normas conservan el idioma oficial publicado por la fuente.
+
 ## Auditoría de repositorios
 
 `auditar_repositorio` inspecciona archivos de texto sin ejecutar el código. Detecta señales sobre secretos, datos personales, logging, autenticación, seguridad, infraestructura y documentación de privacidad.
@@ -118,4 +122,3 @@ La suite valida catálogo, búsquedas, obligaciones, auditoría, detección mult
 ## Responsabilidad
 
 Las normas enlazadas pertenecen a sus fuentes oficiales. Este proyecto no sustituye la revisión legal, técnica, contractual ni de seguridad necesaria para operar un sistema en producción.
-

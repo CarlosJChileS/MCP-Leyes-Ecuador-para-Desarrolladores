@@ -7,10 +7,10 @@ import type { LegalSource } from './domain.js';
 import { z } from 'zod';
 import { scanDependencyVulnerabilities as scanDependencies, type DependencyScanReport } from './dependencies.js';
 import { renderAuditReportHtml, renderAuditReportJson, renderAuditReportMarkdown } from './reports.js';
+import { disclaimers, normalizeLanguage } from './i18n.js';
 
-const disclaimer = 'Orientación preliminar; no constituye dictamen ni certificación jurídica. Verifique siempre la fuente oficial.';
 const input = (properties: Record<string, unknown>, required: string[] = []) => fromJsonSchema({ type: 'object', properties: properties as any, required, additionalProperties: false });
-const profile = input({ name: { type: 'string', minLength: 1, maxLength: 200 }, processesPersonalData: { type: 'boolean' }, usesProviders: { type: 'boolean' }, sellsOnline: { type: 'boolean' }, storesSensitiveData: { type: 'boolean' } }, ['name']);
+const profile = input({ name: { type: 'string', minLength: 1, maxLength: 200 }, processesPersonalData: { type: 'boolean' }, usesProviders: { type: 'boolean' }, sellsOnline: { type: 'boolean' }, storesSensitiveData: { type: 'boolean' }, language: { type: 'string', enum: ['es', 'en'] } }, ['name']);
 const text = (value: unknown) => ({ content: [{ type: 'text' as const, text: JSON.stringify(value, null, 2) }] });
 const auditInput = input({
   path: { type: 'string', minLength: 1, maxLength: 4096 },
@@ -38,11 +38,11 @@ export function createServer(catalog: LegalCatalog, injected: { auditRepository?
   const runAudit = injected.auditRepository ?? auditRepository;
   const runDependencyScan = injected.scanDependencyVulnerabilities ?? scanDependencies;
   const server = new McpServer({ name: 'mcp-leyes-ecuador-para-desarrolladores', version: '0.1.0' });
-  server.registerTool('buscar_normativa', { description: 'Busca normativa ecuatoriana verificable por texto y tema.', inputSchema: input({ query: { type: 'string', maxLength: 200 }, topic: { type: 'string', maxLength: 100 } }) }, async ({ query = '', topic }: any) => text({ results: catalog.search(query, topic), disclaimer }));
-  server.registerTool('consultar_obligacion', { description: 'Consulta una ficha normativa por identificador.', inputSchema: input({ id: { type: 'string', minLength: 1, maxLength: 100 } }, ['id']) }, async ({ id }: any) => { const source = catalog.get(id); return text(source ? { source, disclaimer } : { error: 'Norma no encontrada', disclaimer }); });
-  server.registerTool('verificar_vigencia', { description: 'Devuelve estado y fecha de verificación de una fuente.', inputSchema: input({ id: { type: 'string', minLength: 1, maxLength: 100 } }, ['id']) }, async ({ id }: any) => { const source = catalog.get(id); return text(source ? { id: source.id, title: source.title, status: source.status, verifiedAt: source.verifiedAt, url: source.url, disclaimer } : { error: 'Fuente no encontrada', disclaimer }); });
-  server.registerTool('evaluar_proyecto', { description: 'Genera riesgos y controles preliminares para un proyecto.', inputSchema: profile }, async (project: any) => text(assessProject(project, catalog.all())));
-  server.registerTool('generar_checklist_auditoria', { description: 'Genera una lista reproducible de evidencias para auditoría.', inputSchema: profile }, async (project: any) => text(auditChecklist(project, catalog.all())));
+  server.registerTool('buscar_normativa', { description: 'Busca normativa ecuatoriana verificable por texto y tema. Use language=es o language=en.', inputSchema: input({ query: { type: 'string', maxLength: 200 }, topic: { type: 'string', maxLength: 100 }, language: { type: 'string', enum: ['es', 'en'] } }) }, async ({ query = '', topic, language }: any) => text({ results: catalog.search(query, topic), language: normalizeLanguage(language), disclaimer: disclaimers[normalizeLanguage(language)] }));
+  server.registerTool('consultar_obligacion', { description: 'Consulta una ficha normativa por identificador.', inputSchema: input({ id: { type: 'string', minLength: 1, maxLength: 100 }, language: { type: 'string', enum: ['es', 'en'] } }, ['id']) }, async ({ id, language }: any) => { const lang = normalizeLanguage(language); const source = catalog.get(id); return text(source ? { source, language: lang, disclaimer: disclaimers[lang] } : { error: lang === 'en' ? 'Regulation not found' : 'Norma no encontrada', language: lang, disclaimer: disclaimers[lang] }); });
+  server.registerTool('verificar_vigencia', { description: 'Devuelve estado y fecha de verificación de una fuente.', inputSchema: input({ id: { type: 'string', minLength: 1, maxLength: 100 }, language: { type: 'string', enum: ['es', 'en'] } }, ['id']) }, async ({ id, language }: any) => { const lang = normalizeLanguage(language); const source = catalog.get(id); return text(source ? { id: source.id, title: source.title, status: source.status, verifiedAt: source.verifiedAt, url: source.url, language: lang, disclaimer: disclaimers[lang] } : { error: lang === 'en' ? 'Source not found' : 'Fuente no encontrada', language: lang, disclaimer: disclaimers[lang] }); });
+  server.registerTool('evaluar_proyecto', { description: 'Genera riesgos y controles preliminares para un proyecto.', inputSchema: profile }, async (project: any) => text(assessProject(project, catalog.all(), normalizeLanguage(project.language))));
+  server.registerTool('generar_checklist_auditoria', { description: 'Genera una lista reproducible de evidencias para auditoría.', inputSchema: profile }, async (project: any) => text(auditChecklist(project, catalog.all(), normalizeLanguage(project.language))));
   server.registerTool('auditar_repositorio', {
     description: 'Ejecuta una auditoría estática local y de solo lectura sobre un repositorio con límites seguros.',
     inputSchema: auditInput,
@@ -57,7 +57,7 @@ export function createServer(catalog: LegalCatalog, injected: { auditRepository?
       return { content: [{ type: 'text' as const, text: renderAuditReportJson(adapted, renderOptions) }] };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'No se pudo auditar el repositorio';
-      return text({ error: message, disclaimer });
+      return text({ error: message, disclaimer: disclaimers.es });
     }
   });
   server.registerResource('indice-normativa', 'legal://normativa', { title: 'Índice de normativa ecuatoriana', description: 'Fuentes locales curadas y verificables', mimeType: 'application/json' }, async (uri) => ({ contents: [{ uri: uri.href, text: JSON.stringify(catalog.all().map(({ id, title, status, verifiedAt }) => ({ id, title, status, verifiedAt })), null, 2), mimeType: 'application/json' }] }));
