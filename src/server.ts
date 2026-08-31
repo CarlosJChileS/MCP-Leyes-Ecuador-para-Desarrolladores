@@ -9,6 +9,7 @@ import { scanDependencyVulnerabilities as scanDependencies, type DependencyScanR
 import { renderAuditReportHtml, renderAuditReportJson, renderAuditReportMarkdown } from './reports.js';
 import { disclaimers, normalizeLanguage } from './i18n.js';
 
+const disclaimer = disclaimers.es;
 const input = (properties: Record<string, unknown>, required: string[] = []) => fromJsonSchema({ type: 'object', properties: properties as any, required, additionalProperties: false });
 const profile = input({ name: { type: 'string', minLength: 1, maxLength: 200 }, processesPersonalData: { type: 'boolean' }, usesProviders: { type: 'boolean' }, sellsOnline: { type: 'boolean' }, storesSensitiveData: { type: 'boolean' }, language: { type: 'string', enum: ['es', 'en'] } }, ['name']);
 const text = (value: unknown) => ({ content: [{ type: 'text' as const, text: JSON.stringify(value, null, 2) }] });
