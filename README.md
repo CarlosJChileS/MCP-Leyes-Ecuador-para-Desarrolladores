@@ -1,8 +1,57 @@
 # MCP Leyes Ecuador para Desarrolladores
 
-Servidor MCP local en TypeScript para consultar normativa ecuatoriana y preparar revisiones preliminares de privacidad y cumplimiento.
+Servidor [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) en TypeScript para consultar normativa ecuatoriana y realizar revisiones técnicas preliminares de privacidad, seguridad y cumplimiento en repositorios de software.
 
-## Ejecutar
+> **Aviso importante:** este proyecto es una herramienta de investigación y preauditoría. No constituye asesoría legal, dictamen, certificación ni garantía de cumplimiento. La vigencia y aplicación de cada norma debe confirmarse en la fuente oficial y con un profesional competente.
+
+## Qué resuelve
+
+Conecta un asistente compatible con MCP con un catálogo jurídico ecuatoriano y un auditor estático local. Permite buscar normas, consultar obligaciones, revisar señales técnicas de riesgo y generar un checklist inicial para proyectos tecnológicos y de comercio electrónico.
+
+## Cobertura actual
+
+El catálogo contiene un núcleo relevante de normativa nacional sobre protección de datos, comercio electrónico, firmas y mensajes de datos, propiedad intelectual, telecomunicaciones, transformación digital, fintech, defensa del consumidor, delitos informáticos, facturación electrónica, transparencia y resoluciones recientes de protección de datos.
+
+1. **Cobertura de todas las leyes del Ecuador: todavía no.** No es aún una recopilación exhaustiva de toda la legislación nacional, códigos, reglamentos, ordenanzas, resoluciones sectoriales, normas municipales ni reformas históricas.
+2. **Verificación jurídica completa de vigencia: no automática.** La herramienta comprueba accesibilidad y dominio oficial; no determina por sí sola derogaciones, reformas, suspensión, texto consolidado, ámbito de aplicación ni vigencia jurídica.
+
+Las fuentes de descubrimiento son los índices oficiales de la [Asamblea Nacional](https://www.asambleanacional.gob.ec/es/leyes-aprobadas) y el [Registro Oficial](https://www.registroficial.gob.ec/category/productos/indice/). Una referencia descubierta nunca se incorpora automáticamente como norma vigente.
+
+## Herramientas MCP
+
+- `buscar_normativa`: búsqueda local por título, resumen, etiquetas y ámbito.
+- `consultar_obligacion`: consulta obligaciones asociadas a una norma.
+- `verificar_vigencia`: muestra estado, fechas, fuente y advertencias.
+- `evaluar_proyecto`: relaciona el tipo de proyecto con riesgos preliminares.
+- `generar_checklist_auditoria`: genera controles sugeridos.
+- `auditar_repositorio`: escaneo estático local de solo lectura.
+
+Recursos: `legal://normativa` y `legal://normativa/{id}`. Prompt: `revision-privacidad`.
+
+## Auditoría de repositorios
+
+`auditar_repositorio` inspecciona archivos de texto sin ejecutar el código. Detecta señales sobre secretos, datos personales, logging, autenticación, seguridad, infraestructura y documentación de privacidad.
+
+Reconoce JavaScript, TypeScript, Vue, Python, Java, Kotlin, Scala, Groovy, Gradle, C#, F#, VB.NET, Go, Rust, Ruby, C, C++, Swift, Dart, SQL, Shell, PHP, YAML, JSON, JSONC, TOML, `.env`, INI, Docker, Terraform, XML, HTML, CSS, Markdown y texto plano. También reconoce `Dockerfile`, `Containerfile`, `Gemfile`, `Rakefile`, `README`, `LICENSE` y `.env*`.
+
+Ejemplo:
+
+```json
+{
+  "path": "C:/repos/mi-proyecto",
+  "maxDepth": 6,
+  "maxFiles": 500,
+  "maxFileSizeBytes": 262144,
+  "format": "json",
+  "dependencyScan": true
+}
+```
+
+El resultado incluye resumen, lenguajes detectados, hallazgos por severidad, controles sugeridos, referencias y descargo de responsabilidad. Puede generar JSON, Markdown o HTML y ejecutar escáneres locales disponibles como `npm audit`, `pip-audit`, `cargo audit`, herramientas .NET y `osv-scanner`.
+
+Medidas de seguridad: no ejecuta código del repositorio, excluye dependencias y builds, evita enlaces simbólicos fuera de la raíz, limita profundidad/tamaño/cantidad de archivos y redacta valores sensibles.
+
+## Instalación y uso
 
 Requiere Node.js 20 o superior.
 
@@ -13,9 +62,7 @@ npm run build
 npm start
 ```
 
-El servidor usa `stdio`, por lo que puede registrarse como servidor local en un cliente MCP. El catálogo inicial está en `data/normativa.json`.
-
-Ejemplo de configuración para un cliente MCP:
+El servidor usa `stdio`. Configuración de ejemplo:
 
 ```json
 {
@@ -28,101 +75,47 @@ Ejemplo de configuración para un cliente MCP:
 }
 ```
 
-El catálogo se resuelve relativo al servidor compilado, por lo que no depende del directorio desde el que el cliente lo inicie.
+El catálogo está en `data/normativa.json` y se resuelve relativo al servidor compilado.
 
-Para descubrir nuevas referencias desde índices oficiales:
+## Catálogo y verificación
 
 ```bash
 npm run catalog:discover
-```
-
-El comando genera `data/discovered-sources.json` como bandeja de revisión. No incorpora automáticamente esas referencias al catálogo ni las marca como vigentes: cada entrada debe ser revisada, completar sus metadatos y pasar `validateLegalSource`.
-
-Para comprobar accesibilidad y dominio oficial de las fuentes actualmente publicadas:
-
-```bash
 npm run catalog:verify
 ```
 
-El informe se guarda en `data/verification-report.json`. Una URL accesible no demuestra por sí sola vigencia jurídica; el informe exige revisión jurídica para evitar falsos positivos.
+Informes:
 
-El workflow de GitHub Actions `.github/workflows/catalog-monitor.yml` ejecuta semanalmente las pruebas, el descubrimiento y la verificación. Si encuentra cambios, abre un Pull Request con los informes actualizados para revisión. También puede ejecutarse manualmente desde la pestaña **Actions**. La automatización detecta cambios y enlaces rotos, pero no modifica estados jurídicos por sí sola.
+- `data/discovered-sources.json`: referencias pendientes de revisión.
+- `data/verification-report.json`: accesibilidad y dominio oficial.
 
-## Capacidades
+`.github/workflows/catalog-monitor.yml` ejecuta semanalmente pruebas, compilación, descubrimiento y verificación. Si encuentra cambios, abre un Pull Request para revisión humana.
 
-Incluye `buscar_normativa`, `consultar_obligacion`, `verificar_vigencia`, `evaluar_proyecto` y `generar_checklist_auditoria`. También publica los recursos `legal://normativa` y `legal://normativa/{id}`, además del prompt `revision-privacidad`.
+## Roadmap jurídico
 
-Las búsquedas son locales y reproducibles; cada resultado conserva URL oficial, estado y fecha de verificación. El catálogo se valida al iniciar y rechaza URLs no HTTPS, fechas inválidas, campos obligatorios ausentes e identificadores duplicados.
+Se debe incorporar un catálogo histórico y actualizado del Registro Oficial, con:
 
-Las respuestas son orientación preliminar con fuentes y fechas de verificación. No constituyen asesoría, dictamen ni certificación jurídica. Antes de una auditoría o decisión empresarial, valida la vigencia en la fuente oficial y consulta a un profesional competente.
+- control de reformas y texto consolidado;
+- registro de derogaciones, sustituciones y vigencia temporal;
+- relación entre ley, código, reglamento y resolución;
+- clasificación por sector: tecnología, comercio electrónico, financiero, laboral, tributario, consumo, salud, educación y otros;
+- trazabilidad a número, suplemento, fecha y página del Registro Oficial;
+- estados separados para accesibilidad técnica, revisión documental y vigencia jurídica;
+- revisión humana antes de publicar cambios normativos.
 
-### `auditar_repositorio`
+Este trabajo requiere fuentes oficiales completas, reglas de consolidación y revisión jurídica. No se debe inferir vigencia únicamente desde una URL accesible.
 
-Ejecuta una auditoría estática local y de solo lectura sobre un repositorio para detectar señales técnicas de riesgo, con foco en privacidad, seguridad y cumplimiento preliminar.
+## Desarrollo
 
-Entrada ejemplo:
-
-```json
-{
-  "path": "C:/repos/mi-proyecto",
-  "maxDepth": 6,
-  "maxFiles": 500,
-  "maxFileSizeBytes": 262144
-}
+```bash
+npm test -- --run
+npm run build
+npm run catalog:verify
 ```
 
-`path` es el único campo obligatorio. Los límites son opcionales y, si no se envían, se usan valores conservadores por defecto.
+La suite valida catálogo, búsquedas, obligaciones, auditoría, detección multilenguaje, reportes y límites de seguridad.
 
-La salida incluye:
+## Responsabilidad
 
-- `summary`: ruta raíz resuelta, nombre del repositorio, fecha de generación, conteo de archivos y directorios escaneados, entradas omitidas, totales por severidad y categoría, y los límites usados.
-- `findings`: hallazgos ordenados por severidad, ruta y línea, con explicación, evidencia redactada cuando corresponde, recomendación, referencia y estado.
-- `controls`: controles sugeridos asociados a los hallazgos detectados.
-- `references`: fuentes legales o técnicas asociadas a los hallazgos.
-- `disclaimer`: aviso de que el reporte es preliminar y no constituye certificación ni dictamen.
+Las normas enlazadas pertenecen a sus fuentes oficiales. Este proyecto no sustituye la revisión legal, técnica, contractual ni de seguridad necesaria para operar un sistema en producción.
 
-La detección de archivos es determinista por extensión, nombre especial y patrón de archivo. Cada archivo escaneado recibe un `language`, cada hallazgo hereda ese campo y el resumen incluye `summary.languages` con el conteo por lenguaje, incluido `unknown`.
-
-Lenguajes y formatos reconocidos:
-
-- JavaScript y TypeScript, incluyendo Vue.
-- Python.
-- JVM: Java, Kotlin, Scala, Groovy y Gradle.
-- .NET: C#, F# y VB.NET.
-- Go, Rust, Ruby, C, C++, Swift, Dart, SQL y Shell.
-- Configuración: YAML, JSON, JSONC, TOML, `.env`, INI, CFG, CONF, CONFIG y PROPERTIES.
-- Infraestructura y contenedores: Docker y Terraform.
-- Marcado y documentación: XML, HTML, CSS, Markdown y texto plano.
-- Otros admitidos: PHP.
-
-Archivos especiales reconocidos:
-
-- `Dockerfile`, `Containerfile`, `Dockerfile.*`, `Containerfile.*` y `*.dockerfile` se clasifican como `docker`.
-- `README`, `LICENSE` y `PRIVACY` se tratan como Markdown.
-- `Gemfile` y `Rakefile` se tratan como Ruby.
-- `.env*` se tratan como archivos de configuración.
-- `*.containerfile`, `*.tf`, `*.tfvars` y `*.hcl` se reconocen para Docker y Terraform.
-
-Cuando un archivo de texto no coincide con ninguna regla conocida, la auditoría lo marca como `unknown`. Eso no impide que se escanee, pero sí limita la precisión de las reglas específicas por familia.
-
-Comportamiento de seguridad:
-
-- escanea solo el sistema de archivos local y no ejecuta código;
-- evita directorios excluidos como `node_modules`, `.git`, `dist`, `build`, `.next`, `coverage` y similares;
-- omite enlaces simbólicos y rutas que salgan del repositorio;
-- limita profundidad, cantidad de archivos y tamaño por archivo;
-- ignora archivos binarios y usa solo archivos de texto permitidos;
-- redacta valores sensibles detectados en la evidencia antes de devolverlos.
-
-Limitaciones:
-
-- el análisis es heurístico y no sustituye una revisión manual;
-- puede omitir problemas en archivos binarios, muy grandes o fuera de los tipos de texto admitidos;
-- puede ejecutar opcionalmente escáneres locales de dependencias (`npm audit`, `pip-audit`, `cargo audit`, .NET y `osv-scanner`) cuando estén instalados; si no, lo reporta como omitido;
-- los informes pueden renderizarse como JSON, Markdown o HTML compatible con PDF;
-- no valida ejecución, configuración en tiempo real ni comportamiento en producción;
-- no constituye asesoría, certificación de seguridad ni dictamen jurídico.
-
-## Fuentes
-
-El catálogo solo acepta URLs HTTPS y registros con fecha y estado. Añadir una norma exige conservar su identificador, emisor, URL oficial, fecha de publicación, fecha de verificación y estado normativo.
