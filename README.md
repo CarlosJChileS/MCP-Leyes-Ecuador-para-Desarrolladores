@@ -86,12 +86,14 @@ El catálogo está en `data/normativa.json` y se resuelve relativo al servidor c
 ```bash
 npm run catalog:discover
 npm run catalog:verify
+npm run catalog:import
 ```
 
 Informes:
 
 - `data/discovered-sources.json`: referencias pendientes de revisión.
 - `data/verification-report.json`: accesibilidad y dominio oficial.
+- `data/catalog-pending.json`: referencias oficiales importadas como pendientes de clasificación y revisión jurídica.
 
 `.github/workflows/catalog-monitor.yml` ejecuta semanalmente pruebas, compilación, descubrimiento y verificación. Si encuentra cambios, abre un Pull Request para revisión humana.
 
@@ -108,6 +110,8 @@ Se debe incorporar un catálogo histórico y actualizado del Registro Oficial, c
 - revisión humana antes de publicar cambios normativos.
 
 Este trabajo requiere fuentes oficiales completas, reglas de consolidación y revisión jurídica. No se debe inferir vigencia únicamente desde una URL accesible.
+
+La importación automática prepara referencias para revisión; no las mezcla con `data/normativa.json` hasta completar sus metadatos y confirmar su estado.
 
 ## Desarrollo
 

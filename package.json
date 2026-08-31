@@ -10,6 +10,7 @@
     "dev": "tsx src/server.ts",
     "catalog:discover": "tsx src/discover.ts",
     "catalog:verify": "tsx src/verify.ts",
+    "catalog:import": "tsx src/import-catalog.ts",
     "test": "vitest"
   },
   "dependencies": {
