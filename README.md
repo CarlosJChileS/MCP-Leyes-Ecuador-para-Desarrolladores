@@ -118,7 +118,9 @@ Limitaciones:
 
 - el análisis es heurístico y no sustituye una revisión manual;
 - puede omitir problemas en archivos binarios, muy grandes o fuera de los tipos de texto admitidos;
-- no valida dependencias, ejecución, configuración en tiempo real ni comportamiento en producción;
+- puede ejecutar opcionalmente escáneres locales de dependencias (`npm audit`, `pip-audit`, `cargo audit`, .NET y `osv-scanner`) cuando estén instalados; si no, lo reporta como omitido;
+- los informes pueden renderizarse como JSON, Markdown o HTML compatible con PDF;
+- no valida ejecución, configuración en tiempo real ni comportamiento en producción;
 - no constituye asesoría, certificación de seguridad ni dictamen jurídico.
 
 ## Fuentes

@@ -1,0 +1,38 @@
+name: Auditoría de repositorio
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm test -- --run
+      - run: npm run build
+      - name: Auditar repositorio
+        run: |
+          node --input-type=module <<'NODE'
+          import { writeFile } from 'node:fs/promises';
+          import { auditRepository } from './dist/audit.js';
+          import { renderAuditReportMarkdown } from './dist/reports.js';
+          const report = await auditRepository(process.cwd());
+          await writeFile('audit-report.md', renderAuditReportMarkdown(report), 'utf8');
+          const high = report.findings.filter((finding) => finding.severity === 'high' || finding.severity === 'critical');
+          if (high.length) process.exitCode = 1;
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: repository-audit-${{ github.run_id }}
+          path: audit-report.md
+          retention-days: 30

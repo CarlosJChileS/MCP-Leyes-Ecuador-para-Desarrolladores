@@ -2,6 +2,7 @@ import { lstat, readdir, readFile, realpath, stat } from 'node:fs/promises';
 import { basename, isAbsolute, relative, resolve } from 'node:path';
 import type { LegalSource, LegalStatus } from './domain.js';
 import { detectLanguage, isScannableTextFile, type DetectedLanguage, type LanguageFamily } from './languages.js';
+import { loadAuditConfig, type AuditConfig } from './config.js';
 
 export type AuditSeverity = 'critical' | 'high' | 'medium' | 'low';
 export type AuditCategory =
@@ -12,8 +13,9 @@ export type AuditCategory =
   | 'cors'
   | 'cookies'
   | 'endpoints_sensibles'
+  | 'infraestructura'
   | 'documentacion';
-export type AuditStatus = 'pendiente';
+export type AuditStatus = 'cumple' | 'no cumple' | 'no aplica' | 'pendiente';
 
 export type AuditReference = Pick<LegalSource, 'id' | 'title' | 'url' | 'verifiedAt'> & {
   status: LegalStatus;
@@ -135,6 +137,7 @@ const CATEGORY_ORDER: AuditCategory[] = [
   'cors',
   'cookies',
   'endpoints_sensibles',
+  'infraestructura',
   'documentacion',
 ];
 
@@ -211,6 +214,48 @@ const RULES: Record<string, CategoryRule> = {
     explanation: 'Se detectó un endpoint sensible sin una señal clara de control de autenticación o autorización en la misma ruta.',
     recommendation: 'Exija autenticación, autorización y registro de acceso para endpoints administrativos o con datos sensibles.',
   },
+  dockerRootUser: {
+    id: 'docker-root-user',
+    category: 'infraestructura',
+    severity: 'high',
+    explanation: 'El contenedor no declara un usuario no privilegiado y puede ejecutarse como root.',
+    recommendation: 'Defina `USER` con una cuenta no privilegiada y verifique permisos mínimos para archivos y procesos.',
+  },
+  dockerFloatingImage: {
+    id: 'docker-floating-image',
+    category: 'infraestructura',
+    severity: 'medium',
+    explanation: 'La imagen base de Docker usa una referencia flotante o sin versión fija.',
+    recommendation: 'Fije la imagen base con una versión concreta o digest para reducir deriva y riesgo de cadena de suministro.',
+  },
+  dockerExposedPort: {
+    id: 'docker-exposed-port',
+    category: 'infraestructura',
+    severity: 'medium',
+    explanation: 'El contenedor expone un puerto sensible que suele requerir controles de red adicionales.',
+    recommendation: 'Evite exponer puertos administrativos o de bases de datos; restrínjalos por red privada o proxy autenticado.',
+  },
+  githubActionsSecretExposure: {
+    id: 'github-actions-secret-exposure',
+    category: 'infraestructura',
+    severity: 'high',
+    explanation: 'El workflow de GitHub Actions parece volcar un secreto en un comando con salida visible.',
+    recommendation: 'No imprima secretos en pasos `run`; páselos por variables de entorno estrictamente necesarias y use enmascaramiento.',
+  },
+  terraformPublicResource: {
+    id: 'terraform-public-resource',
+    category: 'infraestructura',
+    severity: 'high',
+    explanation: 'Terraform declara una exposición pública amplia o un recurso marcado como accesible públicamente.',
+    recommendation: 'Restrinja CIDR, deshabilite acceso público por defecto y documente las excepciones con controles compensatorios.',
+  },
+  terraformMissingEncryption: {
+    id: 'terraform-missing-encryption',
+    category: 'infraestructura',
+    severity: 'high',
+    explanation: 'Terraform deshabilita explícitamente cifrado en reposo para un recurso de infraestructura.',
+    recommendation: 'Habilite cifrado en reposo y gestione claves con un servicio KMS o mecanismo equivalente.',
+  },
   missingPrivacyDocs: {
     id: 'missing-privacy-docs',
     category: 'documentacion',
@@ -285,6 +330,14 @@ const CONTROL_LIBRARY: Record<string, AuditControl> = {
     referenceIds: ['lopdp', 'comercio-electronico'],
     status: 'pendiente',
   },
+  infraestructura: {
+    id: 'control-infraestructura',
+    category: 'infraestructura',
+    title: 'Fortalecer infraestructura y CI/CD',
+    description: 'Reducir exposición pública, evitar ejecución privilegiada y proteger secretos y cifrado en definiciones de infraestructura.',
+    referenceIds: ['lopdp', 'comercio-electronico'],
+    status: 'pendiente',
+  },
   documentacion: {
     id: 'control-documentacion',
     category: 'documentacion',
@@ -351,11 +404,19 @@ const LANGUAGE_CORS_PATTERNS = [
   /\bheaders\s*\[\s*['"`]Access-Control-Allow-Origin['"`]\s*\]\s*=\s*['"`]\*['"`]/i,
   /\baccess[-_ ]control[-_ ]allow[-_ ]origin\b\s*[:=]\s*['"`]?\*['"`]?/i,
 ];
+const GITHUB_ACTIONS_WORKFLOW_PATTERN = /^\.github\/workflows\/.+\.(yaml|yml)$/i;
+const DOCKER_SENSITIVE_PORTS = new Set(['22', '2375', '2376', '3306', '5432', '6379', '9200', '11211', '27017']);
+const TERRAFORM_PUBLIC_PATTERNS = [/\b0\.0\.0\.0\/0\b/i, /\b::\/0\b/i, /\bpublicly_accessible\s*=\s*true\b/i, /\bpublic\s*=\s*true\b/i, /\bmap_public_ip_on_launch\s*=\s*true\b/i];
+const TERRAFORM_UNENCRYPTED_PATTERNS = [
+  /\bstorage_encrypted\s*=\s*false\b/i,
+  /\bencrypted\s*=\s*false\b/i,
+  /\benable_at_rest_encryption\s*=\s*false\b/i,
+  /\bserver_side_encryption_configuration\s*=\s*false\b/i,
+];
 const CONFIG_FAMILIES = new Set<LanguageFamily>(['config', 'docker', 'terraform']);
 const LOG_FAMILIES = new Set<LanguageFamily>(['javascript', 'python', 'jvm', 'dotnet', 'go', 'rust', 'ruby', 'c-cpp', 'shell']);
 
 export async function auditRepository(repositoryPath: string, options: AuditOptions = {}): Promise<AuditReport> {
-  const resolvedOptions = normalizeOptions(options);
   const rootPath = resolve(repositoryPath);
   const rootStats = await stat(rootPath).catch(() => {
     throw new Error(`Ruta de repositorio inválida: ${repositoryPath}`);
@@ -366,6 +427,8 @@ export async function auditRepository(repositoryPath: string, options: AuditOpti
   }
 
   const rootRealPath = await realpath(rootPath);
+  const loadedConfig = await loadAuditConfig(rootRealPath);
+  const resolvedOptions = normalizeOptions(options, loadedConfig.config.limits);
   const scanState = {
     files: [] as ScannedFile[],
     scannedDirectories: 0,
@@ -382,13 +445,13 @@ export async function auditRepository(repositoryPath: string, options: AuditOpti
   };
 
   for (const file of scanState.files) {
-    analyzeFile(file, findings);
+    analyzeFile(file, findings, loadedConfig.config);
   }
-  applyRepositoryRules(ruleContext);
+  applyRepositoryRules(ruleContext, loadedConfig.config);
 
   const sortedFindings = [...findings].sort(compareFindings);
   const references = collectReferences(sortedFindings);
-  const controls = collectControls(sortedFindings);
+  const controls = collectControls(sortedFindings, loadedConfig.config);
 
   return {
     summary: buildSummary(rootPath, rootRealPath, resolvedOptions, scanState, sortedFindings),
@@ -481,7 +544,7 @@ async function walkDirectory(
   }
 }
 
-function analyzeFile(file: ScannedFile, findings: AuditFinding[]) {
+function analyzeFile(file: ScannedFile, findings: AuditFinding[], config: AuditConfig) {
   const lines = file.content.split(/\r?\n/);
 
   lines.forEach((line, index) => {
@@ -490,37 +553,45 @@ function analyzeFile(file: ScannedFile, findings: AuditFinding[]) {
     const secretValue = findSecretValue(line);
     if (secretValue) {
       findings.push(
-        buildFinding(file, lineNumber, RULES.secret, redactSecretLine(line, secretValue), referenceForCategory('secretos')),
+        buildFinding(file, lineNumber, RULES.secret, redactSecretLine(line, secretValue), referenceForCategory('secretos'), config),
       );
     }
 
     if (hasPersonalDataSignal(line)) {
-      findings.push(buildFinding(file, lineNumber, RULES.personalData, shorten(line), referenceForCategory('datos_personales')));
+      findings.push(buildFinding(file, lineNumber, RULES.personalData, shorten(line), referenceForCategory('datos_personales'), config));
     }
 
     if (matchesSensitiveLog(file, line)) {
-      findings.push(buildFinding(file, lineNumber, RULES.sensitiveLog, shorten(redactSecretLine(line)), referenceForCategory('logs_sensibles')));
+      findings.push(
+        buildFinding(file, lineNumber, RULES.sensitiveLog, shorten(redactSecretLine(line)), referenceForCategory('logs_sensibles'), config),
+      );
     }
 
     if (matchesInsecureTransport(file, line)) {
-      findings.push(buildFinding(file, lineNumber, RULES.insecureHttp, shorten(line), referenceForCategory('transporte_inseguro')));
+      findings.push(
+        buildFinding(file, lineNumber, RULES.insecureHttp, shorten(line), referenceForCategory('transporte_inseguro'), config),
+      );
     }
 
     if (matchesPermissiveCors(file, line)) {
-      findings.push(buildFinding(file, lineNumber, RULES.permissiveCors, shorten(line), referenceForCategory('cors')));
+      findings.push(buildFinding(file, lineNumber, RULES.permissiveCors, shorten(line), referenceForCategory('cors'), config));
     }
 
     if (matchesInsecureCookie(file, line)) {
-      findings.push(buildFinding(file, lineNumber, RULES.insecureCookie, shorten(redactSecretLine(line)), referenceForCategory('cookies')));
+      findings.push(buildFinding(file, lineNumber, RULES.insecureCookie, shorten(redactSecretLine(line)), referenceForCategory('cookies'), config));
     }
 
     if (matchesSensitiveEndpoint(file, line)) {
-      findings.push(buildFinding(file, lineNumber, RULES.sensitiveEndpoint, shorten(line), referenceForCategory('endpoints_sensibles')));
+      findings.push(
+        buildFinding(file, lineNumber, RULES.sensitiveEndpoint, shorten(line), referenceForCategory('endpoints_sensibles'), config),
+      );
     }
   });
 }
 
-function applyRepositoryRules(context: RuleContext) {
+function applyRepositoryRules(context: RuleContext, config: AuditConfig) {
+  applyInfrastructureRules(context, config);
+
   const hasPrivacyDocumentation = context.files.some((file) => {
     const lowerPath = file.relativePath.toLowerCase();
     return (
@@ -543,9 +614,171 @@ function applyRepositoryRules(context: RuleContext) {
       evidence: 'No se encontró un archivo visible de privacidad o tratamiento de datos dentro del repositorio escaneado.',
       recommendation: RULES.missingPrivacyDocs.recommendation,
       reference: referenceForCategory('documentacion'),
-      status: 'pendiente',
+      status: resolveFindingStatus(config, {
+        id: `${RULES.missingPrivacyDocs.id}:repository`,
+        ruleId: RULES.missingPrivacyDocs.id,
+        category: RULES.missingPrivacyDocs.category,
+      }),
     });
   }
+}
+
+function applyInfrastructureRules(context: RuleContext, config: AuditConfig) {
+  for (const file of context.files) {
+    if (file.family === 'docker') {
+      applyDockerRules(file, context.findings, config);
+      continue;
+    }
+
+    if (file.family === 'terraform') {
+      applyTerraformRules(file, context.findings, config);
+      continue;
+    }
+
+    if (isGitHubActionsWorkflow(file)) {
+      applyGitHubActionsRules(file, context.findings, config);
+    }
+  }
+}
+
+function applyDockerRules(file: ScannedFile, findings: AuditFinding[], config: AuditConfig) {
+  const lines = file.content.split(/\r?\n/);
+  const fromLine = lines.findIndex((line) => /^\s*FROM\b/i.test(line));
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+
+    if (isFloatingDockerImage(line)) {
+      findings.push(
+        buildFinding(file, index + 1, RULES.dockerFloatingImage, shorten(line), referenceForCategory('infraestructura'), config),
+      );
+    }
+
+    const exposedPort = extractSensitiveDockerPort(line);
+    if (exposedPort) {
+      findings.push(
+        buildFinding(
+          file,
+          index + 1,
+          RULES.dockerExposedPort,
+          shorten(`EXPOSE ${exposedPort}`),
+          referenceForCategory('infraestructura'),
+          config,
+        ),
+      );
+    }
+  }
+
+  if (fromLine >= 0 && !hasExplicitNonRootUser(lines)) {
+    findings.push(
+      buildRepositoryFinding(
+        file,
+        RULES.dockerRootUser,
+        'No se detectó una instrucción USER no privilegiada en el Dockerfile.',
+        referenceForCategory('infraestructura'),
+        config,
+        fromLine + 1,
+      ),
+    );
+  }
+}
+
+function applyGitHubActionsRules(file: ScannedFile, findings: AuditFinding[], config: AuditConfig) {
+  const lines = file.content.split(/\r?\n/);
+  let runBlockIndent: number | null = null;
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+    const trimmed = line.trim();
+    const indent = line.length - line.trimStart().length;
+
+    if (runBlockIndent !== null) {
+      if (trimmed.length === 0) {
+        continue;
+      }
+      if (indent <= runBlockIndent) {
+        runBlockIndent = null;
+      } else if (isSecretEchoCommand(trimmed)) {
+        findings.push(
+          buildFinding(
+            file,
+            index + 1,
+            RULES.githubActionsSecretExposure,
+            shorten(trimmed),
+            referenceForCategory('infraestructura'),
+            config,
+          ),
+        );
+        runBlockIndent = null;
+        continue;
+      } else {
+        continue;
+      }
+    }
+
+    if (!/\brun\s*:/i.test(trimmed)) {
+      continue;
+    }
+
+    if (isSecretEchoCommand(trimmed)) {
+      findings.push(
+        buildFinding(file, index + 1, RULES.githubActionsSecretExposure, shorten(trimmed), referenceForCategory('infraestructura'), config),
+      );
+      continue;
+    }
+
+    if (/^\s*-\s*run\s*:\s*[>|]?\s*$/i.test(line) || /^\s*run\s*:\s*[>|]?\s*$/i.test(line)) {
+      runBlockIndent = indent;
+    }
+  }
+}
+
+function applyTerraformRules(file: ScannedFile, findings: AuditFinding[], config: AuditConfig) {
+  const lines = file.content.split(/\r?\n/);
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+
+    if (TERRAFORM_PUBLIC_PATTERNS.some((pattern) => pattern.test(line))) {
+      findings.push(
+        buildFinding(file, index + 1, RULES.terraformPublicResource, shorten(line), referenceForCategory('infraestructura'), config),
+      );
+    }
+
+    if (TERRAFORM_UNENCRYPTED_PATTERNS.some((pattern) => pattern.test(line))) {
+      findings.push(
+        buildFinding(file, index + 1, RULES.terraformMissingEncryption, shorten(line), referenceForCategory('infraestructura'), config),
+      );
+    }
+  }
+}
+
+function buildRepositoryFinding(
+  file: Pick<ScannedFile, 'relativePath' | 'language'>,
+  rule: CategoryRule,
+  evidence: string,
+  reference: AuditReference,
+  config: AuditConfig,
+  line?: number,
+): AuditFinding {
+  return {
+    id: `${rule.id}:${file.relativePath}${line ? `:${line}` : ''}`,
+    ruleId: rule.id,
+    severity: rule.severity,
+    category: rule.category,
+    language: file.language,
+    path: file.relativePath,
+    line,
+    explanation: rule.explanation,
+    evidence,
+    recommendation: rule.recommendation,
+    reference,
+    status: resolveFindingStatus(config, {
+      id: `${rule.id}:${file.relativePath}${line ? `:${line}` : ''}`,
+      ruleId: rule.id,
+      category: rule.category,
+    }),
+  };
 }
 
 function buildFinding(
@@ -554,6 +787,7 @@ function buildFinding(
   rule: CategoryRule,
   evidence: string,
   reference: AuditReference,
+  config: AuditConfig,
 ): AuditFinding {
   return {
     id: `${rule.id}:${file.relativePath}:${line}`,
@@ -567,7 +801,11 @@ function buildFinding(
     evidence,
     recommendation: rule.recommendation,
     reference,
-    status: 'pendiente',
+    status: resolveFindingStatus(config, {
+      id: `${rule.id}:${file.relativePath}:${line}`,
+      ruleId: rule.id,
+      category: rule.category,
+    }),
   };
 }
 
@@ -621,14 +859,14 @@ function collectReferences(findings: AuditFinding[]): AuditReference[] {
   return [...references.values()].sort((left, right) => left.id.localeCompare(right.id, 'en'));
 }
 
-function collectControls(findings: AuditFinding[]): AuditControl[] {
+function collectControls(findings: AuditFinding[], config: AuditConfig): AuditControl[] {
   const controls = new Map<string, AuditControl>();
-  controls.set(CONTROL_LIBRARY.general.id, CONTROL_LIBRARY.general);
+  controls.set(CONTROL_LIBRARY.general.id, withControlStatus(CONTROL_LIBRARY.general, config));
 
   for (const finding of findings) {
     const control = CONTROL_LIBRARY[finding.category];
     if (control) {
-      controls.set(control.id, control);
+      controls.set(control.id, withControlStatus(control, config));
     }
   }
 
@@ -651,11 +889,15 @@ function compareFindings(left: AuditFinding, right: AuditFinding): number {
   return left.ruleId.localeCompare(right.ruleId, 'en');
 }
 
-function normalizeOptions(options: AuditOptions): Required<AuditOptions> {
+function normalizeOptions(options: AuditOptions, configLimits: Partial<AuditOptions> = {}): Required<AuditOptions> {
   return {
-    maxDepth: normalizePositiveInteger(options.maxDepth, DEFAULT_OPTIONS.maxDepth, 'maxDepth'),
-    maxFiles: normalizePositiveInteger(options.maxFiles, DEFAULT_OPTIONS.maxFiles, 'maxFiles'),
-    maxFileSizeBytes: normalizePositiveInteger(options.maxFileSizeBytes, DEFAULT_OPTIONS.maxFileSizeBytes, 'maxFileSizeBytes'),
+    maxDepth: normalizePositiveInteger(options.maxDepth ?? configLimits.maxDepth, DEFAULT_OPTIONS.maxDepth, 'maxDepth'),
+    maxFiles: normalizePositiveInteger(options.maxFiles ?? configLimits.maxFiles, DEFAULT_OPTIONS.maxFiles, 'maxFiles'),
+    maxFileSizeBytes: normalizePositiveInteger(
+      options.maxFileSizeBytes ?? configLimits.maxFileSizeBytes,
+      DEFAULT_OPTIONS.maxFileSizeBytes,
+      'maxFileSizeBytes',
+    ),
   };
 }
 
@@ -794,10 +1036,91 @@ function stripLiteralContent(line: string): string {
 }
 
 function referenceForCategory(category: AuditCategory): AuditReference {
-  if (category === 'transporte_inseguro' || category === 'cors' || category === 'cookies' || category === 'endpoints_sensibles') {
+  if (
+    category === 'transporte_inseguro' ||
+    category === 'cors' ||
+    category === 'cookies' ||
+    category === 'endpoints_sensibles' ||
+    category === 'infraestructura'
+  ) {
     return REFERENCE_LIBRARY['comercio-electronico'];
   }
   return REFERENCE_LIBRARY.lopdp;
+}
+
+function isGitHubActionsWorkflow(file: ScannedFile): boolean {
+  return file.language === 'yaml' && GITHUB_ACTIONS_WORKFLOW_PATTERN.test(file.relativePath);
+}
+
+function isFloatingDockerImage(line: string): boolean {
+  const match = line.match(/^\s*FROM\s+(?:--platform=\S+\s+)?([^\s]+)(?:\s+AS\s+\S+)?\s*$/i);
+  if (!match?.[1]) {
+    return false;
+  }
+
+  const imageReference = match[1].trim();
+  if (imageReference.includes('@sha256:')) {
+    return false;
+  }
+
+  const lastSlash = imageReference.lastIndexOf('/');
+  const lastColon = imageReference.lastIndexOf(':');
+  const tag = lastColon > lastSlash ? imageReference.slice(lastColon + 1) : undefined;
+
+  return tag === undefined || tag.toLowerCase() === 'latest';
+}
+
+function extractSensitiveDockerPort(line: string): string | null {
+  const match = line.match(/^\s*EXPOSE\s+(.+)$/i);
+  if (!match?.[1]) {
+    return null;
+  }
+
+  const tokens = match[1]
+    .split(/\s+/)
+    .flatMap((token) => token.split('/'))
+    .map((token) => token.trim())
+    .filter((token) => /^\d+$/.test(token));
+
+  return tokens.find((token) => DOCKER_SENSITIVE_PORTS.has(token)) ?? null;
+}
+
+function hasExplicitNonRootUser(lines: string[]): boolean {
+  for (const line of lines) {
+    const match = line.match(/^\s*USER\s+([^\s#]+)/i);
+    if (!match?.[1]) {
+      continue;
+    }
+
+    const declaredUser = match[1].trim().replace(/['"]/g, '').toLowerCase();
+    if (declaredUser !== 'root' && declaredUser !== '0') {
+      return true;
+    }
+  }
+  return false;
+}
+
+function isSecretEchoCommand(line: string): boolean {
+  return /\bsecrets\.[a-z0-9_]+\b/i.test(line) && /\b(echo|printf|write-host|write-output|tee|cat)\b/i.test(line);
+}
+
+function resolveFindingStatus(
+  config: AuditConfig,
+  finding: Pick<AuditFinding, 'id' | 'ruleId' | 'category'>,
+): AuditStatus {
+  return (
+    config.statuses.findings.byId[finding.id] ??
+    config.statuses.findings.byRuleId[finding.ruleId] ??
+    config.statuses.findings.byCategory[finding.category] ??
+    'pendiente'
+  );
+}
+
+function withControlStatus(control: AuditControl, config: AuditConfig): AuditControl {
+  return {
+    ...control,
+    status: config.statuses.controls.byId[control.id] ?? config.statuses.controls.byCategory[control.category] ?? 'pendiente',
+  };
 }
 
 function shorten(line: string, maxLength = 220): string {

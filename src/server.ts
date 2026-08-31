@@ -5,6 +5,8 @@ import { auditRepository, type AuditCategory, type AuditFinding, type AuditRefer
 import { assessProject, auditChecklist } from './compliance.js';
 import type { LegalSource } from './domain.js';
 import { z } from 'zod';
+import { scanDependencyVulnerabilities as scanDependencies, type DependencyScanReport } from './dependencies.js';
+import { renderAuditReportHtml, renderAuditReportJson, renderAuditReportMarkdown } from './reports.js';
 
 const disclaimer = 'Orientación preliminar; no constituye dictamen ni certificación jurídica. Verifique siempre la fuente oficial.';
 const input = (properties: Record<string, unknown>, required: string[] = []) => fromJsonSchema({ type: 'object', properties: properties as any, required, additionalProperties: false });
@@ -15,6 +17,9 @@ const auditInput = input({
   maxDepth: { type: 'integer', minimum: 1, maximum: 12 },
   maxFiles: { type: 'integer', minimum: 1, maximum: 2000 },
   maxFileSizeBytes: { type: 'integer', minimum: 1024, maximum: 1048576 },
+  format: { type: 'string', enum: ['json', 'markdown', 'html'] },
+  dependencyScan: { type: 'boolean' },
+  timeout: { type: 'integer', minimum: 1000, maximum: 120000 },
 }, ['path']);
 
 const categoryTopics: Record<AuditCategory, string[]> = {
@@ -25,10 +30,13 @@ const categoryTopics: Record<AuditCategory, string[]> = {
   cors: ['seguridad', 'comercio electrónico'],
   cookies: ['privacidad', 'seguridad'],
   endpoints_sensibles: ['seguridad', 'comercio electrónico'],
+  infraestructura: ['seguridad', 'datos personales', 'comercio electrónico'],
   documentacion: ['privacidad', 'datos personales'],
 };
 
-export function createServer(catalog: LegalCatalog) {
+export function createServer(catalog: LegalCatalog, injected: { auditRepository?: typeof auditRepository; scanDependencyVulnerabilities?: typeof scanDependencies } = {}) {
+  const runAudit = injected.auditRepository ?? auditRepository;
+  const runDependencyScan = injected.scanDependencyVulnerabilities ?? scanDependencies;
   const server = new McpServer({ name: 'mcp-leyes-ecuador-para-desarrolladores', version: '0.1.0' });
   server.registerTool('buscar_normativa', { description: 'Busca normativa ecuatoriana verificable por texto y tema.', inputSchema: input({ query: { type: 'string', maxLength: 200 }, topic: { type: 'string', maxLength: 100 } }) }, async ({ query = '', topic }: any) => text({ results: catalog.search(query, topic), disclaimer }));
   server.registerTool('consultar_obligacion', { description: 'Consulta una ficha normativa por identificador.', inputSchema: input({ id: { type: 'string', minLength: 1, maxLength: 100 } }, ['id']) }, async ({ id }: any) => { const source = catalog.get(id); return text(source ? { source, disclaimer } : { error: 'Norma no encontrada', disclaimer }); });
@@ -38,10 +46,15 @@ export function createServer(catalog: LegalCatalog) {
   server.registerTool('auditar_repositorio', {
     description: 'Ejecuta una auditoría estática local y de solo lectura sobre un repositorio con límites seguros.',
     inputSchema: auditInput,
-  }, async ({ path, maxDepth, maxFiles, maxFileSizeBytes }: any) => {
+  }, async ({ path, maxDepth, maxFiles, maxFileSizeBytes, format = 'json', dependencyScan = false, timeout }: any) => {
     try {
-      const report = await auditRepository(path, { maxDepth, maxFiles, maxFileSizeBytes });
-      return text(adaptAuditReport(report, catalog));
+      const report = await runAudit(path, { maxDepth, maxFiles, maxFileSizeBytes });
+      const adapted = adaptAuditReport(report, catalog);
+      const dependencies = dependencyScan ? await runDependencyScan(path, { timeoutMs: timeout }) : undefined;
+      const renderOptions = { dependencyScan: dependencies, includeDependencyWarnings: Boolean(dependencies) };
+      if (format === 'markdown') return { content: [{ type: 'text' as const, text: renderAuditReportMarkdown(adapted, renderOptions) }] };
+      if (format === 'html') return { content: [{ type: 'text' as const, text: renderAuditReportHtml(adapted, { ...renderOptions, pdfCompatible: true }) }] };
+      return { content: [{ type: 'text' as const, text: renderAuditReportJson(adapted, renderOptions) }] };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'No se pudo auditar el repositorio';
       return text({ error: message, disclaimer });
