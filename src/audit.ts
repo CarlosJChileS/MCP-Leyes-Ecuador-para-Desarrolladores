@@ -437,6 +437,14 @@ export async function auditRepository(repositoryPath: string, options: AuditOpti
 
   await walkDirectory(rootRealPath, rootRealPath, 0, resolvedOptions, scanState);
 
+  const excludedPaths = loadedConfig.config.excludePaths.map((path) => normalizeConfigPath(path));
+  if (excludedPaths.length > 0) {
+    scanState.files = scanState.files.filter((file) => {
+      const relativePath = normalizeConfigPath(file.relativePath);
+      return !excludedPaths.some((excludedPath) => relativePath === excludedPath || relativePath.startsWith(`${excludedPath}/`));
+    });
+  }
+
   const findings: AuditFinding[] = [];
   const ruleContext: RuleContext = {
     files: scanState.files,
@@ -460,6 +468,10 @@ export async function auditRepository(repositoryPath: string, options: AuditOpti
     references,
     disclaimer: DISCLAIMER,
   };
+}
+
+function normalizeConfigPath(path: string): string {
+  return path.replaceAll('\\', '/').replace(/^\.\//, '').replace(/\/+$/, '').toLowerCase();
 }
 
 async function walkDirectory(

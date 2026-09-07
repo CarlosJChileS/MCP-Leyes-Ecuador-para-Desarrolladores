@@ -1,0 +1,6 @@
+{
+  "excludePaths": [
+    "tests",
+    "data/coverage-report.json"
+  ]
+}
