@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 import { McpServer, ResourceTemplate, fromJsonSchema } from '@modelcontextprotocol/server';
 import { serveStdio } from '@modelcontextprotocol/server/stdio';
-import { pathToFileURL } from 'node:url';
-import { resolve } from 'node:path';
 import { LegalCatalog } from './catalog.js';
 import { auditRepository, type AuditCategory, type AuditFinding, type AuditReference, type AuditReport } from './audit.js';
 import { assessProject, auditChecklist } from './compliance.js';
@@ -17,6 +15,7 @@ import { redactSensitiveText } from './redact.js';
 import { renderAuditReportSarif } from './sarif.js';
 import { assessDataTransfer, evaluateDataGovernance, generateDataInventory, generateImpactAssessment, generateResponsibilityMatrix } from './governance.js';
 import { buildGovernanceReport, renderGovernanceReportHtml, renderGovernanceReportMarkdown, renderGovernanceReportPdf } from './governance-report.js';
+import { isMainModule } from './entrypoint.js';
 
 const disclaimer = disclaimers.es;
 const input = (properties: Record<string, unknown>, required: string[] = []) => fromJsonSchema({ type: 'object', properties: properties as any, required, additionalProperties: false });
@@ -114,7 +113,7 @@ export function createServer(catalog: LegalCatalog, injected: { auditRepository?
 }
 
 export async function main() { const catalog = await LegalCatalog.load(); await serveStdio(() => createServer(catalog)); }
-if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
+if (isMainModule(import.meta.url, process.argv[1])) {
   await main().catch((error: unknown) => {
     console.error(error instanceof Error ? error.message : 'No se pudo iniciar el servidor MCP');
     process.exitCode = 1;
