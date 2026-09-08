@@ -1,4 +1,6 @@
 import { spawn } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { redactSensitiveText } from './redact.js';
 import { readdir, stat } from 'node:fs/promises';
 import { basename, dirname, extname, isAbsolute, relative, resolve } from 'node:path';
 
@@ -194,8 +196,12 @@ export async function scanDependencyVulnerabilities(
 
 export const createLocalCommandRunner = (): DependencyCommandRunner => {
   return async (request) => {
+    // Windows cannot spawn npm.cmd without a shell. Invoke npm's JS entry
+    // directly with Node; never interpolate repository paths into shell code.
+    const npmCli = resolve(dirname(process.execPath), 'node_modules/npm/bin/npm-cli.js');
+    const useNode = process.platform === 'win32' && request.command === 'npm' && existsSync(npmCli);
     return new Promise<DependencyCommandResult>((resolveResult, rejectResult) => {
-      const child = spawn(request.command, request.args, {
+      const child = spawn(useNode ? process.execPath : request.command, useNode ? [npmCli, ...request.args] : request.args, {
         cwd: request.cwd,
         env: process.env,
         stdio: ['ignore', 'pipe', 'pipe'],
@@ -360,7 +366,7 @@ function parseExecutionResult(
   request: DependencyCommandRequest,
   result: DependencyCommandResult,
 ): DependencyExecution {
-  if (result.timedOut) {
+  if (result.timedOut || result.outputLimitExceeded) {
     const code: DependencyWarningCode = result.outputLimitExceeded ? 'output_limit_exceeded' : 'command_timed_out';
     const message = result.outputLimitExceeded
       ? `La salida de ${request.command} excedió el límite configurado y se truncó la ejecución.`
@@ -990,7 +996,7 @@ function sanitizeCommandOutput(output: string): string {
     )
     .replace(/\b(sk_(?:live|test)_[A-Za-z0-9]{8,}|AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{20,})\b/g, '[REDACTED]');
 
-  return shorten(redacted, OUTPUT_PREVIEW_LIMIT);
+  return shorten(redactSensitiveText(redacted), OUTPUT_PREVIEW_LIMIT);
 }
 
 function extractNpmFixedVersion(value: unknown): string | undefined {

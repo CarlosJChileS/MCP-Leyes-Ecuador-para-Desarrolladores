@@ -12,6 +12,14 @@ export class LegalCatalog {
     raw.forEach(validateLegalSource);
     const ids = new Set<string>();
     for (const source of raw as LegalSource[]) { if (ids.has(source.id)) throw new Error(`Identificador duplicado: ${source.id}`); ids.add(source.id); }
+    for (const source of raw as LegalSource[]) {
+      if (source.status !== 'pendiente_verificacion' && (!source.verification?.legalReviewedAt || !source.verification.reviewer)) {
+        throw new Error(`Norma confirmada sin revisión jurídica completa: ${source.id}`);
+      }
+      for (const related of source.relatedSourceIds ?? []) if (!ids.has(related)) throw new Error(`Referencia normativa desconocida: ${related}`);
+      const obligations = (source.obligations ?? []).map(item => item.id);
+      if (new Set(obligations).size !== obligations.length) throw new Error(`Obligaciones duplicadas: ${source.id}`);
+    }
     return new LegalCatalog(raw as LegalSource[]);
   }
   search(query = '', topic?: string) { const q = query.trim().toLowerCase(); const t = topic?.trim().toLowerCase(); return this.sources.filter((s) => (!q || `${s.id} ${s.title} ${s.summary ?? ''} ${s.topics.join(' ')}`.toLowerCase().includes(q)) && (!t || s.topics.some((item) => item.toLowerCase() === t))); }

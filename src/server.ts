@@ -1,5 +1,8 @@
-import { McpServer, fromJsonSchema } from '@modelcontextprotocol/server';
+#!/usr/bin/env node
+import { McpServer, ResourceTemplate, fromJsonSchema } from '@modelcontextprotocol/server';
 import { serveStdio } from '@modelcontextprotocol/server/stdio';
+import { pathToFileURL } from 'node:url';
+import { resolve } from 'node:path';
 import { LegalCatalog } from './catalog.js';
 import { auditRepository, type AuditCategory, type AuditFinding, type AuditReference, type AuditReport } from './audit.js';
 import { assessProject, auditChecklist } from './compliance.js';
@@ -8,6 +11,12 @@ import { z } from 'zod';
 import { scanDependencyVulnerabilities as scanDependencies, type DependencyScanReport } from './dependencies.js';
 import { renderAuditReportHtml, renderAuditReportJson, renderAuditReportMarkdown } from './reports.js';
 import { disclaimers, normalizeLanguage } from './i18n.js';
+import { consultObligations, legalVerification } from './obligations.js';
+import { VERSION } from './version.js';
+import { redactSensitiveText } from './redact.js';
+import { renderAuditReportSarif } from './sarif.js';
+import { assessDataTransfer, evaluateDataGovernance, generateDataInventory, generateImpactAssessment, generateResponsibilityMatrix } from './governance.js';
+import { buildGovernanceReport, renderGovernanceReportHtml, renderGovernanceReportMarkdown, renderGovernanceReportPdf } from './governance-report.js';
 
 const disclaimer = disclaimers.es;
 const input = (properties: Record<string, unknown>, required: string[] = []) => fromJsonSchema({ type: 'object', properties: properties as any, required, additionalProperties: false });
@@ -18,7 +27,8 @@ const auditInput = input({
   maxDepth: { type: 'integer', minimum: 1, maximum: 12 },
   maxFiles: { type: 'integer', minimum: 1, maximum: 2000 },
   maxFileSizeBytes: { type: 'integer', minimum: 1024, maximum: 1048576 },
-  format: { type: 'string', enum: ['json', 'markdown', 'html'] },
+  format: { type: 'string', enum: ['json', 'markdown', 'html', 'sarif'] },
+  language: { type: 'string', enum: ['es', 'en'] },
   dependencyScan: { type: 'boolean' },
   timeout: { type: 'integer', minimum: 1000, maximum: 120000 },
 }, ['path']);
@@ -38,37 +48,78 @@ const categoryTopics: Record<AuditCategory, string[]> = {
 export function createServer(catalog: LegalCatalog, injected: { auditRepository?: typeof auditRepository; scanDependencyVulnerabilities?: typeof scanDependencies } = {}) {
   const runAudit = injected.auditRepository ?? auditRepository;
   const runDependencyScan = injected.scanDependencyVulnerabilities ?? scanDependencies;
-  const server = new McpServer({ name: 'mcp-leyes-ecuador-para-desarrolladores', version: '0.1.0' });
+  const server = new McpServer({ name: 'leyes-ecuador-dev-mcp', version: VERSION });
   server.registerTool('buscar_normativa', { description: 'Busca normativa ecuatoriana verificable por texto y tema. Use language=es o language=en.', inputSchema: input({ query: { type: 'string', maxLength: 200 }, topic: { type: 'string', maxLength: 100 }, language: { type: 'string', enum: ['es', 'en'] } }) }, async ({ query = '', topic, language }: any) => text({ results: catalog.search(query, topic), language: normalizeLanguage(language), disclaimer: disclaimers[normalizeLanguage(language)] }));
-  server.registerTool('consultar_obligacion', { description: 'Consulta una ficha normativa por identificador.', inputSchema: input({ id: { type: 'string', minLength: 1, maxLength: 100 }, language: { type: 'string', enum: ['es', 'en'] } }, ['id']) }, async ({ id, language }: any) => { const lang = normalizeLanguage(language); const source = catalog.get(id); return text(source ? { source, language: lang, disclaimer: disclaimers[lang] } : { error: lang === 'en' ? 'Regulation not found' : 'Norma no encontrada', language: lang, disclaimer: disclaimers[lang] }); });
-  server.registerTool('verificar_vigencia', { description: 'Devuelve estado y fecha de verificación de una fuente.', inputSchema: input({ id: { type: 'string', minLength: 1, maxLength: 100 }, language: { type: 'string', enum: ['es', 'en'] } }, ['id']) }, async ({ id, language }: any) => { const lang = normalizeLanguage(language); const source = catalog.get(id); return text(source ? { id: source.id, title: source.title, status: source.status, verifiedAt: source.verifiedAt, url: source.url, language: lang, disclaimer: disclaimers[lang] } : { error: lang === 'en' ? 'Source not found' : 'Fuente no encontrada', language: lang, disclaimer: disclaimers[lang] }); });
+  server.registerTool('consultar_obligacion', { description: 'Consulta obligaciones documentadas con artículos, ámbito y evidencias; informa cobertura parcial o pendiente.', inputSchema: input({ id: { type: 'string', minLength: 1, maxLength: 100 }, language: { type: 'string', enum: ['es', 'en'] } }, ['id']) }, async ({ id, language }: any) => { const lang = normalizeLanguage(language); const source = catalog.get(id); return source ? text(consultObligations(source, lang)) : { ...text({ error: lang === 'en' ? 'Regulation not found' : 'Norma no encontrada', language: lang, disclaimer: disclaimers[lang] }), isError: true }; });
+  server.registerTool('verificar_vigencia', { description: 'Consulta el estado registrado y su evidencia documental y jurídica. No verifica vigencia en tiempo real.', inputSchema: input({ id: { type: 'string', minLength: 1, maxLength: 100 }, language: { type: 'string', enum: ['es', 'en'] } }, ['id']) }, async ({ id, language }: any) => { const lang = normalizeLanguage(language); const source = catalog.get(id); return source ? text(legalVerification(source, lang)) : { ...text({ error: lang === 'en' ? 'Source not found' : 'Fuente no encontrada', language: lang, disclaimer: disclaimers[lang] }), isError: true }; });
   server.registerTool('evaluar_proyecto', { description: 'Genera riesgos y controles preliminares para un proyecto.', inputSchema: profile }, async (project: any) => text(assessProject(project, catalog.all(), normalizeLanguage(project.language))));
   server.registerTool('generar_checklist_auditoria', { description: 'Genera una lista reproducible de evidencias para auditoría.', inputSchema: profile }, async (project: any) => text(auditChecklist(project, catalog.all(), normalizeLanguage(project.language))));
+  const governanceProperties = { name: { type: 'string', minLength: 1, maxLength: 200 }, dataTypes: { type: 'array', items: { type: 'string', maxLength: 120 }, maxItems: 100 }, systems: { type: 'array', items: { type: 'string', maxLength: 200 }, maxItems: 100 }, owners: { type: 'array', items: { type: 'string', maxLength: 200 }, maxItems: 100 }, sharesExternally: { type: 'boolean' }, internationalTransfers: { type: 'boolean' }, publicData: { type: 'boolean' }, automatedDecisions: { type: 'boolean' }, retentionDays: { type: 'integer', minimum: 1, maximum: 36500 }, language: { type: 'string', enum: ['es', 'en'] } };
+  const governanceInput = input(governanceProperties, ['name']);
+  server.registerTool('evaluar_gobernanza_datos', { description: 'Evalúa preliminarmente inventario, roles, calidad, retención, acceso, transferencias e incidentes.', inputSchema: governanceInput }, async (project: any) => text(evaluateDataGovernance(project, catalog.all())));
+  server.registerTool('generar_inventario_datos', { description: 'Genera una plantilla de inventario y evidencia de gobernanza de datos.', inputSchema: governanceInput }, async (project: any) => text(generateDataInventory(project)));
+  server.registerTool('evaluar_transferencia_datos', { description: 'Genera controles y evidencias para transferencias nacionales o internacionales.', inputSchema: governanceInput }, async (project: any) => text(assessDataTransfer(project, catalog.all())));
+  server.registerTool('evaluar_evaluacion_impacto', { description: 'Preclasifica factores de riesgo y estructura de una evaluación de impacto.', inputSchema: governanceInput }, async (project: any) => text(generateImpactAssessment(project, catalog.all())));
+  server.registerTool('generar_matriz_responsabilidades', { description: 'Genera una matriz inicial de responsables de gobernanza de datos.', inputSchema: governanceInput }, async (project: any) => text(generateResponsibilityMatrix(project)));
+  server.registerTool('generar_informe_gobernanza', {
+    description: 'Consolida las cinco evaluaciones y explica cada brecha con riesgo, prioridad, responsable, pasos de solución, evidencia y criterio de cierre; exporta JSON, Markdown, HTML o PDF.',
+    inputSchema: input({ ...governanceProperties, repositoryPath: { type: 'string', minLength: 1, maxLength: 4096 }, maxDepth: { type: 'integer', minimum: 1, maximum: 12 }, maxFiles: { type: 'integer', minimum: 1, maximum: 2000 }, maxFileSizeBytes: { type: 'integer', minimum: 1024, maximum: 1048576 }, dependencyScan: { type: 'boolean' }, timeout: { type: 'integer', minimum: 1000, maximum: 120000 }, format: { type: 'string', enum: ['json', 'markdown', 'html', 'pdf'] } }, ['name']),
+  }, async ({ format = 'json', repositoryPath, maxDepth, maxFiles, maxFileSizeBytes, dependencyScan = false, timeout, ...project }: any) => {
+    let technicalAudit: AuditReport | undefined;
+    let dependencyAudit: DependencyScanReport | undefined;
+    if (repositoryPath) {
+      try {
+        technicalAudit = adaptAuditReport(await runAudit(repositoryPath, { maxDepth, maxFiles, maxFileSizeBytes }), catalog);
+        if (dependencyScan) dependencyAudit = await runDependencyScan(repositoryPath, { timeoutMs: timeout });
+      } catch (error) {
+        const detail = error instanceof Error ? redactSensitiveText(error.message) : undefined;
+        return { ...text({ error: 'No se pudo analizar el repositorio para generar el informe consolidado.', detail, repositoryPath, disclaimer }), isError: true };
+      }
+    }
+    const report = buildGovernanceReport(project, catalog.all(), { technical: technicalAudit, dependencies: dependencyAudit });
+    if (format === 'markdown') return { content: [{ type: 'text' as const, text: renderGovernanceReportMarkdown(report) }] };
+    if (format === 'html') return { content: [{ type: 'text' as const, text: renderGovernanceReportHtml(report) }] };
+    if (format === 'pdf') {
+      const bytes = await renderGovernanceReportPdf(report);
+      const slug = project.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'proyecto';
+      return text({ fileName: `informe-gobernanza-${slug}.pdf`, mimeType: 'application/pdf', encoding: 'base64', data: Buffer.from(bytes).toString('base64') });
+    }
+    return text(report);
+  });
   server.registerTool('auditar_repositorio', {
     description: 'Ejecuta una auditoría estática local y de solo lectura sobre un repositorio con límites seguros.',
     inputSchema: auditInput,
-  }, async ({ path, maxDepth, maxFiles, maxFileSizeBytes, format = 'json', dependencyScan = false, timeout }: any) => {
+  }, async ({ path, maxDepth, maxFiles, maxFileSizeBytes, format = 'json', dependencyScan = false, timeout, language }: any) => {
+    const lang = normalizeLanguage(language);
     try {
       const report = await runAudit(path, { maxDepth, maxFiles, maxFileSizeBytes });
       const adapted = adaptAuditReport(report, catalog);
       const dependencies = dependencyScan ? await runDependencyScan(path, { timeoutMs: timeout }) : undefined;
-      const renderOptions = { dependencyScan: dependencies, includeDependencyWarnings: Boolean(dependencies) };
+      const renderOptions = { language: lang, dependencyScan: dependencies, includeDependencyWarnings: Boolean(dependencies) };
       if (format === 'markdown') return { content: [{ type: 'text' as const, text: renderAuditReportMarkdown(adapted, renderOptions) }] };
       if (format === 'html') return { content: [{ type: 'text' as const, text: renderAuditReportHtml(adapted, { ...renderOptions, pdfCompatible: true }) }] };
+      if (format === 'sarif') return { content: [{ type: 'text' as const, text: renderAuditReportSarif(adapted, dependencies) }] };
       return { content: [{ type: 'text' as const, text: renderAuditReportJson(adapted, renderOptions) }] };
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'No se pudo auditar el repositorio';
-      return text({ error: message, disclaimer: disclaimers.es });
+      const detail = error instanceof Error ? redactSensitiveText(error.message) : undefined;
+      const message = lang === 'en' ? 'Repository audit failed. Check the path, permissions and audit configuration.' : (detail ?? 'No se pudo auditar el repositorio');
+      return { ...text({ error: message, detail, language: lang, disclaimer: disclaimers[lang] }), isError: true };
     }
   });
   server.registerResource('indice-normativa', 'legal://normativa', { title: 'Índice de normativa ecuatoriana', description: 'Fuentes locales curadas y verificables', mimeType: 'application/json' }, async (uri) => ({ contents: [{ uri: uri.href, text: JSON.stringify(catalog.all().map(({ id, title, status, verifiedAt }) => ({ id, title, status, verifiedAt })), null, 2), mimeType: 'application/json' }] }));
-  server.registerResource('ficha-normativa', 'legal://normativa/{id}', { title: 'Ficha normativa', mimeType: 'application/json' }, async (uri) => { const id = uri.pathname.split('/').pop(); const source = id ? catalog.get(id) : undefined; return { contents: [{ uri: uri.href, text: JSON.stringify(source ?? { error: 'Norma no encontrada' }, null, 2), mimeType: 'application/json' }] }; });
+  server.registerResource('ficha-normativa', new ResourceTemplate('legal://normativa/{id}', { list: undefined }), { title: 'Ficha normativa', mimeType: 'application/json' }, async (uri, { id }) => { const source = typeof id === 'string' ? catalog.get(id) : undefined; return { contents: [{ uri: uri.href, text: JSON.stringify(source ?? { error: 'Norma no encontrada' }, null, 2), mimeType: 'application/json' }] }; });
   server.registerPrompt('revision-privacidad', { description: 'Prepara una revisión preliminar de privacidad.', argsSchema: { project: z.string().min(1).max(500).describe('Nombre y contexto del proyecto') } }, ({ project }: any) => ({ messages: [{ role: 'user' as const, content: { type: 'text' as const, text: `Evalúa preliminarmente la privacidad del proyecto ${project}. Usa evaluar_proyecto, identifica datos faltantes y cita fuentes. ${disclaimer}` } }] }));
+  server.registerPrompt('revision-gobernanza-datos', { description: 'Prepara una revisión preliminar de gobernanza de datos ecuatoriana para un proyecto de software.', argsSchema: { project: z.string().min(1).max(500).describe('Nombre, datos y contexto del proyecto') } }, ({ project }: any) => ({ messages: [{ role: 'user' as const, content: { type: 'text' as const, text: `Evalúa la gobernanza de datos del proyecto ${project} en Ecuador. Usa generar_informe_gobernanza para consolidar evaluación, inventario, transferencias, impacto y responsabilidades. Identifica brechas, evidencias y leyes aplicables. No afirmes vigencia jurídica sin fuente y revisión humana. ${disclaimer}` } }] }));
   return server;
 }
 
 export async function main() { const catalog = await LegalCatalog.load(); await serveStdio(() => createServer(catalog)); }
-if (process.env.NODE_ENV !== 'test') await main();
+if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
+  await main().catch((error: unknown) => {
+    console.error(error instanceof Error ? error.message : 'No se pudo iniciar el servidor MCP');
+    process.exitCode = 1;
+  });
+}
 
 function adaptAuditReport(report: AuditReport, catalog: LegalCatalog) {
   const findings = report.findings.map((finding) => ({

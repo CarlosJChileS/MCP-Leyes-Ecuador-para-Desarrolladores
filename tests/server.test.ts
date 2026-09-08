@@ -186,10 +186,66 @@ describe('MCP server contract', () => {
       'verificar_vigencia',
       'evaluar_proyecto',
       'generar_checklist_auditoria',
+      'generar_informe_gobernanza',
       'auditar_repositorio',
     ]));
-    expect(Object.keys(server._registeredResources)).toEqual(expect.arrayContaining(['legal://normativa', 'legal://normativa/{id}']));
+    expect(Object.keys(server._registeredResources)).toContain('legal://normativa');
+    expect(Object.keys(server._registeredResourceTemplates)).toContain('ficha-normativa');
     expect(Object.keys(server._registeredPrompts)).toContain('revision-privacidad');
+  });
+
+  it.each([
+    ['markdown', '# Informe de gobernanza de datos: API ciudadana'],
+    ['html', '<!DOCTYPE html>'],
+  ])('exports the consolidated governance report as %s', async (format, expectedPrefix) => {
+    const server = createServer(await LegalCatalog.load()) as any;
+    const result = await server._registeredTools.generar_informe_gobernanza.executor({
+      name: 'API ciudadana',
+      dataTypes: ['cédula'],
+      format,
+    }, {} as any);
+    expect(getTextContent(result).startsWith(expectedPrefix)).toBe(true);
+  });
+
+  it('exports the consolidated governance PDF as an encoded MCP attachment', async () => {
+    const server = createServer(await LegalCatalog.load()) as any;
+    const result = await server._registeredTools.generar_informe_gobernanza.executor({
+      name: 'API ciudadana',
+      format: 'pdf',
+    }, {} as any);
+    const attachment = JSON.parse(getTextContent(result));
+    expect(attachment).toMatchObject({
+      fileName: 'informe-gobernanza-api-ciudadana.pdf',
+      mimeType: 'application/pdf',
+      encoding: 'base64',
+    });
+    expect(Buffer.from(attachment.data, 'base64').subarray(0, 5).toString()).toBe('%PDF-');
+  });
+
+  it('scans the requested repository and embeds technical findings in the governance report', async () => {
+    const auditRepository = vi.fn().mockResolvedValue(auditReportFixture);
+    const scanDependencyVulnerabilities = vi.fn().mockResolvedValue(dependencyReportFixture);
+    const server = createServer(await LegalCatalog.load(), { auditRepository, scanDependencyVulnerabilities }) as any;
+    const result = await server._registeredTools.generar_informe_gobernanza.executor({
+      name: 'API ciudadana',
+      repositoryPath: 'C:/demo-repo',
+      maxDepth: 12,
+      maxFiles: 2000,
+      maxFileSizeBytes: 1048576,
+      dependencyScan: true,
+      timeout: 120000,
+      format: 'json',
+    }, {} as any);
+    const report = JSON.parse(getTextContent(result));
+
+    expect(auditRepository).toHaveBeenCalledWith('C:/demo-repo', { maxDepth: 12, maxFiles: 2000, maxFileSizeBytes: 1048576 });
+    expect(scanDependencyVulnerabilities).toHaveBeenCalledWith('C:/demo-repo', { timeoutMs: 120000 });
+    expect(report.sections.technicalAudit.summary).toMatchObject({ scannedFiles: 4, totalFindings: 1 });
+    expect(report.sections.dependencyAudit.summary.totalFindings).toBe(1);
+    expect(report.remediationPlan).toEqual(expect.arrayContaining([
+      expect.objectContaining({ area: 'Código y seguridad: secret-exposed', problem: expect.stringContaining('src/app.ts:7') }),
+      expect.objectContaining({ area: 'Dependencias: lodash', problem: expect.stringContaining('4.17.20') }),
+    ]));
   });
 
   it('exposes the extended repository audit schema without breaking the previous input', async () => {
@@ -205,7 +261,7 @@ describe('MCP server contract', () => {
       maxFileSizeBytes: expect.objectContaining({ type: 'integer' }),
       dependencyScan: expect.objectContaining({ type: 'boolean' }),
       timeout: expect.objectContaining({ type: 'integer' }),
-      format: expect.objectContaining({ enum: ['json', 'markdown', 'html'] }),
+      format: expect.objectContaining({ enum: ['json', 'markdown', 'html', 'sarif'] }),
     });
   });
 

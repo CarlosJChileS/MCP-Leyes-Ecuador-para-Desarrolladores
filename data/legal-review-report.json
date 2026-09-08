@@ -1,0 +1,436 @@
+{
+  "generatedAt": "2026-09-08T14:13:08.725Z",
+  "checkedAt": "2026-09-08",
+  "warning": "Los indicios automáticos no determinan vigencia jurídica. Requieren revisión humana.",
+  "sources": [
+    {
+      "id": "lopdp",
+      "title": "Ley Orgánica de Protección de Datos Personales",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://www.registroficial.gob.ec/quinto-suplemento-al-registro-oficial-no-459/",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://www.registroficial.gob.ec/quinto-suplemento-al-registro-oficial-no-459/",
+          "officialHost": true
+        },
+        {
+          "url": "https://spdp.gob.ec/wp-content/uploads/2024/12/03.pdf.pdf",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://spdp.gob.ec/wp-content/uploads/2024/12/03.pdf.pdf",
+          "officialHost": true
+        }
+      ],
+      "indicators": [],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "comercio-electronico",
+      "title": "Ley de Comercio Electrónico, Firmas Electrónicas y Mensajes de Datos",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://www.telecomunicaciones.gob.ec/wp-content/uploads/2020/07/LEY-DE-COMERCIO-ELECTRONICO-FIRMAS-Y.pdf",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://www.telecomunicaciones.gob.ec/wp-content/uploads/2020/07/LEY-DE-COMERCIO-ELECTRONICO-FIRMAS-Y.pdf",
+          "officialHost": true
+        }
+      ],
+      "indicators": [],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "propiedad-intelectual",
+      "title": "Código Orgánico de la Economía Social de los Conocimientos, Creatividad e Innovación",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://www.derechosintelectuales.gob.ec/wp-content/uploads/downloads/2021/agosto/a_2_16_codigo_ingenios_agosto_2021.pdf",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://www.derechosintelectuales.gob.ec/wp-content/uploads/downloads/2021/agosto/a_2_16_codigo_ingenios_agosto_2021.pdf",
+          "officialHost": true
+        }
+      ],
+      "indicators": [],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "reglamento-lopdp",
+      "title": "Reglamento General a la Ley Orgánica de Protección de Datos Personales",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-435/",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-435/",
+          "officialHost": true
+        },
+        {
+          "url": "https://spdp.gob.ec/wp-content/uploads/2024/12/04.pdf.pdf",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://spdp.gob.ec/wp-content/uploads/2024/12/04.pdf.pdf",
+          "officialHost": true
+        }
+      ],
+      "indicators": [
+        "indicio_reforma:https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-435/"
+      ],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "reglamento-comercio-electronico",
+      "title": "Reglamento General a la Ley de Comercio Electrónico, Firmas Electrónicas y Mensajes de Datos",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://biblioteca.defensoria.gob.ec/handle/37000/2742",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://biblioteca.defensoria.gob.ec/handle/37000/2742",
+          "officialHost": true
+        }
+      ],
+      "indicators": [
+        "indicio_reforma:https://biblioteca.defensoria.gob.ec/handle/37000/2742"
+      ],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "telecomunicaciones",
+      "title": "Ley Orgánica de Telecomunicaciones",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-439-5/",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-439-5/",
+          "officialHost": true
+        }
+      ],
+      "indicators": [],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "transformacion-digital",
+      "title": "Ley Orgánica para la Transformación Digital y Audiovisual",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-245/",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-245/",
+          "officialHost": true
+        }
+      ],
+      "indicators": [],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "fintech",
+      "title": "Ley Orgánica para el Desarrollo, Regulación y Control de los Servicios Financieros Tecnológicos",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://www.asambleanacional.gob.ec/sites/default/files/private/asambleanacional/filesasambleanacionalnameuid-29/Leyes%202013-2017/1436-nviteri/ro-215-2do-supl-22-12-2022.pdf",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://www.asambleanacional.gob.ec/sites/default/files/private/asambleanacional/filesasambleanacionalnameuid-29/Leyes%202013-2017/1436-nviteri/ro-215-2do-supl-22-12-2022.pdf",
+          "officialHost": true
+        }
+      ],
+      "indicators": [],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "defensa-consumidor",
+      "title": "Ley Orgánica de Defensa del Consumidor",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://www.produccion.gob.ec/wp-content/uploads/2025/03/LEY-ORGANICA-DE-DEFENSA-DEL-CONSUMIDOR_2022_02_11.pdf",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://www.produccion.gob.ec/wp-content/uploads/2025/03/LEY-ORGANICA-DE-DEFENSA-DEL-CONSUMIDOR_2022_02_11.pdf",
+          "officialHost": true
+        }
+      ],
+      "indicators": [],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "coip-delitos-informaticos",
+      "title": "Código Orgánico Integral Penal - delitos informáticos",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://www.registroficial.gob.ec/suplemento-al-registro-oficial-no-180-8/",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://www.registroficial.gob.ec/suplemento-al-registro-oficial-no-180-8/",
+          "officialHost": true
+        },
+        {
+          "url": "https://www.registroficial.gob.ec/cuarto-suplemento-al-registro-oficial-no-526/",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://www.registroficial.gob.ec/cuarto-suplemento-al-registro-oficial-no-526/",
+          "officialHost": true
+        }
+      ],
+      "indicators": [
+        "indicio_reforma:https://www.registroficial.gob.ec/cuarto-suplemento-al-registro-oficial-no-526/"
+      ],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "reforma-delitos-informaticos",
+      "title": "Ley Orgánica Reformatoria del COIP para fortalecer la lucha contra los delitos informáticos",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://www.registroficial.gob.ec/cuarto-suplemento-al-registro-oficial-no-526/",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://www.registroficial.gob.ec/cuarto-suplemento-al-registro-oficial-no-526/",
+          "officialHost": true
+        }
+      ],
+      "indicators": [
+        "indicio_reforma:https://www.registroficial.gob.ec/cuarto-suplemento-al-registro-oficial-no-526/"
+      ],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "facturacion-electronica-sri",
+      "title": "Normativa de comprobantes electrónicos y facturación electrónica del SRI",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://www.sri.gob.ec/facturacion-electronica",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://www.sri.gob.ec/facturacion-electronica",
+          "officialHost": true
+        }
+      ],
+      "indicators": [
+        "indicio_reforma:https://www.sri.gob.ec/facturacion-electronica"
+      ],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "spdp-transferencias-2025",
+      "title": "Normativa general para transferencias o comunicaciones nacionales e internacionales de datos personales",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://spdp.gob.ec/resolucion_0024/",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://spdp.gob.ec/resolucion_0024/",
+          "officialHost": true
+        },
+        {
+          "url": "https://spdp.gob.ec/wp-content/uploads/2025/07/SPSP-SPD-2025-0024-R-Normativa-General-Aplicacion-de-la-LOPDP-y-su-Reglamento55-signed.pdf",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://spdp.gob.ec/wp-content/uploads/2025/07/SPSP-SPD-2025-0024-R-Normativa-General-Aplicacion-de-la-LOPDP-y-su-Reglamento55-signed.pdf",
+          "officialHost": true
+        }
+      ],
+      "indicators": [],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "spdp-clausulas-contratos-2025",
+      "title": "Reglamento sobre cláusulas de protección de datos personales en contratos",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://spdp.gob.ec/resolucion6/",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://spdp.gob.ec/resolucion6/",
+          "officialHost": true
+        },
+        {
+          "url": "https://spdp.gob.ec/wp-content/uploads/2025/05/06.01.01-SPDP-SPD-2025-0006-R-clausulas-para-contratos-en-Ecuador-signed.pdf",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://spdp.gob.ec/wp-content/uploads/2025/05/06.01.01-SPDP-SPD-2025-0006-R-clausulas-para-contratos-en-Ecuador-signed.pdf",
+          "officialHost": true
+        }
+      ],
+      "indicators": [],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "lotaip",
+      "title": "Ley Orgánica de Transparencia y Acceso a la Información Pública",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://www.registroficial.gob.ec/segundo-suplemento-al-registro-oficial-no-245/",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://www.registroficial.gob.ec/segundo-suplemento-al-registro-oficial-no-245/",
+          "officialHost": true
+        }
+      ],
+      "indicators": [],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    },
+    {
+      "id": "spdp-transferencias-2026",
+      "title": "Norma General de Transferencias o Comunicaciones Nacionales e Internacionales de Datos Personales",
+      "currentStatus": "pendiente_verificacion",
+      "recommendedStatus": "pendiente_verificacion",
+      "evidence": [
+        {
+          "url": "https://spdp.gob.ec/wp-content/uploads/2026/01/04.01.01-SPSP-SPD-2026-0004-R-Norma-general-de-transferencias-signed.pdf",
+          "reachable": true,
+          "status": 200,
+          "finalUrl": "https://spdp.gob.ec/wp-content/uploads/2026/01/04.01.01-SPSP-SPD-2026-0004-R-Norma-general-de-transferencias-signed.pdf",
+          "officialHost": true
+        }
+      ],
+      "indicators": [],
+      "missing": [
+        "legalReviewedAt",
+        "reviewer",
+        "reformas_y_derogaciones_exhaustivas",
+        "texto_consolidado",
+        "ambito_de_aplicacion"
+      ],
+      "conclusion": "requiere_revision_juridica"
+    }
+  ]
+}

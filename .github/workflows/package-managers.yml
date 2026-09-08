@@ -1,0 +1,42 @@
+name: Compatibilidad de gestores
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  managers:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        manager: [npm, pnpm, bun]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        if: matrix.manager == 'bun'
+        with:
+          bun-version: latest
+      - uses: actions/setup-node@v4
+        if: matrix.manager != 'bun'
+        with:
+          node-version: 20
+          cache: ${{ matrix.manager }}
+      - uses: pnpm/action-setup@v4
+        if: matrix.manager == 'pnpm'
+        with:
+          version: 9
+      - name: Instalar dependencias
+        shell: bash
+        run: |
+          if [ "${{ matrix.manager }}" = "npm" ]; then npm ci; fi
+          if [ "${{ matrix.manager }}" = "pnpm" ]; then pnpm install --no-frozen-lockfile; fi
+          if [ "${{ matrix.manager }}" = "bun" ]; then bun install; fi
+      - name: Compilar y probar
+        shell: bash
+        run: |
+          if [ "${{ matrix.manager }}" = "npm" ]; then npm run check; fi
+          if [ "${{ matrix.manager }}" = "pnpm" ]; then pnpm run check; fi
+          if [ "${{ matrix.manager }}" = "bun" ]; then bun run check; fi

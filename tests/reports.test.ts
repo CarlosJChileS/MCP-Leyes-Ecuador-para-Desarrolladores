@@ -275,6 +275,8 @@ describe('report renderers', () => {
             rootPath: '/tmp/demo-repo',
           },
           riskLevel: 'critical',
+          riskScore: 68,
+          remediationPriority: 'inmediata',
           executiveSummary: {
             headline: 'Se detectaron 4 hallazgos: 2 de auditoria local y 2 de dependencias.',
             totalFindings: 4,
@@ -523,6 +525,7 @@ describe('report renderers', () => {
 - Generado: \`2026-08-29T12:00:00.000Z\`
 - Riesgo: \`critical\`
 - Resumen ejecutivo: Se detectaron 4 hallazgos: 2 de auditoria local y 2 de dependencias.
+- Puntuacion de riesgo: 68/100 (inmediata)
 
 ## Resumen ejecutivo
 

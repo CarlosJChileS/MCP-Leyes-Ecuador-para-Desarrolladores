@@ -1,3 +1,5 @@
+import { localizeAuditReport, reportTemplate } from './audit-i18n.js';
+import type { Language } from './i18n.js';
 import type {
   AuditControl,
   AuditFinding,
@@ -43,6 +45,7 @@ export type ReportSkippedCheck = {
 };
 
 export type AuditReportRenderOptions = {
+  language?: Language;
   dependencyScan?: DependencyScanReport;
   skippedChecks?: ReportSkippedCheck[];
   pdfCompatible?: boolean;
@@ -57,6 +60,8 @@ export type RenderedAuditReport = {
     rootPath: string;
   };
   riskLevel: ReportRiskLevel;
+  riskScore: number;
+  remediationPriority: 'inmediata' | 'alta' | 'media' | 'baja' | 'ninguna';
   executiveSummary: {
     headline: string;
     totalFindings: number;
@@ -93,10 +98,11 @@ export function buildRenderedAuditReport(
   report: AuditReport,
   options: AuditReportRenderOptions = {},
 ): RenderedAuditReport {
+  report = localizeAuditReport(report, options.language ?? 'es');
   const findings = [...report.findings].sort(compareAuditFindings);
   const controls = [...report.controls].sort(compareControls);
   const references = [...report.references].sort(compareReferences);
-  const skippedChecks = [...(options.skippedChecks ?? [])].sort(compareSkippedChecks);
+  const skippedChecks = [...(options.skippedChecks ?? []), ...(report.warnings ?? []).map((reason, index) => ({ id: `config-${index}`, title: options.language === 'en' ? 'Audit configuration warning' : 'Advertencia de configuración', reason }))].sort(compareSkippedChecks);
   const dependencyScan = buildDependencySection(options.dependencyScan);
   const totalAuditFindings = findings.length;
   const totalDependencyFindings = dependencyScan.findings.length;
@@ -110,8 +116,10 @@ export function buildRenderedAuditReport(
       rootPath: report.summary.rootPath,
     },
     riskLevel: resolveRiskLevel(findings, dependencyScan.findings),
+    riskScore: calculateRiskScore(findings, dependencyScan.findings),
+    remediationPriority: calculateRemediationPriority(findings, dependencyScan.findings),
     executiveSummary: {
-      headline: `Se detectaron ${totalFindings} hallazgos: ${totalAuditFindings} de auditoria local y ${totalDependencyFindings} de dependencias.`,
+      headline: options.language === 'en' ? `${totalFindings} findings detected: ${totalAuditFindings} from local audit and ${totalDependencyFindings} from dependencies.` : `Se detectaron ${totalFindings} hallazgos: ${totalAuditFindings} de auditoria local y ${totalDependencyFindings} de dependencias.`,
       totalFindings,
       totalAuditFindings,
       totalDependencyFindings,
@@ -136,57 +144,59 @@ export function renderAuditReportJson(report: AuditReport, options: AuditReportR
 }
 
 export function renderAuditReportMarkdown(report: AuditReport, options: AuditReportRenderOptions = {}): string {
+  const t = reportTemplate(options.language);
   const rendered = buildRenderedAuditReport(report, options);
   const lines = [
-    `# Reporte de auditoria: ${rendered.repository.name}`,
+    t`# Reporte de auditoria: ${rendered.repository.name}`,
     '',
-    `- Generado: \`${rendered.generatedAt}\``,
-    `- Riesgo: \`${rendered.riskLevel}\``,
-    `- Resumen ejecutivo: ${rendered.executiveSummary.headline}`,
+    t`- Generado: \`${rendered.generatedAt}\``,
+    t`- Riesgo: \`${rendered.riskLevel}\``,
+    t`- Resumen ejecutivo: ${rendered.executiveSummary.headline}`,
+    t`- Puntuacion de riesgo: ${rendered.riskScore}/100 (${rendered.remediationPriority})`,
     '',
-    '## Resumen ejecutivo',
+    t`## Resumen ejecutivo`,
     '',
-    `- Hallazgos totales: ${rendered.executiveSummary.totalFindings}`,
-    `- Hallazgos de auditoria: ${rendered.executiveSummary.totalAuditFindings}`,
-    `- Hallazgos de dependencias: ${rendered.executiveSummary.totalDependencyFindings}`,
-    `- Archivos escaneados: ${rendered.executiveSummary.scannedFiles}`,
-    `- Directorios escaneados: ${rendered.executiveSummary.scannedDirectories}`,
-    `- Entradas omitidas: ${rendered.executiveSummary.skippedEntries}`,
-    `- Checks omitidos: ${rendered.executiveSummary.skippedChecks}`,
-    `- Advertencias de dependencias: ${rendered.executiveSummary.dependencyWarnings}`,
+    t`- Hallazgos totales: ${rendered.executiveSummary.totalFindings}`,
+    t`- Hallazgos de auditoria: ${rendered.executiveSummary.totalAuditFindings}`,
+    t`- Hallazgos de dependencias: ${rendered.executiveSummary.totalDependencyFindings}`,
+    t`- Archivos escaneados: ${rendered.executiveSummary.scannedFiles}`,
+    t`- Directorios escaneados: ${rendered.executiveSummary.scannedDirectories}`,
+    t`- Entradas omitidas: ${rendered.executiveSummary.skippedEntries}`,
+    t`- Checks omitidos: ${rendered.executiveSummary.skippedChecks}`,
+    t`- Advertencias de dependencias: ${rendered.executiveSummary.dependencyWarnings}`,
     '',
-    '## Estado de escaneres de dependencias',
+    t`## Estado de escaneres de dependencias`,
     '',
-    '| Escaner | Estado | Targets | Hallazgos | Advertencias |',
+    t`| Escaner | Estado | Targets | Hallazgos | Advertencias |`,
     '| --- | --- | --- | ---: | ---: |',
     ...renderDependencyScannerRows(rendered),
-    ...(options.includeDependencyWarnings ? ['', '### Advertencias', '', ...rendered.dependencyScan.warnings.map((warning) => `- ${warning.scanner}: ${warning.message}`), ''] : []),
+    ...(options.includeDependencyWarnings ? ['', t`### Advertencias`, '', ...rendered.dependencyScan.warnings.map((warning) => `- ${warning.scanner}: ${warning.message}`), ''] : []),
     '',
-    '## Hallazgos de auditoria',
+    t`## Hallazgos de auditoria`,
     '',
-    '| Severidad | Regla | Archivo | Linea | Estado | Evidencia |',
+    t`| Severidad | Regla | Archivo | Linea | Estado | Evidencia |`,
     '| --- | --- | --- | ---: | --- | --- |',
-    ...renderAuditFindingRows(rendered.findings),
+    ...renderAuditFindingRows(rendered.findings, options.language),
     '',
-    '## Hallazgos de dependencias',
+    t`## Hallazgos de dependencias`,
     '',
-    '| Severidad | Escaner | Paquete | Manifest | Fija en |',
+    t`| Severidad | Escaner | Paquete | Manifest | Fija en |`,
     '| --- | --- | --- | --- | --- |',
     ...renderDependencyFindingRows(rendered.dependencyScan.findings),
     '',
-    '## Checks omitidos',
+    t`## Checks omitidos`,
     '',
-    ...renderSkippedCheckLines(rendered.skippedChecks),
+    ...renderSkippedCheckLines(rendered.skippedChecks, options.language),
     '',
-    '## Controles',
+    t`## Controles`,
     '',
-    '| Control | Categoria | Estado | Referencias |',
+    t`| Control | Categoria | Estado | Referencias |`,
     '| --- | --- | --- | --- |',
     ...renderControlRows(rendered.controls),
     '',
-    '## Referencias',
+    t`## Referencias`,
     '',
-    ...renderReferenceLines(rendered.references),
+    ...renderReferenceLines(rendered.references, options.language),
     '',
     '## Disclaimer',
     '',
@@ -198,67 +208,70 @@ export function renderAuditReportMarkdown(report: AuditReport, options: AuditRep
 }
 
 export function renderAuditReportHtml(report: AuditReport, options: AuditReportRenderOptions = {}): string {
+  const t = reportTemplate(options.language);
   const rendered = buildRenderedAuditReport(report, options);
   const css = buildHtmlStyles(Boolean(options.pdfCompatible));
   const reportClass = options.pdfCompatible ? 'report report--pdf' : 'report';
 
   return [
     '<!DOCTYPE html>',
-    '<html lang="es">',
+    `<html lang="${options.language ?? 'es'}">`,
     '<head>',
     '<meta charset="utf-8" />',
     '<meta name="viewport" content="width=device-width, initial-scale=1" />',
     '<meta name="color-scheme" content="light only" />',
-    `<title>Reporte de auditoria - ${escapeHtml(rendered.repository.name)}</title>`,
+    t`<title>Reporte de auditoria - ${escapeHtml(rendered.repository.name)}</title>`,
     `<style>${css}</style>`,
     '</head>',
     `<body class="${reportClass}" data-risk-level="${rendered.riskLevel}">`,
     '<main>',
-    `<header><h1>Reporte de auditoria: ${escapeHtml(rendered.repository.name)}</h1><p>${escapeHtml(rendered.executiveSummary.headline)}</p></header>`,
-    '<section><h2>Resumen ejecutivo</h2><dl>',
-    renderDefinitionRow('Generado', rendered.generatedAt),
-    renderDefinitionRow('Riesgo', rendered.riskLevel),
-    renderDefinitionRow('Hallazgos totales', String(rendered.executiveSummary.totalFindings)),
-    renderDefinitionRow('Hallazgos de auditoria', String(rendered.executiveSummary.totalAuditFindings)),
-    renderDefinitionRow('Hallazgos de dependencias', String(rendered.executiveSummary.totalDependencyFindings)),
-    renderDefinitionRow('Archivos escaneados', String(rendered.executiveSummary.scannedFiles)),
-    renderDefinitionRow('Directorios escaneados', String(rendered.executiveSummary.scannedDirectories)),
-    renderDefinitionRow('Entradas omitidas', String(rendered.executiveSummary.skippedEntries)),
-    renderDefinitionRow('Checks omitidos', String(rendered.executiveSummary.skippedChecks)),
-    renderDefinitionRow('Advertencias de dependencias', String(rendered.executiveSummary.dependencyWarnings)),
+    t`<header><h1>Reporte de auditoria: ${escapeHtml(rendered.repository.name)}</h1><p>${escapeHtml(rendered.executiveSummary.headline)}</p></header>`,
+    t`<section><h2>Resumen ejecutivo</h2><dl>`,
+    renderDefinitionRow(t`Generado`, rendered.generatedAt),
+    renderDefinitionRow(t`Riesgo`, rendered.riskLevel),
+    renderDefinitionRow(t`Puntuación de riesgo`, `${rendered.riskScore}/100`),
+    renderDefinitionRow(t`Prioridad`, rendered.remediationPriority),
+    renderDefinitionRow(t`Hallazgos totales`, String(rendered.executiveSummary.totalFindings)),
+    renderDefinitionRow(t`Hallazgos de auditoria`, String(rendered.executiveSummary.totalAuditFindings)),
+    renderDefinitionRow(t`Hallazgos de dependencias`, String(rendered.executiveSummary.totalDependencyFindings)),
+    renderDefinitionRow(t`Archivos escaneados`, String(rendered.executiveSummary.scannedFiles)),
+    renderDefinitionRow(t`Directorios escaneados`, String(rendered.executiveSummary.scannedDirectories)),
+    renderDefinitionRow(t`Entradas omitidas`, String(rendered.executiveSummary.skippedEntries)),
+    renderDefinitionRow(t`Checks omitidos`, String(rendered.executiveSummary.skippedChecks)),
+    renderDefinitionRow(t`Advertencias de dependencias`, String(rendered.executiveSummary.dependencyWarnings)),
     '</dl></section>',
-    '<section><h2>Estado de escaneres de dependencias</h2>',
-    '<table><thead><tr><th>Escaner</th><th>Estado</th><th>Targets</th><th>Hallazgos</th><th>Advertencias</th></tr></thead><tbody>',
+    t`<section><h2>Estado de escaneres de dependencias</h2>`,
+    t`<table><thead><tr><th>Escaner</th><th>Estado</th><th>Targets</th><th>Hallazgos</th><th>Advertencias</th></tr></thead><tbody>`,
     ...rendered.dependencyScan.scanners.map((scanner) => {
       return `<tr><td>${escapeHtml(scanner.scanner)}</td><td>${escapeHtml(scanner.status)}</td><td>${escapeHtml(scanner.targets.join(', ') || '-')}</td><td>${scanner.findingCount}</td><td>${scanner.warningCount}</td></tr>`;
     }),
     '</tbody></table>',
-    ...(options.includeDependencyWarnings ? ['<h3>Advertencias</h3><ul>', ...rendered.dependencyScan.warnings.map((warning) => `<li>${escapeHtml(warning.scanner)}: ${escapeHtml(warning.message)}</li>`), '</ul>'] : []),
+    ...(options.includeDependencyWarnings ? [t`<h3>Advertencias</h3><ul>`, ...rendered.dependencyScan.warnings.map((warning) => `<li>${escapeHtml(warning.scanner)}: ${escapeHtml(warning.message)}</li>`), '</ul>'] : []),
     '</section>',
-    '<section><h2>Hallazgos de auditoria</h2>',
-    '<table><thead><tr><th>Severidad</th><th>Regla</th><th>Archivo</th><th>Linea</th><th>Estado</th><th>Evidencia</th></tr></thead><tbody>',
+    t`<section><h2>Hallazgos de auditoria</h2>`,
+    t`<table><thead><tr><th>Severidad</th><th>Regla</th><th>Archivo</th><th>Linea</th><th>Estado</th><th>Evidencia</th></tr></thead><tbody>`,
     ...rendered.findings.map((finding) => {
       return `<tr><td>${escapeHtml(finding.severity)}</td><td>${escapeHtml(finding.ruleId)}</td><td>${escapeHtml(finding.path)}</td><td>${finding.line ?? '-'}</td><td>${escapeHtml(finding.status)}</td><td>${escapeHtml(finding.evidence)}</td></tr>`;
     }),
     '</tbody></table></section>',
-    '<section><h2>Hallazgos de dependencias</h2>',
-    '<table><thead><tr><th>Severidad</th><th>Escaner</th><th>Paquete</th><th>Manifest</th><th>Fija en</th></tr></thead><tbody>',
+    t`<section><h2>Hallazgos de dependencias</h2>`,
+    t`<table><thead><tr><th>Severidad</th><th>Escaner</th><th>Paquete</th><th>Manifest</th><th>Fija en</th></tr></thead><tbody>`,
     ...rendered.dependencyScan.findings.map((finding) => {
       return `<tr><td>${escapeHtml(finding.severity)}</td><td>${escapeHtml(finding.scanner)}</td><td>${escapeHtml(finding.packageName)}</td><td>${escapeHtml(finding.manifestPath)}</td><td>${escapeHtml(finding.fixedVersion ?? '-')}</td></tr>`;
     }),
     '</tbody></table></section>',
-    '<section><h2>Checks omitidos</h2><ul>',
+    t`<section><h2>Checks omitidos</h2><ul>`,
     ...rendered.skippedChecks.map((check) => `<li><strong>${escapeHtml(check.id)}</strong>: ${escapeHtml(check.title)}. ${escapeHtml(check.reason)}</li>`),
     '</ul></section>',
-    '<section><h2>Controles</h2>',
-    '<table><thead><tr><th>Control</th><th>Categoria</th><th>Estado</th><th>Referencias</th></tr></thead><tbody>',
+    t`<section><h2>Controles</h2>`,
+    t`<table><thead><tr><th>Control</th><th>Categoria</th><th>Estado</th><th>Referencias</th></tr></thead><tbody>`,
     ...rendered.controls.map((control) => {
       return `<tr><td>${escapeHtml(control.id)}</td><td>${escapeHtml(control.category)}</td><td>${escapeHtml(control.status)}</td><td>${escapeHtml(control.referenceIds.join(', '))}</td></tr>`;
     }),
     '</tbody></table></section>',
-    '<section><h2>Referencias</h2><ul>',
+    t`<section><h2>Referencias</h2><ul>`,
     ...rendered.references.map((reference) => {
-      return `<li><strong>${escapeHtml(reference.id)}</strong>: ${escapeHtml(reference.title)} (<a href="${escapeHtmlAttribute(reference.url)}">fuente</a>) - ${escapeHtml(reference.status)}, verificada ${escapeHtml(reference.verifiedAt)}</li>`;
+      return t`<li><strong>${escapeHtml(reference.id)}</strong>: ${escapeHtml(reference.title)} (<a href="${escapeHtmlAttribute(reference.url)}">fuente</a>) - ${escapeHtml(reference.status)}, verificada ${escapeHtml(reference.verifiedAt)}</li>`;
     }),
     '</ul></section>',
     `<section><h2>Disclaimer</h2><p>${escapeHtml(rendered.disclaimer)}</p></section>`,
@@ -332,6 +345,16 @@ function resolveRiskLevel(findings: AuditFinding[], dependencyFindings: Dependen
   return severities.includes('unknown') ? 'low' : 'none';
 }
 
+function calculateRiskScore(findings: AuditFinding[], dependencyFindings: DependencyFinding[]): number {
+  const weights: Record<string, number> = { critical: 35, high: 20, medium: 10, low: 3, unknown: 2 };
+  return Math.min(100, [...findings, ...dependencyFindings].reduce((total, finding) => total + (weights[finding.severity] ?? 0), 0));
+}
+
+function calculateRemediationPriority(findings: AuditFinding[], dependencyFindings: DependencyFinding[]): RenderedAuditReport['remediationPriority'] {
+  const level = resolveRiskLevel(findings, dependencyFindings);
+  return level === 'critical' ? 'inmediata' : level === 'high' ? 'alta' : level === 'medium' ? 'media' : level === 'low' ? 'baja' : 'ninguna';
+}
+
 function renderDependencyScannerRows(rendered: RenderedAuditReport): string[] {
   if (rendered.dependencyScan.scanners.length === 0) {
     return ['| - | not_run | - | 0 | 0 |'];
@@ -343,9 +366,10 @@ function renderDependencyScannerRows(rendered: RenderedAuditReport): string[] {
   });
 }
 
-function renderAuditFindingRows(findings: AuditFinding[]): string[] {
+function renderAuditFindingRows(findings: AuditFinding[], language?: Language): string[] {
+  const t = reportTemplate(language);
   if (findings.length === 0) {
-    return ['| - | - | - | 0 | cumple | Sin hallazgos |'];
+    return [t`| - | - | - | 0 | cumple | Sin hallazgos |`];
   }
 
   return findings.map((finding) => {
@@ -363,9 +387,10 @@ function renderDependencyFindingRows(findings: DependencyFinding[]): string[] {
   });
 }
 
-function renderSkippedCheckLines(skippedChecks: ReportSkippedCheck[]): string[] {
+function renderSkippedCheckLines(skippedChecks: ReportSkippedCheck[], language?: Language): string[] {
+  const t = reportTemplate(language);
   if (skippedChecks.length === 0) {
-    return ['- Ninguno.'];
+    return [t`- Ninguno.`];
   }
 
   return skippedChecks.map((check) => `- ${escapeMarkdownText(check.id)}: ${escapeMarkdownText(check.title)}. ${escapeMarkdownText(check.reason)}`);
@@ -381,13 +406,14 @@ function renderControlRows(controls: AuditControl[]): string[] {
   });
 }
 
-function renderReferenceLines(references: AuditReference[]): string[] {
+function renderReferenceLines(references: AuditReference[], language?: Language): string[] {
+  const t = reportTemplate(language);
   if (references.length === 0) {
-    return ['- Sin referencias.'];
+    return [t`- Sin referencias.`];
   }
 
   return references.map((reference) => {
-    return `- ${escapeMarkdownText(reference.id)}: ${escapeMarkdownText(reference.title)} ([fuente](${reference.url})) - ${escapeMarkdownText(reference.status)}, verificada ${escapeMarkdownText(reference.verifiedAt)}`;
+    return t`- ${escapeMarkdownText(reference.id)}: ${escapeMarkdownText(reference.title)} ([fuente](${reference.url})) - ${escapeMarkdownText(reference.status)}, verificada ${escapeMarkdownText(reference.verifiedAt)}`;
   });
 }
 

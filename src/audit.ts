@@ -3,6 +3,7 @@ import { basename, isAbsolute, relative, resolve } from 'node:path';
 import type { LegalSource, LegalStatus } from './domain.js';
 import { detectLanguage, isScannableTextFile, type DetectedLanguage, type LanguageFamily } from './languages.js';
 import { loadAuditConfig, type AuditConfig } from './config.js';
+import { redactSensitiveText } from './redact.js';
 
 export type AuditSeverity = 'critical' | 'high' | 'medium' | 'low';
 export type AuditCategory =
@@ -66,6 +67,7 @@ export type AuditSummary = {
 };
 
 export type AuditReport = {
+  warnings?: string[];
   summary: AuditSummary;
   findings: AuditFinding[];
   controls: AuditControl[];
@@ -112,6 +114,7 @@ const DEFAULT_OPTIONS = {
 
 const EXCLUDED_DIRECTORIES = new Set([
   '.git',
+  '.release-work',
   '.hg',
   '.next',
   '.nuxt',
@@ -149,7 +152,7 @@ const REFERENCE_LIBRARY: Record<string, AuditReference> = {
     title: 'Ley Orgánica de Protección de Datos Personales',
     url: 'https://www.registroficial.gob.ec/quinto-suplemento-al-registro-oficial-no-459/',
     verifiedAt: '2026-08-27',
-    status: 'vigente',
+    status: 'pendiente_verificacion',
     topic: 'datos personales',
     rationale: 'Base general para privacidad, seguridad y transparencia en el tratamiento de datos personales.',
   },
@@ -158,7 +161,7 @@ const REFERENCE_LIBRARY: Record<string, AuditReference> = {
     title: 'Ley de Comercio Electrónico, Firmas Electrónicas y Mensajes de Datos',
     url: 'https://www.telecomunicaciones.gob.ec/wp-content/uploads/2020/07/LEY-DE-COMERCIO-ELECTRONICO-FIRMAS-Y.pdf',
     verifiedAt: '2026-08-27',
-    status: 'reformado',
+    status: 'pendiente_verificacion',
     topic: 'seguridad de servicios digitales',
     rationale: 'Referencia útil para controles de servicios digitales, contratación y manejo seguro de mensajes de datos.',
   },
@@ -263,6 +266,14 @@ const RULES: Record<string, CategoryRule> = {
     explanation: 'No se detectó documentación visible de privacidad, tratamiento de datos o retención en el repositorio.',
     recommendation: 'Agregue documentación de privacidad, retención, consentimiento e incidentes alineada con el tratamiento real.',
   },
+  sqlInjection: { id: 'sql-injection-signal', category: 'endpoints_sensibles', severity: 'high', explanation: 'Se detectó concatenación de entrada en una consulta SQL.', recommendation: 'Use consultas parametrizadas, un ORM seguro y validación de entrada; nunca concatene valores controlados por usuarios.' },
+  xss: { id: 'xss-signal', category: 'endpoints_sensibles', severity: 'high', explanation: 'Se detectó inserción de contenido no confiable en HTML.', recommendation: 'Escape la salida por contexto, use sanitización confiable y evite APIs de HTML crudo con entrada de usuario.' },
+  ssrf: { id: 'ssrf-signal', category: 'endpoints_sensibles', severity: 'high', explanation: 'Se detectó una solicitud HTTP construida con una URL potencialmente controlada por el usuario.', recommendation: 'Permita únicamente destinos aprobados, bloquee redes internas y valide protocolo, host y resolución DNS.' },
+  csrf: { id: 'csrf-signal', category: 'endpoints_sensibles', severity: 'medium', explanation: 'Se detectó un formulario o mutación HTTP sin señal visible de protección CSRF.', recommendation: 'Use tokens CSRF, cookies SameSite y validación del origen para operaciones que cambian estado.' },
+  graphql: { id: 'graphql-unbounded', category: 'endpoints_sensibles', severity: 'medium', explanation: 'Se detectó un endpoint GraphQL sin límites visibles de profundidad o complejidad.', recommendation: 'Configure límites de profundidad, complejidad, tamaño, paginación, timeouts y autorización por campo.' },
+  weakAuth: { id: 'weak-auth-signal', category: 'endpoints_sensibles', severity: 'high', explanation: 'Se detectó autenticación o autorización potencialmente débil.', recommendation: 'Valide tokens con algoritmo y audiencia esperados, aplique expiración, autorización por recurso y MFA cuando corresponda.' },
+  cloudPublic: { id: 'cloud-public-access', category: 'infraestructura', severity: 'high', explanation: 'Se detectó una política cloud con acceso público amplio.', recommendation: 'Aplique mínimo privilegio, elimine comodines públicos y restrinja recursos por identidad, red y condición.' },
+  taintedFlow: { id: 'tainted-input-flow', category: 'endpoints_sensibles', severity: 'high', explanation: 'Se relacionó una entrada externa con un uso sensible en el mismo archivo.', recommendation: 'Valide y normalice la entrada en el límite, use APIs parametrizadas o escape contextual antes del uso.' },
 };
 
 const CONTROL_LIBRARY: Record<string, AuditControl> = {
@@ -435,15 +446,8 @@ export async function auditRepository(repositoryPath: string, options: AuditOpti
     skippedEntries: 0,
   };
 
-  await walkDirectory(rootRealPath, rootRealPath, 0, resolvedOptions, scanState);
-
   const excludedPaths = loadedConfig.config.excludePaths.map((path) => normalizeConfigPath(path));
-  if (excludedPaths.length > 0) {
-    scanState.files = scanState.files.filter((file) => {
-      const relativePath = normalizeConfigPath(file.relativePath);
-      return !excludedPaths.some((excludedPath) => relativePath === excludedPath || relativePath.startsWith(`${excludedPath}/`));
-    });
-  }
+  await walkDirectory(rootRealPath, rootRealPath, 0, resolvedOptions, scanState, excludedPaths);
 
   const findings: AuditFinding[] = [];
   const ruleContext: RuleContext = {
@@ -457,11 +461,12 @@ export async function auditRepository(repositoryPath: string, options: AuditOpti
   }
   applyRepositoryRules(ruleContext, loadedConfig.config);
 
-  const sortedFindings = [...findings].sort(compareFindings);
+  const sortedFindings = findings.map(finding => ({ ...finding, evidence: redactSensitiveText(finding.evidence) })).sort(compareFindings);
   const references = collectReferences(sortedFindings);
   const controls = collectControls(sortedFindings, loadedConfig.config);
 
   return {
+    warnings: loadedConfig.warnings,
     summary: buildSummary(rootPath, rootRealPath, resolvedOptions, scanState, sortedFindings),
     findings: sortedFindings,
     controls,
@@ -480,6 +485,7 @@ async function walkDirectory(
   depth: number,
   options: Required<AuditOptions>,
   state: { files: ScannedFile[]; scannedDirectories: number; skippedEntries: number },
+  excludedPaths: string[],
 ): Promise<void> {
   if (depth > options.maxDepth || state.files.length >= options.maxFiles) {
     return;
@@ -496,6 +502,11 @@ async function walkDirectory(
     }
 
     const entryPath = resolve(directoryPath, entry.name);
+    const configPath = normalizeConfigPath(toRelativePath(rootRealPath, entryPath));
+    if (excludedPaths.some(path => configPath === path || configPath.startsWith(`${path}/`))) {
+      state.skippedEntries += 1;
+      continue;
+    }
     const entryStats = await lstat(entryPath);
 
     if (entryStats.isSymbolicLink()) {
@@ -518,7 +529,7 @@ async function walkDirectory(
         state.skippedEntries += 1;
         continue;
       }
-      await walkDirectory(rootRealPath, entryRealPath, depth + 1, options, state);
+      await walkDirectory(rootRealPath, entryRealPath, depth + 1, options, state, excludedPaths);
       continue;
     }
 
@@ -557,9 +568,10 @@ async function walkDirectory(
 }
 
 function analyzeFile(file: ScannedFile, findings: AuditFinding[], config: AuditConfig) {
-  const lines = file.content.split(/\r?\n/);
+  const lines = file.content.replace(/-----BEGIN (?:[A-Z]+ )?PRIVATE KEY-----[\s\S]*?(?:-----END (?:[A-Z]+ )?PRIVATE KEY-----|$)/g, block => block.split(/\r?\n/).map((_, i) => i === 0 ? '-----BEGIN RSA PRIVATE KEY-----' : '[REDACTED]').join('\n')).split(/\r?\n/);
 
   lines.forEach((line, index) => {
+    if (/mcp-audit-ignore(?:\s|:|$)/i.test(line)) return;
     const lineNumber = index + 1;
 
     const secretValue = findSecretValue(line);
@@ -598,7 +610,39 @@ function analyzeFile(file: ScannedFile, findings: AuditFinding[], config: AuditC
         buildFinding(file, lineNumber, RULES.sensitiveEndpoint, shorten(line), referenceForCategory('endpoints_sensibles'), config),
       );
     }
+    const advanced: Array<[RegExp, keyof typeof RULES]> = [
+      [/\b(?:query|execute|raw)\s*\([^\n]*(?:\+|\$\{|format\()/i, 'sqlInjection'],
+      [/(?:innerHTML|outerHTML|insertAdjacentHTML|document\.write)\s*=/i, 'xss'],
+      [/(?:fetch|axios\.(?:get|post)|requests\.get|urllib\.request)\s*\([^\n]*(?:req\.|request\.|params|query|input|url)/i, 'ssrf'],
+      [/<form\b[^>]*(?:method\s*=\s*["']?post|action\s*=)/i, 'csrf'],
+      [/\b(?:graphql|ApolloServer|express-graphql)\b/i, 'graphql'],
+      [/(?:jwt\.decode|verify\s*:\s*false|algorithms?\s*:\s*["']none|password\s*===?\s*["'](?:password|admin))/i, 'weakAuth'],
+      [/(?:Principal|Action|Effect)\s*[:=]\s*["'](?:\*|Allow)["']/i, 'cloudPublic'],
+    ];
+    for (const [pattern, rule] of advanced) if (pattern.test(line)) findings.push(buildFinding(file, lineNumber, RULES[rule], shorten(line), referenceForCategory(RULES[rule].category), config));
   });
+  analyzeTaintedFlows(file, lines, findings, config);
+}
+
+function analyzeTaintedFlows(file: ScannedFile, lines: string[], findings: AuditFinding[], config: AuditConfig) {
+  const content = lines.join('\n');
+  const sources = /(?:req\.(?:query|body|params)|request\.(?:args|form|json)|location\.(?:search|hash)|userInput|input)/i.test(content);
+  if (!sources) return;
+  const flows: Array<[RegExp, keyof typeof RULES]> = [
+    [/(?:query|execute|raw)\s*\([^\n]*(?:\+|\$\{|format\()/i, 'sqlInjection'],
+    [/(?:innerHTML|outerHTML|insertAdjacentHTML|document\.write)\s*=/i, 'xss'],
+    [/(?:fetch|axios\.(?:get|post)|requests\.get)\s*\([^\n]*(?:req\.|request\.|params|query|input|url)/i, 'ssrf'],
+  ];
+  if (/select[\s\S]{0,200}\+\s*(?:value|input|id)/i.test(content)) {
+    const line = lines.findIndex(item => /select|query|execute|raw/i.test(item));
+    if (line >= 0) findings.push(buildFinding(file, line + 1, RULES.taintedFlow, `Flujo relacionado con sql-injection-signal: ${shorten(lines[line])}`, referenceForCategory('endpoints_sensibles'), config));
+  }
+  for (const [pattern, rule] of flows) {
+    const match = lines.findIndex(line => pattern.test(line));
+    if (match >= 0 && !findings.some(finding => finding.path === file.relativePath && finding.line === match + 1 && finding.ruleId === RULES[rule].id)) {
+      findings.push(buildFinding(file, match + 1, RULES.taintedFlow, `Flujo relacionado con ${RULES[rule].id}: ${shorten(lines[match])}`, referenceForCategory('endpoints_sensibles'), config));
+    }
+  }
 }
 
 function applyRepositoryRules(context: RuleContext, config: AuditConfig) {
@@ -920,6 +964,8 @@ function normalizePositiveInteger(value: number | undefined, fallback: number, n
   if (!Number.isInteger(value) || value < 1) {
     throw new Error(`La opción ${name} debe ser un entero positivo`);
   }
+  const maximum = { maxDepth: 12, maxFiles: 2000, maxFileSizeBytes: 1048576 }[name];
+  if (maximum !== undefined && value > maximum) throw new Error(`La opción ${name} excede el límite seguro ${maximum}`);
   return value;
 }
 
@@ -1136,7 +1182,7 @@ function withControlStatus(control: AuditControl, config: AuditConfig): AuditCon
 }
 
 function shorten(line: string, maxLength = 220): string {
-  const trimmed = line.trim();
+  const trimmed = redactSensitiveText(line).trim();
   if (trimmed.length <= maxLength) {
     return trimmed;
   }

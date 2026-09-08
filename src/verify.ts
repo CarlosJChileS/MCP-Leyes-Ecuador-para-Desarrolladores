@@ -2,24 +2,28 @@ import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { LegalCatalog } from './catalog.js';
 
-export type VerificationResult = { id: string; url: string; officialHost: boolean; reachable: boolean; httpStatus?: number; checkedAt: string; conclusion: 'requiere_revision_juridica' };
+export type VerificationResult = { id: string; url: string; finalUrl?: string; officialHost: boolean; reachable: boolean; httpStatus?: number; checkedAt: string; conclusion: 'requiere_revision_juridica' };
 
 export async function verifyCatalog(catalog?: LegalCatalog): Promise<VerificationResult[]> {
   catalog ??= await LegalCatalog.load();
   const checkedAt = new Date().toISOString();
   return Promise.all(catalog.all().map(async (source) => {
-    let reachable = false; let httpStatus: number | undefined;
+    let reachable = false; let httpStatus: number | undefined; let finalUrl: string | undefined;
+    const signal = AbortSignal.timeout(15000);
     try {
       const headers = { 'user-agent': 'mcp-leyes-ecuador-verifier/0.1' };
-      let response = await fetch(source.url, { method: 'HEAD', redirect: 'follow', headers });
+      let response = await fetch(source.url, { method: 'HEAD', redirect: 'follow', headers, signal });
       if (response.status === 405 || response.status === 501) {
-        response = await fetch(source.url, { method: 'GET', redirect: 'follow', headers });
+        response = await fetch(source.url, { method: 'GET', redirect: 'follow', headers, signal });
       }
       reachable = response.ok;
       httpStatus = response.status;
+      finalUrl = response.url;
+      await response.body?.cancel();
     } catch { /* se informa como no accesible */ }
-    const host = new URL(source.url).hostname.toLowerCase();
-    return { id: source.id, url: source.url, officialHost: host.endsWith('.gob.ec') || host === 'gob.ec', reachable, httpStatus, checkedAt, conclusion: 'requiere_revision_juridica' as const };
+    const target = new URL(finalUrl ?? source.url);
+    const host = target.hostname.toLowerCase();
+    return { id: source.id, url: source.url, finalUrl, officialHost: target.protocol === 'https:' && (host.endsWith('.gob.ec') || host === 'gob.ec'), reachable, httpStatus, checkedAt, conclusion: 'requiere_revision_juridica' as const };
   }));
 }
 

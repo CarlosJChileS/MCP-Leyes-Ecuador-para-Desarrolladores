@@ -1,8 +1,15 @@
 {
-  "name": "mcp-leyes-ecuador-para-desarrolladores",
-  "version": "0.1.0",
-  "private": true,
-  "engines": { "node": ">=20" },
+  "name": "leyes-ecuador-dev-mcp",
+  "version": "1.0.1",
+  "description": "MCP de gobernanza de datos y leyes tecnológicas del Ecuador para desarrolladores",
+  "license": "MIT",
+  "author": "Carlos Chile",
+  "repository": { "type": "git", "url": "git+https://github.com/CarlosJChileS/leyes-ecuador-dev-mcp.git" },
+  "bin": { "leyes-ecuador-dev-mcp": "dist/server.js" },
+  "files": ["dist", "data/normativa.json", "README.md", "LICENSE", "CHANGELOG.md", "SECURITY.md", "docs/release-readiness.md", "docs/catalog-review.md", "docs/clients.md"],
+  "engines": {
+    "node": ">=20"
+  },
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -13,13 +20,23 @@
     "catalog:import": "tsx src/import-catalog.ts",
     "catalog:review": "tsx src/review-catalog.ts",
     "catalog:coverage": "tsx src/coverage.ts",
-    "test": "vitest"
+    "catalog:legal-review": "tsx src/legal-review.ts",
+    "pretest": "npm run build",
+    "test": "vitest",
+    "check": "npm test -- --run",
+    "prepack": "npm run build",
+    "verify:package": "node scripts/check-package.mjs",
+    "verify:scanners": "node scripts/check-scanners.mjs",
+    "verify:all": "npm run check && npm run verify:package && npm run verify:scanners",
+    "checksum": "node scripts/checksum-package.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
-    "zod": "^4.4.3"
+    "pdf-lib": "1.17.1",
+    "zod": "4.5.4"
   },
   "devDependencies": {
+    "@modelcontextprotocol/client": "2.0.0",
     "@types/node": "^22.20.1",
     "tsx": "^4.23.12",
     "typescript": "^5.9.3",

@@ -1,21 +1,44 @@
-export type LegalStatus = 'vigente' | 'reformado' | 'derogado' | 'pendiente_verificacion';
-export type LegalEventType = 'publicacion' | 'reforma' | 'derogacion' | 'sustitucion' | 'reglamento' | 'resolucion';
-export type LegalHistoryEvent = { type: LegalEventType; date?: string; officialGazette?: string; title: string; sourceUrl: string; notes?: string };
-export type LegalSource = { id: string; title: string; type: string; issuer: string; jurisdiction: 'Ecuador'; publishedAt: string; verifiedAt: string; status: LegalStatus; url: string; topics: string[]; summary?: string; officialGazette?: { number?: string; edition?: string; page?: string }; history?: LegalHistoryEvent[]; relatedSourceIds?: string[]; verification?: { urlCheckedAt?: string; documentaryReviewedAt?: string; legalReviewedAt?: string; reviewer?: string; notes?: string } };
+import { z } from 'zod';
+
+const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(value => {
+  const parsed = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+}, 'Las fechas deben usar YYYY-MM-DD y existir en el calendario');
+const httpsUrl = z.string().url().refine(value => {
+  const url = new URL(value);
+  return url.protocol === 'https:' && !url.username && !url.password;
+}, 'La fuente debe usar una URL HTTPS sin credenciales');
+const localizedText = z.object({ es: z.string().min(1), en: z.string().min(1) });
+const legalStatus = z.enum(['vigente', 'reformado', 'derogado', 'pendiente_verificacion']);
+const historyEvent = z.object({
+  type: z.enum(['publicacion', 'reforma', 'derogacion', 'sustitucion', 'reglamento', 'resolucion']),
+  date: date.optional(), officialGazette: z.string().optional(), title: z.string().min(1),
+  sourceUrl: httpsUrl, notes: z.string().optional(),
+});
+export const legalSourceSchema = z.object({
+  id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/), title: z.string().trim().min(1),
+  type: z.string().min(1), issuer: z.string().trim().min(1), jurisdiction: z.literal('Ecuador'),
+  sourceKind: z.enum(['norma', 'portal']).optional(),
+  publishedAt: date.nullable(), issuedAt: date.optional(), verifiedAt: date, status: legalStatus,
+  url: httpsUrl, documentUrl: httpsUrl.optional(), topics: z.array(z.string().min(1)), summary: z.string().optional(),
+  officialGazette: z.object({ number: z.string().optional(), edition: z.string().optional(), page: z.string().optional() }).optional(),
+  history: z.array(historyEvent).optional(), relatedSourceIds: z.array(z.string()).optional(),
+  verification: z.object({
+    urlCheckedAt: date.optional(), documentaryReviewedAt: date.optional(), legalReviewedAt: date.optional(),
+    reviewer: z.string().optional(), notes: z.string().optional(),
+    documentaryStatus: z.enum(['revisado', 'parcial', 'pendiente']).optional(),
+  }).optional(),
+  obligations: z.array(z.object({
+    id: z.string().min(1), article: z.string().min(1), sourceUrl: httpsUrl,
+    requirement: localizedText, appliesWhen: localizedText, evidence: z.array(localizedText).min(1),
+    documentaryReviewedAt: date,
+  })).optional(),
+});
+export type LegalSource = z.infer<typeof legalSourceSchema>;
+export type LegalStatus = z.infer<typeof legalStatus>;
+export type LegalHistoryEvent = z.infer<typeof historyEvent>;
+export type LegalEventType = LegalHistoryEvent['type'];
 export function validateLegalSource(source: unknown): source is LegalSource {
-  if (!source || typeof source !== 'object') throw new Error('La fuente debe ser un objeto');
-  const s = source as Record<string, unknown>;
-  if (typeof s.id !== 'string' || !s.id.trim() || typeof s.title !== 'string' || !s.title.trim() || typeof s.type !== 'string' || typeof s.issuer !== 'string' || !s.issuer.trim() || s.jurisdiction !== 'Ecuador') throw new Error('Faltan campos obligatorios de la fuente');
-  if (typeof s.url !== 'string') throw new Error('La fuente debe usar una URL HTTPS');
-  try { const url = new URL(s.url); if (url.protocol !== 'https:') throw new Error(); } catch { throw new Error('La fuente debe usar una URL HTTPS'); }
-  if (!['vigente', 'reformado', 'derogado', 'pendiente_verificacion'].includes(String(s.status))) throw new Error('Estado normativo inválido');
-  const validDate = (value: unknown) => {
-    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
-    const parsed = new Date(`${value}T00:00:00Z`);
-    return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
-  };
-  if (!validDate(s.publishedAt) || !validDate(s.verifiedAt)) throw new Error('Las fechas deben usar YYYY-MM-DD');
-  if (!Array.isArray(s.topics) || s.topics.some((t) => typeof t !== 'string')) throw new Error('Los temas deben ser texto');
-  if (s.history !== undefined && (!Array.isArray(s.history) || s.history.some((event) => !event || typeof event !== 'object' || typeof (event as Record<string, unknown>).title !== 'string' || typeof (event as Record<string, unknown>).sourceUrl !== 'string'))) throw new Error('El historial normativo es inválido');
+  legalSourceSchema.parse(source);
   return true;
 }

@@ -55,6 +55,34 @@ describe('auditRepository', () => {
     expect(report.references.length).toBeGreaterThan(0);
   });
 
+  it('detects advanced web security signals and honors explicit ignores', async () => {
+    const { repoRoot } = await createRepoFixture({
+      'src/routes.ts': [
+        'db.query("SELECT * FROM users WHERE id=" + req.query.id);',
+        'element.innerHTML = req.body.html;',
+        'fetch(req.query.url);',
+        '<form method="post" action="/transfer">',
+        'const server = new ApolloServer({ schema });',
+        'jwt.decode(token);',
+        'const intentionally = "innerHTML = userInput"; // mcp-audit-ignore: test fixture',
+      ].join('\n'),
+      'docs/privacy.md': '# Privacy\n',
+    });
+    const report = await auditRepository(repoRoot, { maxDepth: 5 });
+    const ids = report.findings.map(finding => finding.ruleId);
+    expect(ids).toEqual(expect.arrayContaining(['sql-injection-signal', 'xss-signal', 'ssrf-signal', 'csrf-signal', 'graphql-unbounded', 'weak-auth-signal']));
+    expect(report.findings.filter(finding => finding.path === 'src/routes.ts' && finding.evidence.includes('intentionally')).length).toBe(0);
+  });
+
+  it('detects a multi-line tainted input flow', async () => {
+    const { repoRoot } = await createRepoFixture({
+      'src/flow.ts': 'const value = req.query.id;\nconst statement = "SELECT * FROM users WHERE id=" + value;\ndb.query(statement);\n',
+      'docs/privacy.md': '# Privacy\n',
+    });
+    const report = await auditRepository(repoRoot, { maxDepth: 5 });
+    expect(report.findings.some(finding => finding.ruleId === 'tainted-input-flow')).toBe(true);
+  });
+
   it('counts detected languages in the summary across the listed ecosystems', async () => {
     const { repoRoot } = await createRepoFixture({
       'js/index.js': 'export const jsReady = true;\n',

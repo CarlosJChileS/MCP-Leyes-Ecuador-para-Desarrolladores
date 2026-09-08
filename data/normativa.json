@@ -1,17 +1,848 @@
 [
-  {"id":"lopdp","title":"Ley Orgánica de Protección de Datos Personales","type":"ley","issuer":"Asamblea Nacional del Ecuador","jurisdiction":"Ecuador","publishedAt":"2021-05-26","verifiedAt":"2026-08-30","status":"vigente","url":"https://www.registroficial.gob.ec/quinto-suplemento-al-registro-oficial-no-459/","topics":["datos personales","privacidad","seguridad","transferencias internacionales"],"summary":"Marco general para el tratamiento y protección de datos personales en Ecuador."},
-  {"id":"comercio-electronico","title":"Ley de Comercio Electrónico, Firmas Electrónicas y Mensajes de Datos","type":"ley","issuer":"Congreso Nacional del Ecuador","jurisdiction":"Ecuador","publishedAt":"2002-04-17","verifiedAt":"2026-08-27","status":"reformado","url":"https://www.telecomunicaciones.gob.ec/wp-content/uploads/2020/07/LEY-DE-COMERCIO-ELECTRONICO-FIRMAS-Y.pdf","topics":["comercio electrónico","firmas electrónicas","mensajes de datos"],"summary":"Regula mensajes de datos, firmas electrónicas y contratación electrónica. Texto oficial identificado como reformado."},
-  {"id":"propiedad-intelectual","title":"Código Orgánico de la Economía Social de los Conocimientos, Creatividad e Innovación","type":"codigo","issuer":"Asamblea Nacional del Ecuador","jurisdiction":"Ecuador","publishedAt":"2016-12-09","verifiedAt":"2026-08-30","status":"reformado","url":"https://www.derechosintelectuales.gob.ec/wp-content/uploads/downloads/2021/agosto/a_2_16_codigo_ingenios_agosto_2021.pdf","topics":["propiedad intelectual","software","licencias"],"summary":"Marco aplicable a obras, software, innovación y derechos intelectuales."},
-  {"id":"reglamento-lopdp","title":"Reglamento General a la Ley Orgánica de Protección de Datos Personales","type":"reglamento","issuer":"Presidencia de la República del Ecuador","jurisdiction":"Ecuador","publishedAt":"2023-11-13","verifiedAt":"2026-08-30","status":"vigente","url":"https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-435/","topics":["datos personales","privacidad","encargados","transferencias internacionales"],"summary":"Desarrolla la aplicación de la LOPDP y las obligaciones de responsables y encargados."},
-  {"id":"reglamento-comercio-electronico","title":"Reglamento General a la Ley de Comercio Electrónico, Firmas Electrónicas y Mensajes de Datos","type":"reglamento","issuer":"Presidencia de la República del Ecuador","jurisdiction":"Ecuador","publishedAt":"2002-12-31","verifiedAt":"2026-08-30","status":"vigente","url":"https://www.telecomunicaciones.gob.ec/wp-content/uploads/2020/07/REGLAMENTO-A-LA-LEY-DE-COMERCIO-ELECTRONICO.pdf","topics":["comercio electrónico","firmas electrónicas","mensajes de datos","certificación"],"summary":"Reglamenta la aplicación de la ley de comercio electrónico."},
-  {"id":"telecomunicaciones","title":"Ley Orgánica de Telecomunicaciones","type":"ley","issuer":"Asamblea Nacional del Ecuador","jurisdiction":"Ecuador","publishedAt":"2015-02-18","verifiedAt":"2026-08-30","status":"reformado","url":"https://www.asambleanacional.gob.ec/es/leyes-aprobadas?fecha=&leyesaprobadas=All&title=telecomunicaciones","topics":["telecomunicaciones","internet","servicios digitales","seguridad","usuarios"],"summary":"Regula telecomunicaciones, prestadores, usuarios, espectro y ARCOTEL."},
-  {"id":"transformacion-digital","title":"Ley Orgánica para la Transformación Digital y Audiovisual","type":"ley","issuer":"Asamblea Nacional del Ecuador","jurisdiction":"Ecuador","publishedAt":"2023-02-07","verifiedAt":"2026-08-30","status":"vigente","url":"https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-245/","topics":["transformación digital","gobierno digital","servicios digitales","interoperabilidad"],"summary":"Establece medidas para transformación digital y modernización tecnológica."},
-  {"id":"fintech","title":"Ley Orgánica para el Desarrollo, Regulación y Control de los Servicios Financieros Tecnológicos","type":"ley","issuer":"Asamblea Nacional del Ecuador","jurisdiction":"Ecuador","publishedAt":"2022-12-22","verifiedAt":"2026-08-30","status":"vigente","url":"https://www.asambleanacional.gob.ec/sites/default/files/private/asambleanacional/filesasambleanacionalnameuid-29/Leyes%202013-2017/1436-nviteri/ro-215-2do-supl-22-12-2022.pdf","topics":["fintech","pagos electrónicos","servicios financieros tecnológicos","criptoactivos","innovación"],"summary":"Regula servicios financieros tecnológicos y actividades de innovación financiera."},
-  {"id":"defensa-consumidor","title":"Ley Orgánica de Defensa del Consumidor","type":"ley","issuer":"Congreso Nacional del Ecuador","jurisdiction":"Ecuador","publishedAt":"2000-07-10","verifiedAt":"2026-08-30","status":"reformado","url":"https://www.produccion.gob.ec/wp-content/uploads/2025/03/LEY-ORGANICA-DE-DEFENSA-DEL-CONSUMIDOR_2022_02_11.pdf","topics":["consumidores","comercio electrónico","publicidad","contratos","reclamos"],"summary":"Protege consumidores y exige información clara sobre bienes, servicios, precios y contratación."},
-  {"id":"coip-delitos-informaticos","title":"Código Orgánico Integral Penal - delitos informáticos","type":"codigo","issuer":"Asamblea Nacional del Ecuador","jurisdiction":"Ecuador","publishedAt":"2014-02-10","verifiedAt":"2026-08-30","status":"reformado","url":"https://www.registroficial.gob.ec/suplemento-al-registro-oficial-no-180-8/","topics":["ciberseguridad","delitos informáticos","acceso no consentido","interceptación de datos","fraude electrónico"],"summary":"Incluye delitos relacionados con acceso no consentido, interceptación y transferencia electrónica de activos."},
-  {"id":"reforma-delitos-informaticos","title":"Ley Orgánica Reformatoria del COIP para fortalecer la lucha contra los delitos informáticos","type":"ley reformatoria","issuer":"Asamblea Nacional del Ecuador","jurisdiction":"Ecuador","publishedAt":"2021-08-30","verifiedAt":"2026-08-30","status":"vigente","url":"https://www.registroficial.gob.ec/cuarto-suplemento-al-registro-oficial-no-526/","topics":["ciberseguridad","delitos informáticos","violencia digital","datos"],"summary":"Reforma disposiciones penales sobre violencia sexual digital y delitos informáticos."},
-  {"id":"facturacion-electronica-sri","title":"Normativa de comprobantes electrónicos y facturación electrónica del SRI","type":"normativa tributaria","issuer":"Servicio de Rentas Internas","jurisdiction":"Ecuador","publishedAt":"2013-05-17","verifiedAt":"2026-08-30","status":"reformado","url":"https://www.sri.gob.ec/facturacion-electronica","topics":["facturación electrónica","comprobantes electrónicos","tributación","firma electrónica","comercio electrónico"],"summary":"Regula comprobantes electrónicos, emisión, firma, autorización y transmisión."},
-  {"id":"spdp-transferencias-2025","title":"Normativa general para transferencias o comunicaciones nacionales e internacionales de datos personales","type":"resolución","issuer":"Superintendencia de Protección de Datos Personales","jurisdiction":"Ecuador","publishedAt":"2025-06-01","verifiedAt":"2026-08-30","status":"vigente","url":"https://spdp.gob.ec/resolucion_0024/","topics":["datos personales","transferencias internacionales","encargados","privacidad"],"summary":"Establece reglas generales para transferencias y comunicaciones de datos personales."},
-  {"id":"spdp-clausulas-contratos-2025","title":"Reglamento sobre cláusulas de protección de datos personales en contratos","type":"resolución","issuer":"Superintendencia de Protección de Datos Personales","jurisdiction":"Ecuador","publishedAt":"2025-05-01","verifiedAt":"2026-08-30","status":"vigente","url":"https://spdp.gob.ec/resolucion6/","topics":["datos personales","contratos","encargados","proveedores"],"summary":"Establece obligaciones de cláusulas de protección de datos en contratos."},
-  {"id":"lotaip","title":"Ley Orgánica de Transparencia y Acceso a la Información Pública","type":"ley","issuer":"Asamblea Nacional del Ecuador","jurisdiction":"Ecuador","publishedAt":"2023-02-07","verifiedAt":"2026-08-30","status":"vigente","url":"https://www.registroficial.gob.ec/segundo-suplemento-al-registro-oficial-no-245/","topics":["información pública","gobierno digital","transparencia","sistemas públicos"],"summary":"Aplica a la gestión, publicación y acceso a información pública."}
+  {
+    "id": "lopdp",
+    "title": "Ley Orgánica de Protección de Datos Personales",
+    "type": "ley",
+    "issuer": "Asamblea Nacional del Ecuador",
+    "jurisdiction": "Ecuador",
+    "publishedAt": "2021-05-26",
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://www.registroficial.gob.ec/quinto-suplemento-al-registro-oficial-no-459/",
+    "topics": [
+      "datos personales",
+      "privacidad",
+      "seguridad",
+      "transferencias internacionales"
+    ],
+    "summary": "Marco general para el tratamiento y protección de datos personales en Ecuador.",
+    "sourceKind": "norma",
+    "documentUrl": "https://spdp.gob.ec/wp-content/uploads/2024/12/03.pdf.pdf",
+    "officialGazette": {
+      "number": "459",
+      "edition": "Quinto Suplemento"
+    },
+    "history": [
+      {
+        "type": "publicacion",
+        "date": "2021-05-26",
+        "title": "Publicación de Ley Orgánica de Protección de Datos Personales",
+        "officialGazette": "Quinto Suplemento 459",
+        "sourceUrl": "https://www.registroficial.gob.ec/quinto-suplemento-al-registro-oficial-no-459/",
+        "notes": "Evento documental de publicación; no constituye historial consolidado ni confirma vigencia actual."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal."
+    },
+    "relatedSourceIds": [
+      "reglamento-lopdp",
+      "spdp-transferencias-2025",
+      "spdp-transferencias-2026",
+      "spdp-clausulas-contratos-2025"
+    ],
+    "obligations": [
+      {
+        "id": "informacion",
+        "article": "Art. 12",
+        "sourceUrl": "https://spdp.gob.ec/wp-content/uploads/2024/12/03.pdf.pdf",
+        "requirement": {
+          "es": "Informar al titular sobre finalidades, base jurídica, conservación, destinatarios y ejercicio de derechos conforme al artículo.",
+          "en": "Inform data subjects about purposes, legal basis, retention, recipients and exercise of rights as specified by this article."
+        },
+        "appliesWhen": {
+          "es": "Tratamiento de datos personales dentro del ámbito de la LOPDP.",
+          "en": "Personal data processing within the scope of the LOPDP."
+        },
+        "evidence": [
+          {
+            "es": "Aviso de privacidad y evidencia de entrega de información.",
+            "en": "Privacy notice and evidence that information was provided."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-07"
+      },
+      {
+        "id": "seguridad",
+        "article": "Art. 37",
+        "sourceUrl": "https://spdp.gob.ec/wp-content/uploads/2024/12/03.pdf.pdf",
+        "requirement": {
+          "es": "Implementar y evaluar continuamente medidas de seguridad proporcionales al tratamiento y a sus riesgos.",
+          "en": "Implement and continuously evaluate security measures proportionate to processing and its risks."
+        },
+        "appliesWhen": {
+          "es": "Responsables y encargados del tratamiento.",
+          "en": "Data controllers and processors."
+        },
+        "evidence": [
+          {
+            "es": "Análisis de riesgos, controles y registros de evaluación.",
+            "en": "Risk analysis, controls and assessment records."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-07"
+      },
+      {
+        "id": "diseno-defecto",
+        "article": "Art. 39",
+        "sourceUrl": "https://spdp.gob.ec/wp-content/uploads/2024/12/03.pdf.pdf",
+        "requirement": {
+          "es": "Integrar protección de datos desde el diseño y limitar por defecto el tratamiento a los datos necesarios.",
+          "en": "Integrate data protection by design and limit default processing to necessary data."
+        },
+        "appliesWhen": {
+          "es": "Responsable que concibe o configura un tratamiento.",
+          "en": "Controller designing or configuring processing."
+        },
+        "evidence": [
+          {
+            "es": "Decisiones de diseño y configuración de minimización.",
+            "en": "Design decisions and data minimization settings."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-07"
+      }
+    ]
+  },
+  {
+    "id": "comercio-electronico",
+    "title": "Ley de Comercio Electrónico, Firmas Electrónicas y Mensajes de Datos",
+    "type": "ley",
+    "issuer": "Congreso Nacional del Ecuador",
+    "jurisdiction": "Ecuador",
+    "publishedAt": "2002-04-17",
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://www.telecomunicaciones.gob.ec/wp-content/uploads/2020/07/LEY-DE-COMERCIO-ELECTRONICO-FIRMAS-Y.pdf",
+    "topics": [
+      "comercio electrónico",
+      "firmas electrónicas",
+      "mensajes de datos"
+    ],
+    "summary": "Regula mensajes de datos, firmas electrónicas y contratación electrónica. Texto oficial identificado como reformado.",
+    "sourceKind": "norma",
+    "documentUrl": "https://www.telecomunicaciones.gob.ec/wp-content/uploads/2020/07/LEY-DE-COMERCIO-ELECTRONICO-FIRMAS-Y.pdf",
+    "officialGazette": {
+      "number": "557",
+      "edition": "Suplemento"
+    },
+    "history": [
+      {
+        "type": "publicacion",
+        "date": "2002-04-17",
+        "title": "Publicación de Ley de Comercio Electrónico, Firmas Electrónicas y Mensajes de Datos",
+        "officialGazette": "Suplemento 557",
+        "sourceUrl": "https://www.telecomunicaciones.gob.ec/wp-content/uploads/2020/07/LEY-DE-COMERCIO-ELECTRONICO-FIRMAS-Y.pdf",
+        "notes": "Evento documental de publicación; no constituye historial consolidado ni confirma vigencia actual."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal."
+    },
+    "relatedSourceIds": [
+      "reglamento-comercio-electronico"
+    ],
+    "obligations": [
+      {
+        "id": "conservacion-mensajes",
+        "article": "Art. 8",
+        "sourceUrl": "https://www.telecomunicaciones.gob.ec/wp-content/uploads/2020/07/LEY-DE-COMERCIO-ELECTRONICO-FIRMAS-Y.pdf",
+        "requirement": {
+          "es": "Cuando se conserven mensajes de datos, mantener accesibilidad, fidelidad, datos de origen y destino e integridad conforme a la norma.",
+          "en": "When retaining data messages, preserve accessibility, fidelity, origin and destination information and integrity as specified by the law."
+        },
+        "appliesWhen": {
+          "es": "Conservación de mensajes de datos sometidos a esta ley.",
+          "en": "Retention of data messages subject to this law."
+        },
+        "evidence": [
+          {
+            "es": "Política de conservación y pruebas de recuperación e integridad.",
+            "en": "Retention policy and recovery and integrity tests."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-07"
+      },
+      {
+        "id": "custodia-firma",
+        "article": "Art. 17",
+        "sourceUrl": "https://www.telecomunicaciones.gob.ec/wp-content/uploads/2020/07/LEY-DE-COMERCIO-ELECTRONICO-FIRMAS-Y.pdf",
+        "requirement": {
+          "es": "Proteger el control de la firma electrónica y notificar riesgos de utilización no autorizada según las obligaciones del titular.",
+          "en": "Protect control of the electronic signature and notify risks of unauthorized use under the holder’s obligations."
+        },
+        "appliesWhen": {
+          "es": "Titulares de una firma electrónica.",
+          "en": "Electronic signature holders."
+        },
+        "evidence": [
+          {
+            "es": "Procedimiento de custodia, revocación y notificación.",
+            "en": "Custody, revocation and notification procedure."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-07"
+      }
+    ]
+  },
+  {
+    "id": "propiedad-intelectual",
+    "title": "Código Orgánico de la Economía Social de los Conocimientos, Creatividad e Innovación",
+    "type": "codigo",
+    "issuer": "Asamblea Nacional del Ecuador",
+    "jurisdiction": "Ecuador",
+    "publishedAt": "2016-12-09",
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://www.derechosintelectuales.gob.ec/wp-content/uploads/downloads/2021/agosto/a_2_16_codigo_ingenios_agosto_2021.pdf",
+    "topics": [
+      "propiedad intelectual",
+      "software",
+      "licencias"
+    ],
+    "summary": "Marco aplicable a obras, software, innovación y derechos intelectuales.",
+    "sourceKind": "norma",
+    "documentUrl": "https://www.derechosintelectuales.gob.ec/wp-content/uploads/downloads/2021/agosto/a_2_16_codigo_ingenios_agosto_2021.pdf",
+    "officialGazette": {
+      "number": "899",
+      "edition": "Suplemento"
+    },
+    "history": [
+      {
+        "type": "publicacion",
+        "date": "2016-12-09",
+        "title": "Publicación de Código Orgánico de la Economía Social de los Conocimientos, Creatividad e Innovación",
+        "officialGazette": "Suplemento 899",
+        "sourceUrl": "https://www.derechosintelectuales.gob.ec/wp-content/uploads/downloads/2021/agosto/a_2_16_codigo_ingenios_agosto_2021.pdf",
+        "notes": "Evento documental de publicación; no constituye historial consolidado ni confirma vigencia actual."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal."
+    },
+    "relatedSourceIds": [],
+    "obligations": [
+      {
+        "id": "derechos-software",
+        "article": "Arts. 120 y 131",
+        "sourceUrl": "https://www.derechosintelectuales.gob.ec/wp-content/uploads/downloads/2021/agosto/a_2_16_codigo_ingenios_agosto_2021.pdf",
+        "requirement": {
+          "es": "Revisar los derechos exclusivos aplicables al uso, reproducción y distribución del software, protegido como obra literaria, y las excepciones pertinentes.",
+          "en": "Review exclusive rights applicable to use, reproduction and distribution of software, protected as a literary work, and relevant exceptions."
+        },
+        "appliesWhen": {
+          "es": "Uso o distribución de software de terceros.",
+          "en": "Use or distribution of third-party software."
+        },
+        "evidence": [
+          {
+            "es": "Inventario de componentes, licencias y autorizaciones.",
+            "en": "Component inventory, licenses and permissions."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-07"
+      }
+    ]
+  },
+  {
+    "id": "reglamento-lopdp",
+    "title": "Reglamento General a la Ley Orgánica de Protección de Datos Personales",
+    "type": "reglamento",
+    "issuer": "Presidencia de la República del Ecuador",
+    "jurisdiction": "Ecuador",
+    "publishedAt": "2023-11-13",
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-435/",
+    "topics": [
+      "datos personales",
+      "privacidad",
+      "encargados",
+      "transferencias internacionales"
+    ],
+    "summary": "Desarrolla la aplicación de la LOPDP y las obligaciones de responsables y encargados.",
+    "sourceKind": "norma",
+    "documentUrl": "https://spdp.gob.ec/wp-content/uploads/2024/12/04.pdf.pdf",
+    "officialGazette": {
+      "number": "435",
+      "edition": "Tercer Suplemento"
+    },
+    "history": [
+      {
+        "type": "publicacion",
+        "date": "2023-11-13",
+        "title": "Publicación de Reglamento General a la Ley Orgánica de Protección de Datos Personales",
+        "officialGazette": "Tercer Suplemento 435",
+        "sourceUrl": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-435/",
+        "notes": "Evento documental de publicación; no constituye historial consolidado ni confirma vigencia actual."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal."
+    },
+    "relatedSourceIds": [
+      "lopdp",
+      "spdp-transferencias-2025",
+      "spdp-transferencias-2026",
+      "spdp-clausulas-contratos-2025"
+    ],
+    "obligations": [
+      {
+        "id": "canales-derechos",
+        "article": "Art. 12",
+        "sourceUrl": "https://spdp.gob.ec/wp-content/uploads/2024/12/04.pdf.pdf",
+        "requirement": {
+          "es": "Habilitar canales accesibles para recibir y atender solicitudes de derechos, preferentemente informáticos, sin excluir medios físicos.",
+          "en": "Provide accessible channels for data rights requests, preferably digital, without excluding physical channels."
+        },
+        "appliesWhen": {
+          "es": "Responsables sujetos al reglamento.",
+          "en": "Controllers subject to the regulation."
+        },
+        "evidence": [
+          {
+            "es": "Canal de solicitudes y procedimiento de identificación y atención.",
+            "en": "Request channel and identification and handling procedure."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-07"
+      }
+    ]
+  },
+  {
+    "id": "reglamento-comercio-electronico",
+    "title": "Reglamento General a la Ley de Comercio Electrónico, Firmas Electrónicas y Mensajes de Datos",
+    "type": "reglamento",
+    "issuer": "Presidencia de la República del Ecuador",
+    "jurisdiction": "Ecuador",
+    "publishedAt": "2002-12-31",
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://biblioteca.defensoria.gob.ec/handle/37000/2742",
+    "topics": [
+      "comercio electrónico",
+      "firmas electrónicas",
+      "mensajes de datos",
+      "certificación"
+    ],
+    "summary": "Reglamenta la aplicación de la ley de comercio electrónico.",
+    "sourceKind": "norma",
+    "officialGazette": {
+      "number": "735",
+      "edition": "Registro Oficial"
+    },
+    "history": [
+      {
+        "type": "publicacion",
+        "date": "2002-12-31",
+        "title": "Publicación de Reglamento General a la Ley de Comercio Electrónico, Firmas Electrónicas y Mensajes de Datos",
+        "officialGazette": "Registro Oficial 735",
+        "sourceUrl": "https://biblioteca.defensoria.gob.ec/handle/37000/2742",
+        "notes": "Evento documental de publicación; no constituye historial consolidado ni confirma vigencia actual."
+      },
+      {
+        "type": "reforma",
+        "date": "2011-09-12",
+        "title": "Última modificación declarada por la edición de la Defensoría Pública",
+        "sourceUrl": "https://biblioteca.defensoria.gob.ec/handle/37000/2742",
+        "notes": "Fecha de la edición consultada; no afirma ausencia de reformas posteriores."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal."
+    },
+    "relatedSourceIds": [
+      "comercio-electronico"
+    ],
+    "obligations": []
+  },
+  {
+    "id": "telecomunicaciones",
+    "title": "Ley Orgánica de Telecomunicaciones",
+    "type": "ley",
+    "issuer": "Asamblea Nacional del Ecuador",
+    "jurisdiction": "Ecuador",
+    "publishedAt": "2015-02-18",
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-439-5/",
+    "topics": [
+      "telecomunicaciones",
+      "internet",
+      "servicios digitales",
+      "seguridad",
+      "usuarios"
+    ],
+    "summary": "Regula telecomunicaciones, prestadores, usuarios, espectro y ARCOTEL.",
+    "sourceKind": "norma",
+    "officialGazette": {
+      "number": "439",
+      "edition": "Tercer Suplemento"
+    },
+    "history": [
+      {
+        "type": "publicacion",
+        "date": "2015-02-18",
+        "title": "Publicación de Ley Orgánica de Telecomunicaciones",
+        "officialGazette": "Tercer Suplemento 439",
+        "sourceUrl": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-439-5/",
+        "notes": "Evento documental de publicación; no constituye historial consolidado ni confirma vigencia actual."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal."
+    },
+    "relatedSourceIds": [],
+    "obligations": []
+  },
+  {
+    "id": "transformacion-digital",
+    "title": "Ley Orgánica para la Transformación Digital y Audiovisual",
+    "type": "ley",
+    "issuer": "Asamblea Nacional del Ecuador",
+    "jurisdiction": "Ecuador",
+    "publishedAt": "2023-02-07",
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-245/",
+    "topics": [
+      "transformación digital",
+      "gobierno digital",
+      "servicios digitales",
+      "interoperabilidad"
+    ],
+    "summary": "Establece medidas para transformación digital y modernización tecnológica.",
+    "sourceKind": "norma",
+    "officialGazette": {
+      "number": "245",
+      "edition": "Tercer Suplemento"
+    },
+    "history": [
+      {
+        "type": "publicacion",
+        "date": "2023-02-07",
+        "title": "Publicación de Ley Orgánica para la Transformación Digital y Audiovisual",
+        "officialGazette": "Tercer Suplemento 245",
+        "sourceUrl": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-245/",
+        "notes": "Evento documental de publicación; no constituye historial consolidado ni confirma vigencia actual."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal."
+    },
+    "relatedSourceIds": [],
+    "obligations": []
+  },
+  {
+    "id": "fintech",
+    "title": "Ley Orgánica para el Desarrollo, Regulación y Control de los Servicios Financieros Tecnológicos",
+    "type": "ley",
+    "issuer": "Asamblea Nacional del Ecuador",
+    "jurisdiction": "Ecuador",
+    "publishedAt": "2022-12-22",
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://www.asambleanacional.gob.ec/sites/default/files/private/asambleanacional/filesasambleanacionalnameuid-29/Leyes%202013-2017/1436-nviteri/ro-215-2do-supl-22-12-2022.pdf",
+    "topics": [
+      "fintech",
+      "pagos electrónicos",
+      "servicios financieros tecnológicos",
+      "criptoactivos",
+      "innovación"
+    ],
+    "summary": "Regula servicios financieros tecnológicos y actividades de innovación financiera.",
+    "sourceKind": "norma",
+    "documentUrl": "https://www.asambleanacional.gob.ec/sites/default/files/private/asambleanacional/filesasambleanacionalnameuid-29/Leyes%202013-2017/1436-nviteri/ro-215-2do-supl-22-12-2022.pdf",
+    "officialGazette": {
+      "number": "215",
+      "edition": "Segundo Suplemento"
+    },
+    "history": [
+      {
+        "type": "publicacion",
+        "date": "2022-12-22",
+        "title": "Publicación de Ley Orgánica para el Desarrollo, Regulación y Control de los Servicios Financieros Tecnológicos",
+        "officialGazette": "Segundo Suplemento 215",
+        "sourceUrl": "https://www.asambleanacional.gob.ec/sites/default/files/private/asambleanacional/filesasambleanacionalnameuid-29/Leyes%202013-2017/1436-nviteri/ro-215-2do-supl-22-12-2022.pdf",
+        "notes": "Evento documental de publicación; no constituye historial consolidado ni confirma vigencia actual."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal."
+    },
+    "relatedSourceIds": [],
+    "obligations": [
+      {
+        "id": "habilitacion",
+        "article": "Art. 7",
+        "sourceUrl": "https://www.asambleanacional.gob.ec/sites/default/files/private/asambleanacional/filesasambleanacionalnameuid-29/Leyes%202013-2017/1436-nviteri/ro-215-2do-supl-22-12-2022.pdf",
+        "requirement": {
+          "es": "Verificar constitución o autorización de sucursal, objeto social específico y autorización del organismo competente antes de ejercer actividades Fintech reguladas.",
+          "en": "Verify incorporation or branch authorization, a specific corporate purpose and competent authority authorization before performing regulated Fintech activities."
+        },
+        "appliesWhen": {
+          "es": "Compañías que ejercen las actividades definidas por la ley; no todo software financiero entra automáticamente en este ámbito.",
+          "en": "Companies performing activities defined by the law; financial software does not automatically fall within this scope."
+        },
+        "evidence": [
+          {
+            "es": "Documentos societarios y autorización sectorial aplicable.",
+            "en": "Corporate documents and applicable sector authorization."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-07"
+      }
+    ]
+  },
+  {
+    "id": "defensa-consumidor",
+    "title": "Ley Orgánica de Defensa del Consumidor",
+    "type": "ley",
+    "issuer": "Congreso Nacional del Ecuador",
+    "jurisdiction": "Ecuador",
+    "publishedAt": "2000-07-10",
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://www.produccion.gob.ec/wp-content/uploads/2025/03/LEY-ORGANICA-DE-DEFENSA-DEL-CONSUMIDOR_2022_02_11.pdf",
+    "topics": [
+      "consumidores",
+      "comercio electrónico",
+      "publicidad",
+      "contratos",
+      "reclamos"
+    ],
+    "summary": "Protege consumidores y exige información clara sobre bienes, servicios, precios y contratación.",
+    "sourceKind": "norma",
+    "documentUrl": "https://www.produccion.gob.ec/wp-content/uploads/2025/03/LEY-ORGANICA-DE-DEFENSA-DEL-CONSUMIDOR_2022_02_11.pdf",
+    "history": [],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal. La descarga directa falló durante esta revisión; solo se contrastó la referencia indexada. No se añadieron obligaciones ni datos de publicación no corroborados."
+    },
+    "relatedSourceIds": [],
+    "obligations": []
+  },
+  {
+    "id": "coip-delitos-informaticos",
+    "title": "Código Orgánico Integral Penal - delitos informáticos",
+    "type": "codigo",
+    "issuer": "Asamblea Nacional del Ecuador",
+    "jurisdiction": "Ecuador",
+    "publishedAt": "2014-02-10",
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://www.registroficial.gob.ec/suplemento-al-registro-oficial-no-180-8/",
+    "topics": [
+      "ciberseguridad",
+      "delitos informáticos",
+      "acceso no consentido",
+      "interceptación de datos",
+      "fraude electrónico"
+    ],
+    "summary": "Incluye delitos relacionados con acceso no consentido, interceptación y transferencia electrónica de activos.",
+    "sourceKind": "norma",
+    "officialGazette": {
+      "number": "180",
+      "edition": "Suplemento"
+    },
+    "history": [
+      {
+        "type": "publicacion",
+        "date": "2014-02-10",
+        "title": "Publicación de Código Orgánico Integral Penal - delitos informáticos",
+        "officialGazette": "Suplemento 180",
+        "sourceUrl": "https://www.registroficial.gob.ec/suplemento-al-registro-oficial-no-180-8/",
+        "notes": "Evento documental de publicación; no constituye historial consolidado ni confirma vigencia actual."
+      },
+      {
+        "type": "reforma",
+        "date": "2021-08-30",
+        "title": "Ley Orgánica Reformatoria del COIP para fortalecer la lucha contra los delitos informáticos",
+        "sourceUrl": "https://www.registroficial.gob.ec/cuarto-suplemento-al-registro-oficial-no-526/",
+        "notes": "Reforma identificada; otras reformas del COIP no están consolidadas."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal."
+    },
+    "relatedSourceIds": [
+      "reforma-delitos-informaticos"
+    ],
+    "obligations": []
+  },
+  {
+    "id": "reforma-delitos-informaticos",
+    "title": "Ley Orgánica Reformatoria del COIP para fortalecer la lucha contra los delitos informáticos",
+    "type": "ley reformatoria",
+    "issuer": "Asamblea Nacional del Ecuador",
+    "jurisdiction": "Ecuador",
+    "publishedAt": "2021-08-30",
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://www.registroficial.gob.ec/cuarto-suplemento-al-registro-oficial-no-526/",
+    "topics": [
+      "ciberseguridad",
+      "delitos informáticos",
+      "violencia digital",
+      "datos"
+    ],
+    "summary": "Reforma disposiciones penales sobre violencia sexual digital y delitos informáticos.",
+    "sourceKind": "norma",
+    "officialGazette": {
+      "number": "526",
+      "edition": "Cuarto Suplemento"
+    },
+    "history": [
+      {
+        "type": "publicacion",
+        "date": "2021-08-30",
+        "title": "Publicación de Ley Orgánica Reformatoria del COIP para fortalecer la lucha contra los delitos informáticos",
+        "officialGazette": "Cuarto Suplemento 526",
+        "sourceUrl": "https://www.registroficial.gob.ec/cuarto-suplemento-al-registro-oficial-no-526/",
+        "notes": "Evento documental de publicación; no constituye historial consolidado ni confirma vigencia actual."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal."
+    },
+    "relatedSourceIds": [
+      "coip-delitos-informaticos"
+    ],
+    "obligations": []
+  },
+  {
+    "id": "facturacion-electronica-sri",
+    "title": "Normativa de comprobantes electrónicos y facturación electrónica del SRI",
+    "type": "normativa tributaria",
+    "issuer": "Servicio de Rentas Internas",
+    "jurisdiction": "Ecuador",
+    "publishedAt": null,
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://www.sri.gob.ec/facturacion-electronica",
+    "topics": [
+      "facturación electrónica",
+      "comprobantes electrónicos",
+      "tributación",
+      "firma electrónica",
+      "comercio electrónico"
+    ],
+    "summary": "Regula comprobantes electrónicos, emisión, firma, autorización y transmisión.",
+    "sourceKind": "portal",
+    "history": [],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal. Portal temático del SRI, no una norma individual: no tiene fecha única de publicación. Seleccionar las resoluciones aplicables en su sección Base legal."
+    },
+    "relatedSourceIds": [],
+    "obligations": []
+  },
+  {
+    "id": "spdp-transferencias-2025",
+    "title": "Normativa general para transferencias o comunicaciones nacionales e internacionales de datos personales",
+    "type": "resolución",
+    "issuer": "Superintendencia de Protección de Datos Personales",
+    "jurisdiction": "Ecuador",
+    "publishedAt": null,
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://spdp.gob.ec/resolucion_0024/",
+    "topics": [
+      "datos personales",
+      "transferencias internacionales",
+      "encargados",
+      "privacidad"
+    ],
+    "summary": "Establece reglas generales para transferencias y comunicaciones de datos personales.",
+    "issuedAt": "2025-07-25",
+    "sourceKind": "norma",
+    "documentUrl": "https://spdp.gob.ec/wp-content/uploads/2025/07/SPSP-SPD-2025-0024-R-Normativa-General-Aplicacion-de-la-LOPDP-y-su-Reglamento55-signed.pdf",
+    "history": [
+      {
+        "type": "resolucion",
+        "date": "2025-07-25",
+        "title": "Expedición y firma de la resolución",
+        "sourceUrl": "https://spdp.gob.ec/wp-content/uploads/2025/07/SPSP-SPD-2025-0024-R-Normativa-General-Aplicacion-de-la-LOPDP-y-su-Reglamento55-signed.pdf",
+        "notes": "Fecha de firma; no equivale a fecha de publicación en el Registro Oficial."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal. Se corrigió la fecha de firma a 2025-07-25; se identificó regulación posterior de 2026, sin inferir derogación."
+    },
+    "relatedSourceIds": [
+      "lopdp",
+      "reglamento-lopdp",
+      "spdp-transferencias-2026",
+      "spdp-clausulas-contratos-2025"
+    ],
+    "obligations": []
+  },
+  {
+    "id": "spdp-clausulas-contratos-2025",
+    "title": "Reglamento sobre cláusulas de protección de datos personales en contratos",
+    "type": "resolución",
+    "issuer": "Superintendencia de Protección de Datos Personales",
+    "jurisdiction": "Ecuador",
+    "publishedAt": null,
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://spdp.gob.ec/resolucion6/",
+    "topics": [
+      "datos personales",
+      "contratos",
+      "encargados",
+      "proveedores"
+    ],
+    "summary": "Establece obligaciones de cláusulas de protección de datos en contratos.",
+    "issuedAt": "2025-04-30",
+    "sourceKind": "norma",
+    "documentUrl": "https://spdp.gob.ec/wp-content/uploads/2025/05/06.01.01-SPDP-SPD-2025-0006-R-clausulas-para-contratos-en-Ecuador-signed.pdf",
+    "history": [
+      {
+        "type": "resolucion",
+        "date": "2025-04-30",
+        "title": "Expedición y firma de la resolución",
+        "sourceUrl": "https://spdp.gob.ec/wp-content/uploads/2025/05/06.01.01-SPDP-SPD-2025-0006-R-clausulas-para-contratos-en-Ecuador-signed.pdf",
+        "notes": "Fecha de firma; no equivale a fecha de publicación en el Registro Oficial."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal. Se corrigió la fecha de firma a 2025-04-30; Anexo I es referencial, no una cláusula obligatoria literal."
+    },
+    "relatedSourceIds": [
+      "lopdp",
+      "reglamento-lopdp",
+      "spdp-transferencias-2025",
+      "spdp-transferencias-2026"
+    ],
+    "obligations": [
+      {
+        "id": "clausulas-datos",
+        "article": "Arts. 1, 2 y 3",
+        "sourceUrl": "https://spdp.gob.ec/wp-content/uploads/2025/05/06.01.01-SPDP-SPD-2025-0006-R-clausulas-para-contratos-en-Ecuador-signed.pdf",
+        "requirement": {
+          "es": "Incorporar cláusulas de protección de datos en las relaciones contractuales sujetas al reglamento. Los modelos del Anexo I son referenciales.",
+          "en": "Include data protection clauses in contractual relationships subject to the regulation. Annex I models are illustrative."
+        },
+        "appliesWhen": {
+          "es": "Contratos con tratamiento de datos dentro del ámbito del reglamento.",
+          "en": "Contracts involving data processing within the regulation’s scope."
+        },
+        "evidence": [
+          {
+            "es": "Contrato y cláusulas adaptadas a los roles y al tratamiento real.",
+            "en": "Contract and clauses adapted to the roles and actual processing."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-07"
+      }
+    ]
+  },
+  {
+    "id": "lotaip",
+    "title": "Ley Orgánica de Transparencia y Acceso a la Información Pública",
+    "type": "ley",
+    "issuer": "Asamblea Nacional del Ecuador",
+    "jurisdiction": "Ecuador",
+    "publishedAt": "2023-02-07",
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://www.registroficial.gob.ec/segundo-suplemento-al-registro-oficial-no-245/",
+    "topics": [
+      "información pública",
+      "gobierno digital",
+      "transparencia",
+      "sistemas públicos"
+    ],
+    "summary": "Aplica a la gestión, publicación y acceso a información pública.",
+    "sourceKind": "norma",
+    "officialGazette": {
+      "number": "245",
+      "edition": "Segundo Suplemento"
+    },
+    "history": [
+      {
+        "type": "publicacion",
+        "date": "2023-02-07",
+        "title": "Publicación de Ley Orgánica de Transparencia y Acceso a la Información Pública",
+        "officialGazette": "Segundo Suplemento 245",
+        "sourceUrl": "https://www.registroficial.gob.ec/segundo-suplemento-al-registro-oficial-no-245/",
+        "notes": "Evento documental de publicación; no constituye historial consolidado ni confirma vigencia actual."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal."
+    },
+    "relatedSourceIds": [],
+    "obligations": []
+  },
+  {
+    "id": "spdp-transferencias-2026",
+    "title": "Norma General de Transferencias o Comunicaciones Nacionales e Internacionales de Datos Personales",
+    "type": "resolución",
+    "issuer": "Superintendencia de Protección de Datos Personales",
+    "jurisdiction": "Ecuador",
+    "publishedAt": null,
+    "issuedAt": "2026-01-28",
+    "verifiedAt": "2026-09-07",
+    "status": "pendiente_verificacion",
+    "url": "https://spdp.gob.ec/wp-content/uploads/2026/01/04.01.01-SPSP-SPD-2026-0004-R-Norma-general-de-transferencias-signed.pdf",
+    "topics": [
+      "datos personales",
+      "transferencias internacionales",
+      "encargados"
+    ],
+    "summary": "Resolución SPDP-SPD-2026-0004-R. Regula procedimientos y requisitos de transferencias. Debe revisarse junto con la regulación de 2025; la fecha de publicación en Registro Oficial y la vigencia consolidada requieren confirmación.",
+    "sourceKind": "norma",
+    "documentUrl": "https://spdp.gob.ec/wp-content/uploads/2026/01/04.01.01-SPSP-SPD-2026-0004-R-Norma-general-de-transferencias-signed.pdf",
+    "history": [
+      {
+        "type": "resolucion",
+        "date": "2026-01-28",
+        "title": "Expedición y firma de la resolución",
+        "sourceUrl": "https://spdp.gob.ec/wp-content/uploads/2026/01/04.01.01-SPSP-SPD-2026-0004-R-Norma-general-de-transferencias-signed.pdf",
+        "notes": "Fecha de firma; no equivale a fecha de publicación en el Registro Oficial."
+      }
+    ],
+    "verification": {
+      "documentaryReviewedAt": "2026-09-07",
+      "documentaryStatus": "parcial",
+      "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal."
+    },
+    "relatedSourceIds": [
+      "lopdp",
+      "reglamento-lopdp",
+      "spdp-transferencias-2025",
+      "spdp-clausulas-contratos-2025"
+    ],
+    "obligations": []
+  }
 ]

@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises';
+import { lstat, readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import type { AuditCategory, AuditOptions, AuditStatus } from './audit.js';
 
@@ -48,6 +48,8 @@ export async function loadAuditConfig(repositoryPath: string): Promise<LoadedAud
 
   let raw: string;
   try {
+    const info = await lstat(configPath);
+    if (!info.isFile() || info.isSymbolicLink() || info.size > 65536) throw new Error('.mcp-audit.json debe ser un archivo regular de hasta 64 KiB, sin enlaces simbólicos.');
     raw = await readFile(configPath, 'utf8');
   } catch (error) {
     if (isMissingFileError(error)) {
