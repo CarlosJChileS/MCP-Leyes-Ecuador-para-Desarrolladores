@@ -19,15 +19,15 @@ jobs:
         if: matrix.manager == 'bun'
         with:
           bun-version: latest
+      - uses: pnpm/action-setup@v4
+        if: matrix.manager == 'pnpm'
+        with:
+          version: 11
       - uses: actions/setup-node@v4
         if: matrix.manager != 'bun'
         with:
           node-version: 20
           cache: ${{ matrix.manager }}
-      - uses: pnpm/action-setup@v4
-        if: matrix.manager == 'pnpm'
-        with:
-          version: 9
       - name: Instalar dependencias
         shell: bash
         run: |
