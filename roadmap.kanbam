@@ -1,0 +1,278 @@
+# Roadmap profesional — Leyes Ecuador Dev MCP
+
+> Objetivo: auditor de leyes, gobernanza de datos y seguridad técnica para desarrolladores que trabajan con datos ecuatorianos.
+>
+> Alcance: complementar EcuDataMCP. EcuDataMCP descubre y consulta datos; este MCP evalúa su uso legal, gobernanza y seguridad.
+
+## Cómo usar este tablero
+
+- Mover una tarjeta a `Hecho` solo cuando exista evidencia verificable.
+- Las tareas jurídicas requieren revisión humana de un abogado o especialista competente.
+- Las tareas de seguridad deben probarse únicamente sobre sistemas propios o con autorización explícita.
+- Cada acción del informe consolidado debe conservar responsable, fecha, evidencia y criterio de cierre.
+
+## Pendiente — publicación y distribución
+
+### Publicar la versión corregida en npm
+
+- Prioridad: crítica
+- Responsable: mantenedor del paquete
+- Acción:
+  1. Ejecutar `npm publish --access public` desde la versión `1.0.3`.
+  2. Confirmar autenticación y 2FA si npm lo solicita.
+  3. Verificar con `npm view leyes-ecuador-dev-mcp version`.
+  4. Probar instalación limpia con `npm install leyes-ecuador-dev-mcp`.
+- Evidencia: versión `1.0.3` visible en npm y prueba de instalación limpia aprobada.
+
+## Pendiente — catálogo jurídico ecuatoriano
+
+### Ampliar el catálogo normativo
+
+- Prioridad: crítica
+- Responsable: especialista jurídico y mantenedor
+- Acción:
+  - Incorporar leyes, códigos, reglamentos, resoluciones y ordenanzas relevantes.
+  - Cubrir privacidad, datos abiertos, transparencia, gobierno digital, seguridad, ciberseguridad, IA, fintech, salud, educación, telecomunicaciones, comercio electrónico, tributación, trabajo, consumo, propiedad intelectual y contratación pública.
+  - Registrar fuentes del Registro Oficial y entidades competentes.
+- Evidencia: ficha normativa trazable por cada fuente incorporada.
+
+### Registrar reformas, derogaciones y textos consolidados
+
+- Prioridad: crítica
+- Responsable: abogado revisor
+- Acción:
+  - Registrar norma original, reformas, sustituciones y derogaciones.
+  - Relacionar normas mediante `relatedSourceIds`.
+  - Conservar texto consolidado y fecha de corte.
+  - Separar accesibilidad técnica de vigencia jurídica.
+- Evidencia: historial completo, fuente oficial y fecha de verificación.
+
+### Añadir citas jurídicas precisas
+
+- Prioridad: alta
+- Responsable: abogado revisor
+- Acción:
+  - Añadir artículo, disposición, número de Registro Oficial, suplemento, fecha y página.
+  - Vincular cada obligación con su fuente exacta.
+  - Registrar URL oficial y copia trazable cuando sea posible.
+- Evidencia: citas reproducibles por norma y obligación.
+
+### Completar revisión jurídica humana
+
+- Prioridad: crítica
+- Responsable: abogado o especialista competente
+- Acción:
+  - Revisar manualmente cada norma.
+  - Confirmar vigencia, alcance, sujetos obligados y aplicabilidad.
+  - Completar `legalReviewedAt` y `reviewer`.
+  - Mantener como `pendiente_verificacion` cualquier norma no confirmada.
+- Evidencia mínima:
+
+```json
+{
+  "legalReviewedAt": "YYYY-MM-DD",
+  "reviewer": "Nombre del profesional",
+  "reviewerRole": "Abogado especialista"
+}
+```
+
+## Pendiente — integración con EcuDataMCP
+
+### Crear evaluación de datasets ecuatorianos
+
+- Prioridad: alta
+- Responsable: mantenedor y especialista en datos
+- Acción:
+  - Recibir URL o identificador del dataset.
+  - Identificar institución publicadora y fuente oficial.
+  - Analizar campos, finalidad, licencia y restricciones de uso.
+  - Clasificar datos públicos, personales, sensibles, confidenciales o técnicos.
+  - Relacionar el dataset con normas y controles aplicables.
+- Herramienta sugerida: `evaluar_dataset_ecuador`.
+- Evidencia: evaluación con fuente, fecha de consulta, clasificación y limitaciones.
+
+### Definir flujo de interoperabilidad
+
+- Prioridad: alta
+- Responsable: arquitecto de integración
+- Acción:
+  1. EcuDataMCP descubre o consulta el dataset.
+  2. Este MCP evalúa gobernanza y obligaciones.
+  3. `auditar_repositorio` revisa el código consumidor.
+  4. `generar_informe_gobernanza` consolida todos los resultados.
+- Evidencia: prueba de integración con ambos servidores MCP.
+
+## Pendiente — auditoría técnica avanzada
+
+### Añadir auditoría dinámica autorizada
+
+- Prioridad: alta
+- Responsable: seguridad y líder técnico
+- Acción:
+  - Revisar endpoints HTTP, cabeceras, TLS, autenticación y autorización.
+  - Ejecutar pruebas DAST solo con autorización.
+  - Probar configuraciones Docker y servicios locales aislados.
+  - Registrar alcance, autorización, fecha y límites de la prueba.
+- Evidencia: reporte dinámico, autorización documentada y pruebas reproducibles.
+
+### Ampliar revisión de repositorio
+
+- Prioridad: alta
+- Responsable: ingeniería de seguridad
+- Acción:
+  - Mantener análisis de código, configuraciones, infraestructura y documentación.
+  - Añadir detección de más frameworks y lenguajes.
+  - Mejorar reducción de falsos positivos.
+  - Mostrar siempre archivos omitidos, límites y reglas ejecutadas.
+- Evidencia: pruebas de regresión, cobertura de lenguajes y reporte de límites.
+
+### Completar escaneo de dependencias
+
+- Prioridad: alta
+- Responsable: ingeniería de plataforma
+- Acción:
+  - Instalar y probar `npm audit`, `pip-audit`, `cargo audit`, herramientas .NET y `osv-scanner`.
+  - Registrar herramientas no disponibles como advertencias, nunca como ausencia de vulnerabilidades.
+  - Añadir actualización automática de lockfiles y validación de versiones corregidas.
+- Evidencia: ejecución por ecosistema, salida guardada y acción de remediación.
+
+## Pendiente — informe y seguimiento
+
+### Mejorar puntuación y semáforo
+
+- Prioridad: media
+- Responsable: producto y seguridad
+- Acción:
+  - Calcular riesgo por severidad, exposición, datos y criticidad.
+  - Mostrar semáforo general y por dominio.
+  - Separar resumen ejecutivo, técnico y jurídico.
+- Evidencia: fórmula documentada y casos de prueba.
+
+### Añadir plan temporal de remediación
+
+- Prioridad: alta
+- Responsable: líder del proyecto
+- Acción:
+  - Añadir fecha objetivo, responsable, estado y dependencia por acción `GOV-###`.
+  - Permitir estados `pendiente`, `en_progreso`, `bloqueada`, `cerrada` y `aceptada temporalmente`.
+  - Exigir evidencia antes de cerrar.
+- Evidencia: historial de acciones y comparación entre auditorías.
+
+### Persistir auditorías y evidencias
+
+- Prioridad: media
+- Responsable: mantenedor y responsable de datos
+- Acción:
+  - Guardar informes anteriores y checksum.
+  - Asociar evidencias, excepciones, aprobaciones y fechas límite.
+  - Comparar cambios entre versiones del repositorio y catálogo.
+- Evidencia: historial inmutable o versionado y mecanismo de recuperación.
+
+## Pendiente — seguridad del MCP
+
+### Preparar operación remota segura
+
+- Prioridad: crítica si se expone por red
+- Responsable: seguridad de plataforma
+- Acción:
+  - Añadir autenticación y autorización.
+  - Aplicar rate limiting.
+  - Aislar procesos y limitar permisos.
+  - Validar rutas y bloquear SSRF.
+  - Redactar secretos en logs y respuestas.
+  - Usar HTTPS y gestión segura de certificados.
+- Evidencia: pruebas de seguridad, configuración revisada y modelo de amenazas.
+
+### Firmar releases y publicar checksums
+
+- Prioridad: alta
+- Responsable: mantenedor de releases
+- Acción:
+  - Generar SHA-512 por paquete.
+  - Firmar artefactos y etiquetas.
+  - Publicar changelog y notas de migración.
+  - Verificar que el paquete publicado coincide con el commit y la etiqueta.
+- Evidencia: firma, checksum, etiqueta y tarball reproducibles.
+
+## Pendiente — CI/CD
+
+### Mantener matriz de compatibilidad
+
+- Prioridad: alta
+- Responsable: ingeniería de plataforma
+- Acción:
+  - Probar npm, pnpm y Bun en Ubuntu, Windows y macOS.
+  - Probar Node 20, 22 y 24.
+  - Instalar cada gestor antes de configurar su caché.
+  - Usar una versión de pnpm compatible con el Node probado.
+  - Probar instalación desde el tarball y desde npm.
+- Evidencia: workflows aprobados y logs de cada combinación.
+
+### Actualizar GitHub Actions
+
+- Prioridad: media
+- Responsable: mantenedor CI
+- Acción:
+  - Actualizar Actions cuando exista una versión estable compatible.
+  - Eliminar avisos de runtime obsoleto.
+  - Revisar permisos mínimos de cada workflow.
+- Evidencia: workflow sin errores y advertencias justificadas.
+
+## Pendiente — documentación
+
+### Documentar clientes MCP
+
+- Prioridad: media
+- Responsable: documentación
+- Acción:
+  - Añadir ejemplos para Claude Desktop, Cursor, VS Code, Claude Code, ChatGPT y Windsurf.
+  - Documentar stdio, HTTP, Docker, npm, pnpm y Bun.
+  - Explicar cómo guardar el PDF base64.
+  - Documentar integración con EcuDataMCP.
+- Evidencia: instrucciones probadas por una persona distinta del autor.
+
+### Documentar interpretación y límites
+
+- Prioridad: alta
+- Responsable: jurídico y documentación
+- Acción:
+  - Explicar diferencia entre accesibilidad, catalogación, revisión y vigencia.
+  - Indicar que el informe no es certificación ni asesoría legal.
+  - Documentar falsos positivos, falsos negativos y límites del análisis estático.
+- Evidencia: README, guía de uso y ejemplos actualizados.
+
+## En progreso
+
+- [x] Integrar cinco evaluaciones de gobernanza en un solo informe.
+- [x] Exportar JSON, Markdown, HTML A4 y PDF real.
+- [x] Añadir plan de remediación con acciones `GOV-###`.
+- [x] Integrar auditoría de repositorio y dependencias en el informe.
+- [x] Corregir arranque del paquete en macOS.
+- [x] Corregir orden de instalación de pnpm en CI.
+- [x] Usar pnpm compatible con Node 20 en CI.
+- [ ] Publicar `1.0.3` en npm.
+- [ ] Confirmar ejecución completa del workflow de gestores tras el último cambio.
+
+## Hecho
+
+- [x] Paquete renombrado a `leyes-ecuador-dev-mcp`.
+- [x] Repositorio renombrado y conectado a GitHub.
+- [x] Soporte npm, pnpm y Bun.
+- [x] Auditoría estática de seguridad.
+- [x] Herramientas de gobernanza de datos.
+- [x] Revisión automática preliminar del catálogo.
+- [x] Gates para `legalReviewedAt` y `reviewer`.
+- [x] Workflows de CI para Linux, Windows y macOS.
+
+## Definición de terminado
+
+El proyecto podrá considerarse listo para una primera versión profesional cuando:
+
+1. `npm view leyes-ecuador-dev-mcp version` muestre la versión publicada esperada.
+2. Los workflows de npm, pnpm y Bun pasen en Linux, Windows y macOS.
+3. El catálogo tenga fuentes oficiales y revisión jurídica trazable.
+4. El informe indique exactamente qué se revisó y qué quedó fuera.
+5. Cada brecha tenga solución, responsable, evidencia y criterio de cierre.
+6. La integración con EcuDataMCP tenga una prueba reproducible.
+7. Los cambios normativos y técnicos tengan historial versionado.
+

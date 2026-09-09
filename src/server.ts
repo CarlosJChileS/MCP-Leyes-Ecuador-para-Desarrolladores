@@ -16,6 +16,7 @@ import { renderAuditReportSarif } from './sarif.js';
 import { assessDataTransfer, evaluateDataGovernance, generateDataInventory, generateImpactAssessment, generateResponsibilityMatrix } from './governance.js';
 import { buildGovernanceReport, renderGovernanceReportHtml, renderGovernanceReportMarkdown, renderGovernanceReportPdf } from './governance-report.js';
 import { isMainModule } from './entrypoint.js';
+import { createGovernanceLifecycle } from './governance-lifecycle.js';
 
 const disclaimer = disclaimers.es;
 const input = (properties: Record<string, unknown>, required: string[] = []) => fromJsonSchema({ type: 'object', properties: properties as any, required, additionalProperties: false });
@@ -62,8 +63,8 @@ export function createServer(catalog: LegalCatalog, injected: { auditRepository?
   server.registerTool('generar_matriz_responsabilidades', { description: 'Genera una matriz inicial de responsables de gobernanza de datos.', inputSchema: governanceInput }, async (project: any) => text(generateResponsibilityMatrix(project)));
   server.registerTool('generar_informe_gobernanza', {
     description: 'Consolida las cinco evaluaciones y explica cada brecha con riesgo, prioridad, responsable, pasos de solución, evidencia y criterio de cierre; exporta JSON, Markdown, HTML o PDF.',
-    inputSchema: input({ ...governanceProperties, repositoryPath: { type: 'string', minLength: 1, maxLength: 4096 }, maxDepth: { type: 'integer', minimum: 1, maximum: 12 }, maxFiles: { type: 'integer', minimum: 1, maximum: 2000 }, maxFileSizeBytes: { type: 'integer', minimum: 1024, maximum: 1048576 }, dependencyScan: { type: 'boolean' }, timeout: { type: 'integer', minimum: 1000, maximum: 120000 }, format: { type: 'string', enum: ['json', 'markdown', 'html', 'pdf'] } }, ['name']),
-  }, async ({ format = 'json', repositoryPath, maxDepth, maxFiles, maxFileSizeBytes, dependencyScan = false, timeout, ...project }: any) => {
+    inputSchema: input({ ...governanceProperties, repositoryPath: { type: 'string', minLength: 1, maxLength: 4096 }, maxDepth: { type: 'integer', minimum: 1, maximum: 12 }, maxFiles: { type: 'integer', minimum: 1, maximum: 2000 }, maxFileSizeBytes: { type: 'integer', minimum: 1024, maximum: 1048576 }, dependencyScan: { type: 'boolean' }, timeout: { type: 'integer', minimum: 1000, maximum: 120000 }, persist: { type: 'boolean' }, lifecycleActor: { type: 'string', minLength: 1, maxLength: 200 }, format: { type: 'string', enum: ['json', 'markdown', 'html', 'pdf'] } }, ['name']),
+  }, async ({ format = 'json', repositoryPath, maxDepth, maxFiles, maxFileSizeBytes, dependencyScan = false, timeout, persist = false, lifecycleActor = 'sistema', ...project }: any) => {
     let technicalAudit: AuditReport | undefined;
     let dependencyAudit: DependencyScanReport | undefined;
     if (repositoryPath) {
@@ -76,6 +77,11 @@ export function createServer(catalog: LegalCatalog, injected: { auditRepository?
       }
     }
     const report = buildGovernanceReport(project, catalog.all(), { technical: technicalAudit, dependencies: dependencyAudit });
+    if (persist) {
+      if (!repositoryPath) return { ...text({ error: 'persist requiere repositoryPath para guardar el ciclo en el repositorio.', disclaimer }), isError: true };
+      const lifecycle = await createGovernanceLifecycle(repositoryPath).recordAudit(report, lifecycleActor);
+      (report as any).lifecycle = { auditId: lifecycle.auditId, storage: '.mcp-governance/lifecycle.json', persisted: true };
+    }
     if (format === 'markdown') return { content: [{ type: 'text' as const, text: renderGovernanceReportMarkdown(report) }] };
     if (format === 'html') return { content: [{ type: 'text' as const, text: renderGovernanceReportHtml(report) }] };
     if (format === 'pdf') {
@@ -84,6 +90,22 @@ export function createServer(catalog: LegalCatalog, injected: { auditRepository?
       return text({ fileName: `informe-gobernanza-${slug}.pdf`, mimeType: 'application/pdf', encoding: 'base64', data: Buffer.from(bytes).toString('base64') });
     }
     return text(report);
+  });
+  server.registerTool('gestionar_ciclo_gobernanza', {
+    description: 'Administra auditorías, acciones, fechas límite, responsables, evidencias, excepciones aprobadas e historial persistido en .mcp-governance.',
+    inputSchema: input({ repositoryPath: { type: 'string', minLength: 1, maxLength: 4096 }, operation: { type: 'string', enum: ['listar', 'actualizar_accion', 'agregar_evidencia', 'agregar_excepcion'] }, actionId: { type: 'string', maxLength: 100 }, status: { type: 'string', enum: ['pendiente', 'en_progreso', 'cerrada', 'aceptada_temporalmente'] }, owner: { type: 'string', maxLength: 200 }, dueDate: { type: 'string', maxLength: 30 }, description: { type: 'string', maxLength: 1000 }, uri: { type: 'string', maxLength: 4096 }, reason: { type: 'string', maxLength: 2000 }, approvedBy: { type: 'string', maxLength: 200 }, expiresAt: { type: 'string', maxLength: 30 }, actor: { type: 'string', minLength: 1, maxLength: 200 } }, ['repositoryPath', 'operation', 'actor']),
+  }, async ({ repositoryPath, operation, actionId, status, owner, dueDate, description, uri, reason, approvedBy, expiresAt, actor }: any) => {
+    try {
+      const lifecycle = createGovernanceLifecycle(repositoryPath);
+      if (operation === 'listar') return text(await lifecycle.load());
+      if (!actionId) return { ...text({ error: 'actionId es obligatorio para esta operación.', disclaimer }), isError: true };
+      if (operation === 'actualizar_accion') return text(await lifecycle.updateAction(actionId, Object.fromEntries(Object.entries({ status, owner, dueDate }).filter(([, value]) => value !== undefined)), actor));
+      if (operation === 'agregar_evidencia') return text(await lifecycle.addEvidence(actionId, { description, uri }, actor));
+      if (operation === 'agregar_excepcion') return text(await lifecycle.addException(actionId, { reason, approvedBy, expiresAt }, actor));
+      return { ...text({ error: `Operación no soportada: ${operation}`, disclaimer }), isError: true };
+    } catch (error) {
+      return { ...text({ error: error instanceof Error ? error.message : 'No se pudo actualizar el ciclo de gobernanza.', disclaimer }), isError: true };
+    }
   });
   server.registerTool('auditar_repositorio', {
     description: 'Ejecuta una auditoría estática local y de solo lectura sobre un repositorio con límites seguros.',

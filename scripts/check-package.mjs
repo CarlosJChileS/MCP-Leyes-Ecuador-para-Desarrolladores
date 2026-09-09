@@ -23,7 +23,7 @@ const client = new Client({ name: 'clean-package-install', version: '1.0.0' });
 try {
   await client.connect(new StdioClientTransport({ command: process.execPath, args: [join(installed, 'dist/server.js')], cwd: tmpdir() }));
   const tools = await client.listTools();
-  assert.equal(tools.tools.length, 12);
+  assert.equal(tools.tools.length, 13);
   const resource = await client.readResource({ uri: 'legal://normativa/lopdp' });
   assert.equal(JSON.parse(resource.contents[0].text).id, 'lopdp');
   const obligations = await client.callTool({ name: 'consultar_obligacion', arguments: { id: 'lopdp' } });

@@ -10,7 +10,7 @@ it('interoperates with the official MCP client SDK', async () => {
   try {
     await client.connect(transport);
     const tools = await client.listTools();
-    expect(tools.tools).toHaveLength(12);
+    expect(tools.tools).toHaveLength(13);
     const result = await client.callTool({ name: 'consultar_obligacion', arguments: { id: 'lopdp', language: 'en' } });
     expect(result.isError).not.toBe(true);
     const resource = await client.readResource({ uri: 'legal://normativa/lopdp' });

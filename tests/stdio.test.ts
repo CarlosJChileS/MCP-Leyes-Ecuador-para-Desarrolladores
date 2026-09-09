@@ -58,7 +58,7 @@ it('serves tools, resource templates and prompts over real stdio from another wo
     expect(initialized.serverInfo.name).toBe('leyes-ecuador-dev-mcp');
     child.stdin.write(JSON.stringify({ jsonrpc: '2.0', method: 'notifications/initialized' }) + '\n');
     const tools = await request('tools/list');
-    expect(tools.tools).toHaveLength(12);
+    expect(tools.tools).toHaveLength(13);
     expect(tools.tools.find((tool: any) => tool.name === 'auditar_repositorio').inputSchema.properties.language.enum).toEqual(['es', 'en']);
     const call = (name: string, args: object) => request('tools/call', { name, arguments: args });
     const search = await call('buscar_normativa', { query: 'lopdp', language: 'en' });

@@ -32,13 +32,14 @@ Las fuentes de descubrimiento son los índices oficiales de la [Asamblea Naciona
 - `evaluar_evaluacion_impacto`: preclasifica riesgos y estructura la evaluación de impacto.
 - `generar_matriz_responsabilidades`: propone funciones y asignaciones pendientes.
 - `generar_informe_gobernanza`: reúne las cinco herramientas anteriores en JSON, Markdown, HTML o PDF.
+- `gestionar_ciclo_gobernanza`: guarda auditorías, acciones, evidencias, excepciones, responsables, fechas e historial.
 - `auditar_repositorio`: escaneo estático local de solo lectura.
 
 Recursos: `legal://normativa` y `legal://normativa/{id}`. Prompts: `revision-privacidad` y `revision-gobernanza-datos`.
 
 ## Idiomas
 
-Las doce herramientas aceptan `language: "es"` (predeterminado) o `language: "en"` cuando aplica. Las evaluaciones, checklists y descargos se generan en el idioma seleccionado. En la auditoría se traducen el resumen, los encabezados de reportes, las explicaciones y recomendaciones de las reglas y los títulos y descripciones de los controles.
+Las trece herramientas aceptan `language: "es"` (predeterminado) o `language: "en"` cuando aplica. Las evaluaciones, checklists y descargos se generan en el idioma seleccionado. En la auditoría se traducen el resumen, los encabezados de reportes, las explicaciones y recomendaciones de las reglas y los títulos y descripciones de los controles.
 
 ## Informe consolidado de gobernanza
 
@@ -77,7 +78,9 @@ Si se proporciona `repositoryPath`, la misma llamada ejecuta la auditoría, inco
 }
 ```
 
-`format` admite `json`, `markdown`, `html` y `pdf`. HTML incluye estilos A4 para imprimir. Como MCP por `stdio` transporta texto, PDF devuelve un objeto con `fileName`, `mimeType`, `encoding: "base64"` y `data`; el cliente debe decodificar `data` para guardar el archivo indicado. El informe es una evaluación preliminar y no una certificación legal.
+`format` admite `json`, `markdown`, `html` y `pdf`. HTML incluye estilos A4 para imprimir. Con `persist: true` y `lifecycleActor`, el informe se guarda en `.mcp-governance/audits/` y actualiza `.mcp-governance/lifecycle.json`. Como MCP por `stdio` transporta texto, PDF devuelve un objeto con `fileName`, `mimeType`, `encoding: "base64"` y `data`; el cliente debe decodificar `data` para guardar el archivo indicado. El informe es una evaluación preliminar y no una certificación legal.
+
+`gestionar_ciclo_gobernanza` permite `listar`, `actualizar_accion`, `agregar_evidencia` y `agregar_excepcion`. Conserva acciones abiertas y cerradas, responsables, fechas límite, evidencias, excepciones con expiración y un historial de actor, fecha y operación. Una excepción cambia la acción a `aceptada_temporalmente`.
 
 Los títulos y textos normativos conservan el idioma de la fuente. Los identificadores, categorías y estados son valores estables del contrato y no se traducen; por ejemplo, `transporte_inseguro` y `pendiente`. Las evidencias, rutas, avisos de dependencias y detalles de errores conservan su contenido original. Los recursos jurídicos y el prompt `revision-privacidad` están en español.
 
@@ -200,7 +203,7 @@ El catálogo está en `data/normativa.json` y se resuelve relativo al servidor c
 
 Reemplace la ruta de ejemplo por la ruta absoluta de su copia. Conserve `dist/` y `data/` dentro de la carpeta del proyecto; el cliente puede iniciar el proceso desde otro directorio. Si el cliente no encuentra `node`, use la ruta absoluta del ejecutable en `command`. Reinicie o reconecte el cliente después de recompilar.
 
-Al conectarse deben aparecer doce herramientas, el recurso `legal://normativa`, la plantilla `legal://normativa/{id}` y los dos prompts. Puede pedir al asistente: «Genera el informe consolidado de gobernanza de API ciudadana en PDF» o «Audita el repositorio C:/repos/mi-proyecto en español, sin escanear dependencias».
+Al conectarse deben aparecer trece herramientas, el recurso `legal://normativa`, la plantilla `legal://normativa/{id}` y los dos prompts. Puede pedir al asistente: «Genera el informe consolidado de gobernanza de API ciudadana en PDF» o «Audita el repositorio C:/repos/mi-proyecto en español, sin escanear dependencias».
 
 Para diagnosticar el arranque, ejecute `node dist/server.js`. Es normal que espere sin mostrar texto: recibe mensajes MCP por la entrada estándar y reserva la salida estándar para el protocolo. Los errores de inicio se escriben en la salida de errores. `npm run dev` permite trabajar con el código TypeScript; vuelva a compilar antes de usar la configuración de producción del cliente.
 
@@ -253,7 +256,7 @@ npm run build
 npm run catalog:verify
 ```
 
-La suite valida catálogo, búsquedas, obligaciones, gobernanza, auditoría, detección multilenguaje, reportes y límites de seguridad. La prueba de integración inicia el servidor compilado desde un directorio temporal, negocia el protocolo MCP, valida las doce herramientas, lee el índice y una ficha jurídica, obtiene los prompts y comprueba formatos y errores.
+La suite valida catálogo, búsquedas, obligaciones, gobernanza, auditoría, detección multilenguaje, reportes y límites de seguridad. La prueba de integración inicia el servidor compilado desde un directorio temporal, negocia el protocolo MCP, valida las trece herramientas, lee el índice y una ficha jurídica, obtiene los prompts y comprueba formatos y errores.
 
 ## Responsabilidad
 
