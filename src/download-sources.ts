@@ -53,7 +53,7 @@ export async function downloadCatalogSources(root = process.cwd()): Promise<{ ma
     const item = queue[index];
     const checkedAt = new Date().toISOString();
     try {
-      const response = await fetch(item.url, { redirect: 'follow', signal: AbortSignal.timeout(20000), headers: { 'user-agent': 'leyes-ecuador-dev-mcp-downloader/1.0' } });
+      const response = await fetch(item.url, { redirect: 'follow', signal: AbortSignal.timeout(20000), headers: { 'user-agent': 'eculegaldev-downloader/1.0' } });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const contentType = response.headers.get('content-type') ?? undefined;
       const body = Buffer.from(await response.arrayBuffer());

@@ -39,7 +39,7 @@ El producto es exclusivamente un servidor MCP local por `stdio`. Se utiliza desd
 
 ## Estado actual
 
-- Código actualizado en GitHub: [`4d0da52`](https://github.com/CarlosJChileS/leyes-ecuador-dev-mcp/commit/4d0da52).
+- Código actualizado en GitHub: [`4d0da52`](https://github.com/CarlosJChileS/eculegaldev/commit/4d0da52).
 - Versión local preparada: `1.0.3`.
 - Versión actualmente publicada en npm: `1.0.2`.
 - La publicación de `1.0.3` requiere autenticarse con `npm login` y ejecutar `npm publish --access public`.
@@ -56,7 +56,7 @@ Requiere Node.js 20 o superior. Para clientes MCP que admiten `npx`, puede usar 
   "mcpServers": {
     "leyes-ecuador-dev": {
       "command": "npx",
-      "args": ["-y", "leyes-ecuador-dev-mcp"]
+      "args": ["-y", "eculegaldev"]
     }
   }
 }
@@ -65,8 +65,8 @@ Requiere Node.js 20 o superior. Para clientes MCP que admiten `npx`, puede usar 
 Si `npx` no está disponible o desea controlar exactamente la versión, instale el paquete y use el ejecutable:
 
 ```bash
-npm install -g leyes-ecuador-dev-mcp
-leyes-ecuador-dev-mcp
+npm install -g eculegaldev
+eculegaldev
 ```
 
 En Windows, si el cliente no encuentra `npx` o `node`, configure la ruta absoluta al ejecutable, por ejemplo `C:/Program Files/nodejs/npx.cmd` o `C:/Program Files/nodejs/node.exe`.
@@ -76,8 +76,8 @@ En Windows, si el cliente no encuentra `npx` o `node`, configure la ruta absolut
 Úsela para desarrollar, modificar el catálogo o probar cambios que todavía no están publicados en npm:
 
 ```bash
-git clone https://github.com/CarlosJChileS/leyes-ecuador-dev-mcp.git
-cd leyes-ecuador-dev-mcp
+git clone https://github.com/CarlosJChileS/eculegaldev.git
+cd eculegaldev
 npm ci
 npm run build
 npm run check
@@ -90,7 +90,7 @@ El cliente MCP debe apuntar a `dist/server.js`:
   "mcpServers": {
     "leyes-ecuador-dev": {
       "command": "node",
-      "args": ["C:/ruta/leyes-ecuador-dev-mcp/dist/server.js"]
+      "args": ["C:/ruta/eculegaldev/dist/server.js"]
     }
   }
 }
@@ -111,8 +111,8 @@ bun run check
 Instale Node.js 20 o superior desde [nodejs.org](https://nodejs.org/) y abra PowerShell:
 
 ```powershell
-git clone https://github.com/CarlosJChileS/leyes-ecuador-dev-mcp.git
-Set-Location leyes-ecuador-dev-mcp
+git clone https://github.com/CarlosJChileS/eculegaldev.git
+Set-Location eculegaldev
 npm ci
 npm run check
 ```
@@ -137,7 +137,7 @@ Ejemplo de configuración MCP en Windows:
   "mcpServers": {
     "leyes-ecuador-dev": {
       "command": "C:/Program Files/nodejs/node.exe",
-      "args": ["C:/ruta/leyes-ecuador-dev-mcp/dist/server.js"]
+      "args": ["C:/ruta/eculegaldev/dist/server.js"]
     }
   }
 }
@@ -151,8 +151,8 @@ Con Homebrew, instale Node.js y Git:
 
 ```bash
 brew install node git
-git clone https://github.com/CarlosJChileS/leyes-ecuador-dev-mcp.git
-cd leyes-ecuador-dev-mcp
+git clone https://github.com/CarlosJChileS/eculegaldev.git
+cd eculegaldev
 npm ci
 npm run check
 ```
@@ -177,7 +177,7 @@ Ejemplo de configuración MCP en macOS:
   "mcpServers": {
     "leyes-ecuador-dev": {
       "command": "/opt/homebrew/bin/node",
-      "args": ["/Users/tu-usuario/leyes-ecuador-dev-mcp/dist/server.js"]
+      "args": ["/Users/tu-usuario/eculegaldev/dist/server.js"]
     }
   }
 }
@@ -194,8 +194,8 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 source ~/.bashrc
 nvm install 20
 nvm use 20
-git clone https://github.com/CarlosJChileS/leyes-ecuador-dev-mcp.git
-cd leyes-ecuador-dev-mcp
+git clone https://github.com/CarlosJChileS/eculegaldev.git
+cd eculegaldev
 npm ci
 npm run check
 ```
@@ -220,7 +220,7 @@ Ejemplo de configuración MCP en Linux:
   "mcpServers": {
     "leyes-ecuador-dev": {
       "command": "/usr/bin/node",
-      "args": ["/home/tu-usuario/leyes-ecuador-dev-mcp/dist/server.js"]
+      "args": ["/home/tu-usuario/eculegaldev/dist/server.js"]
     }
   }
 }
@@ -247,7 +247,7 @@ La configuración exacta depende del cliente. En todos los casos se debe registr
 - **Claude Desktop:** agregue la entrada en el archivo de configuración MCP de Claude Desktop.
 - **Cursor:** agregue el servidor en la sección MCP de Cursor.
 - **VS Code:** registre el servidor en la configuración MCP de la extensión compatible.
-- **Otros clientes:** use el mismo comando `node dist/server.js` o `npx -y leyes-ecuador-dev-mcp` siempre que soporten transporte MCP por `stdio`.
+- **Otros clientes:** use el mismo comando `node dist/server.js` o `npx -y eculegaldev` siempre que soporten transporte MCP por `stdio`.
 
 El archivo [docs/clients.md](docs/clients.md) contiene ejemplos adicionales. Las rutas deben ser absolutas y usar la sintaxis de rutas aceptada por el sistema operativo.
 

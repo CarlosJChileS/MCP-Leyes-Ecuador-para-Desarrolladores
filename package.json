@@ -1,15 +1,15 @@
 {
-  "name": "leyes-ecuador-dev-mcp",
-  "version": "1.0.3",
+  "name": "eculegaldev",
+  "version": "1.0.0",
   "description": "MCP de gobernanza de datos y leyes tecnológicas del Ecuador para desarrolladores",
   "license": "MIT",
   "author": "Carlos Chile",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CarlosJChileS/leyes-ecuador-dev-mcp.git"
+    "url": "git+https://github.com/CarlosJChileS/eculegaldev.git"
   },
   "bin": {
-    "leyes-ecuador-dev-mcp": "dist/server.js"
+    "eculegaldev": "dist/server.js"
   },
   "files": [
     "dist",

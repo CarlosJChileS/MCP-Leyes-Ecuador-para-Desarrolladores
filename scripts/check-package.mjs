@@ -18,7 +18,7 @@ npm(['install', '--prefix', temp, '--ignore-scripts', '--omit=dev', '--no-audit'
 const pkg = JSON.parse(readFileSync(resolve('package.json'), 'utf8'));
 const installed = join(temp, 'node_modules', pkg.name);
 const installedPackage = JSON.parse(readFileSync(join(installed, 'package.json'), 'utf8'));
-assert.equal(installedPackage.bin['leyes-ecuador-dev-mcp'], 'dist/server.js');
+assert.equal(installedPackage.bin.eculegaldev, 'dist/server.js');
 const client = new Client({ name: 'clean-package-install', version: '1.0.0' });
 try {
   await client.connect(new StdioClientTransport({ command: process.execPath, args: [join(installed, 'dist/server.js')], cwd: tmpdir() }));

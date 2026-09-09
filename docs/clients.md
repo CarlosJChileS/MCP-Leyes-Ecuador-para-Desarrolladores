@@ -7,7 +7,7 @@
   "mcpServers": {
     "leyes-ecuador": {
       "command": "node",
-      "args": ["C:/ruta/leyes-ecuador-dev-mcp/dist/server.js"]
+      "args": ["C:/ruta/eculegaldev/dist/server.js"]
     }
   }
 }
@@ -27,7 +27,7 @@ En `.vscode/mcp.json`:
     "leyes-ecuador": {
       "type": "stdio",
       "command": "node",
-      "args": ["C:/ruta/leyes-ecuador-dev-mcp/dist/server.js"]
+      "args": ["C:/ruta/eculegaldev/dist/server.js"]
     }
   }
 }

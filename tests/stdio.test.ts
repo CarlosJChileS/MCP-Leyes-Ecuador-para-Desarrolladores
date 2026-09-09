@@ -55,7 +55,7 @@ it('serves tools, resource templates and prompts over real stdio from another wo
     const initialized = await request('initialize', {
       protocolVersion: '2025-11-25', capabilities: {}, clientInfo: { name: 'integration-test', version: '1.0.0' },
     });
-    expect(initialized.serverInfo.name).toBe('leyes-ecuador-dev-mcp');
+    expect(initialized.serverInfo.name).toBe('eculegaldev');
     child.stdin.write(JSON.stringify({ jsonrpc: '2.0', method: 'notifications/initialized' }) + '\n');
     const tools = await request('tools/list');
     expect(tools.tools).toHaveLength(13);

@@ -346,6 +346,6 @@ export async function renderGovernanceReportPdf(report: GovernanceReport): Promi
   }
   pdf.setTitle(`Informe de gobernanza de datos: ${report.executiveSummary.project}`);
   pdf.setSubject('Evaluación consolidada de gobernanza de datos y leyes tecnológicas de Ecuador');
-  pdf.setCreator('leyes-ecuador-dev-mcp');
+  pdf.setCreator('eculegaldev');
   return pdf.save();
 }

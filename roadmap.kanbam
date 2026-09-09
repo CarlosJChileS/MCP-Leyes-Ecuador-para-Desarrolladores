@@ -20,8 +20,8 @@
 - Acción:
   1. Ejecutar `npm publish --access public` desde la versión `1.0.3`.
   2. Confirmar autenticación y 2FA si npm lo solicita.
-  3. Verificar con `npm view leyes-ecuador-dev-mcp version`.
-  4. Probar instalación limpia con `npm install leyes-ecuador-dev-mcp`.
+  3. Verificar con `npm view eculegaldev version`.
+  4. Probar instalación limpia con `npm install eculegaldev`.
 - Evidencia: versión `1.0.3` visible en npm y prueba de instalación limpia aprobada.
 
 ## Pendiente — catálogo jurídico ecuatoriano
@@ -255,7 +255,7 @@
 
 ## Hecho
 
-- [x] Paquete renombrado a `leyes-ecuador-dev-mcp`.
+- [x] Paquete renombrado a `eculegaldev`.
 - [x] Repositorio renombrado y conectado a GitHub.
 - [x] Soporte npm, pnpm y Bun.
 - [x] Auditoría estática de seguridad.
@@ -268,7 +268,7 @@
 
 El proyecto podrá considerarse listo para una primera versión profesional cuando:
 
-1. `npm view leyes-ecuador-dev-mcp version` muestre la versión publicada esperada.
+1. `npm view eculegaldev version` muestre la versión publicada esperada.
 2. Los workflows de npm, pnpm y Bun pasen en Linux, Windows y macOS.
 3. El catálogo tenga fuentes oficiales y revisión jurídica trazable.
 4. El informe indique exactamente qué se revisó y qué quedó fuera.

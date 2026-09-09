@@ -2,7 +2,7 @@
 
 **Última actualización:** 9 de septiembre de 2026
 
-Esta política describe el funcionamiento de `leyes-ecuador-dev-mcp`, un servidor MCP local para auditoría técnica, gobernanza de datos y consulta de normativa tecnológica ecuatoriana.
+Esta política describe el funcionamiento de `eculegaldev`, un servidor MCP local para auditoría técnica, gobernanza de datos y consulta de normativa tecnológica ecuatoriana.
 
 ## 1. Responsable y alcance
 
