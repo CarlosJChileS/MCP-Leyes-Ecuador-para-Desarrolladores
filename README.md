@@ -532,3 +532,11 @@ La suite valida catálogo, búsquedas, obligaciones, gobernanza, auditoría, det
 ## Responsabilidad
 
 Las normas enlazadas pertenecen a sus fuentes oficiales. Este proyecto no sustituye la revisión legal, técnica, contractual ni de seguridad necesaria para operar un sistema en producción.
+
+## Privacidad y uso responsable
+
+El servidor procesa localmente el repositorio y los parámetros que el usuario envía. No mantiene telemetría propia ni envía el código a un modelo desde el servidor. El cliente MCP y sus proveedores pueden aplicar políticas independientes al contenido de las respuestas. Las verificaciones, descargas de fuentes y escáneres de dependencias pueden conectarse a internet.
+
+El servidor no guarda informes por defecto. Cuando se activa `persist: true`, las auditorías, evidencias, responsables, fechas, excepciones e historial se almacenan en `.mcp-governance/` bajo el control del usuario. Revise los reportes antes de compartirlos y no incluya secretos, datos personales o repositorios privados sin autorización. Consulte la [Política de privacidad](PRIVACY.md) y [Seguridad](SECURITY.md).
+
+Esta documentación no constituye una política corporativa, asesoría legal ni certificación de cumplimiento. Cada organización debe definir su responsable, base jurídica, plazos de conservación, controles de acceso y procedimiento para atender derechos de titulares conforme a su tratamiento real.
