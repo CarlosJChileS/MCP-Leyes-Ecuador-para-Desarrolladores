@@ -5,10 +5,20 @@ import type { LegalSource } from './domain.js';
 import { LegalCatalog } from './catalog.js';
 
 export type DownloadCandidate = Pick<LegalSource, 'id' | 'title' | 'url'> & { documentUrl?: string };
-export type DownloadResult = { id: string; url: string; fileName: string; status: 'descargado' | 'inaccesible' | 'pendiente_verificacion'; checkedAt: string; httpStatus?: number; contentType?: string; bytes?: number; sha256?: string; error?: string };
+export type DownloadKind = 'documento_normativo' | 'norma_html' | 'ficha_oficial' | 'indice_normativo' | 'portal_institucional';
+export type DownloadResult = { id: string; url: string; fileName: string; kind?: DownloadKind; status: 'descargado' | 'inaccesible' | 'pendiente_verificacion'; checkedAt: string; httpStatus?: number; contentType?: string; bytes?: number; sha256?: string; error?: string };
 
 const official = (url: string) => { const parsed = new URL(url); return parsed.protocol === 'https:' && (parsed.hostname === 'gob.ec' || parsed.hostname.endsWith('.gob.ec')); };
 const safeName = (id: string, url: string) => `${id}${extname(new URL(url).pathname).toLowerCase() || '.html'}`;
+
+export function classifyDownloadedContent(contentType: string | undefined, html: string): DownloadKind {
+  if (!contentType?.toLowerCase().includes('html')) return 'documento_normativo';
+  const title = (html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] ?? '').replace(/\s+/g, ' ').trim().toLowerCase();
+  if (/ministerio|superintendencia|junta de política|servicio de rentas/.test(title)) return 'portal_institucional';
+  if (/leyes aprobadas|registro oficial \|/.test(title)) return 'indice_normativo';
+  if (/(ley|código|reglamento|resolución|decreto).*(art[íi]culo|registro oficial)/i.test(html) || /reglamento|ley orgánica|código/.test(title)) return 'norma_html';
+  return 'ficha_oficial';
+}
 
 export function extractDocumentLinks(html: string, baseUrl: string): string[] {
   const links = new Set<string>();
@@ -51,7 +61,7 @@ export async function downloadCatalogSources(root = process.cwd()): Promise<{ ma
       const sha256 = createHash('sha256').update(body).digest('hex');
       const fileName = item.fileName.replace(/[^a-zA-Z0-9._-]/g, '-');
       await writeFile(resolve(directory, fileName), body);
-      results.push({ id: item.id, url: item.url, fileName, status: 'descargado', checkedAt, httpStatus: response.status, contentType, bytes: body.byteLength, sha256 });
+      results.push({ id: item.id, url: item.url, fileName, kind: classifyDownloadedContent(contentType, contentType?.includes('html') ? body.toString('utf8') : ''), status: 'descargado', checkedAt, httpStatus: response.status, contentType, bytes: body.byteLength, sha256 });
       if (contentType?.toLowerCase().includes('text/html')) {
         for (const [childIndex, url] of extractDocumentLinks(body.toString('utf8'), item.url).entries()) {
           if (!queued.has(url)) { queued.add(url); queue.push({ id: `${item.id}-document-${childIndex + 1}`, title: item.title, url, fileName: safeName(`${item.id}-document-${childIndex + 1}`, url) }); }
