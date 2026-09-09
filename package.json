@@ -36,6 +36,7 @@
     "catalog:review": "tsx src/review-catalog.ts",
     "catalog:coverage": "tsx src/coverage.ts",
     "catalog:legal-review": "tsx src/legal-review.ts",
+    "catalog:download": "tsx src/download-sources.ts",
     "pretest": "npm run build",
     "test": "vitest",
     "check": "npm test -- --run",

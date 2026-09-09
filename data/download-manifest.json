@@ -1,0 +1,244 @@
+{
+  "generatedAt": "2026-09-09T15:30:30.975Z",
+  "results": [
+    {
+      "id": "lopdp",
+      "url": "https://spdp.gob.ec/wp-content/uploads/2024/12/03.pdf.pdf",
+      "fileName": "lopdp.pdf",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:16.916Z",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "bytes": 115013,
+      "sha256": "220d49f9e6cd420e9820ea47522a9f7e4890fbd6c607f522dc4f17bc5a5dcb5d"
+    },
+    {
+      "id": "comercio-electronico",
+      "url": "https://www.telecomunicaciones.gob.ec/wp-content/uploads/2020/07/LEY-DE-COMERCIO-ELECTRONICO-FIRMAS-Y.pdf",
+      "fileName": "comercio-electronico.pdf",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:17.933Z",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "bytes": 55348,
+      "sha256": "2aefbf0847e9c4db476e62978cab531e29ef635319c9e2ee1381b991ef30f658"
+    },
+    {
+      "id": "propiedad-intelectual",
+      "url": "https://www.derechosintelectuales.gob.ec/wp-content/uploads/downloads/2021/agosto/a_2_16_codigo_ingenios_agosto_2021.pdf",
+      "fileName": "propiedad-intelectual.pdf",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:18.536Z",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "bytes": 846073,
+      "sha256": "b8d9a98cfa60d4c2e2b046d6963848d5fef8b6642702d4ba940cfc1bff254eed"
+    },
+    {
+      "id": "reglamento-lopdp",
+      "url": "https://spdp.gob.ec/wp-content/uploads/2024/12/04.pdf.pdf",
+      "fileName": "reglamento-lopdp.pdf",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:19.195Z",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "bytes": 96145,
+      "sha256": "11c3152691befe0dc0d61f5d16e931c6487be3cfcdfc9abfac35a33c7ebe0d47"
+    },
+    {
+      "id": "reglamento-comercio-electronico",
+      "url": "https://biblioteca.defensoria.gob.ec/handle/37000/2742",
+      "fileName": "reglamento-comercio-electronico.html",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:19.846Z",
+      "httpStatus": 200,
+      "contentType": "text/html;charset=UTF-8",
+      "bytes": 15071,
+      "sha256": "dc430bd5576c80891bb2fcbfbc61a67f0c4626de69f17a65b336a2101ec1175a"
+    },
+    {
+      "id": "telecomunicaciones",
+      "url": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-439-5/",
+      "fileName": "telecomunicaciones.html",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:20.451Z",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 179274,
+      "sha256": "9897f1dab4a9b44f36011e267f5705d02233d90e47faa558e6e40aff2d6dfb94"
+    },
+    {
+      "id": "transformacion-digital",
+      "url": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-245/",
+      "fileName": "transformacion-digital.html",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:21.208Z",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 179253,
+      "sha256": "1e2123efb18a8c6c061be39130df75a3267b98b6b1df36d33fdb55b63fe7e3bf"
+    },
+    {
+      "id": "fintech",
+      "url": "https://www.asambleanacional.gob.ec/sites/default/files/private/asambleanacional/filesasambleanacionalnameuid-29/Leyes%202013-2017/1436-nviteri/ro-215-2do-supl-22-12-2022.pdf",
+      "fileName": "fintech.pdf",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:21.647Z",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "bytes": 793941,
+      "sha256": "2d96fac3cc325868d7ff7ecf31fb272d017709f00f9585e70f86aca466017bd3"
+    },
+    {
+      "id": "defensa-consumidor",
+      "url": "https://www.produccion.gob.ec/wp-content/uploads/2025/03/LEY-ORGANICA-DE-DEFENSA-DEL-CONSUMIDOR_2022_02_11.pdf",
+      "fileName": "defensa-consumidor.pdf",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:22.252Z",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "bytes": 226890,
+      "sha256": "9cf8c042670f0f64066ae1d7a854f905bec261c64cd22587c119606b30a45f44"
+    },
+    {
+      "id": "coip-delitos-informaticos",
+      "url": "https://www.registroficial.gob.ec/suplemento-al-registro-oficial-no-180-8/",
+      "fileName": "coip-delitos-informaticos.html",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:22.843Z",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 179389,
+      "sha256": "e592042fd445f46bf8735c21535d72c33c79ae929d2b795bc60500a62809d5c8"
+    },
+    {
+      "id": "reforma-delitos-informaticos",
+      "url": "https://www.registroficial.gob.ec/cuarto-suplemento-al-registro-oficial-no-526/",
+      "fileName": "reforma-delitos-informaticos.html",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:23.209Z",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 179383,
+      "sha256": "b49aec5776d8934da23be4514fbbeeade27d7101e29f2fe8bae9c4471be4f4be"
+    },
+    {
+      "id": "facturacion-electronica-sri",
+      "url": "https://www.sri.gob.ec/facturacion-electronica",
+      "fileName": "facturacion-electronica-sri.html",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:23.586Z",
+      "httpStatus": 200,
+      "contentType": "text/html;charset=UTF-8",
+      "bytes": 204225,
+      "sha256": "a0cfb1d67fe320fcac7a70574fbe8660b43eb930de0f552c6d1d207c70ae22ca"
+    },
+    {
+      "id": "spdp-transferencias-2025",
+      "url": "https://spdp.gob.ec/wp-content/uploads/2025/07/SPSP-SPD-2025-0024-R-Normativa-General-Aplicacion-de-la-LOPDP-y-su-Reglamento55-signed.pdf",
+      "fileName": "spdp-transferencias-2025.pdf",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:23.812Z",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "bytes": 370920,
+      "sha256": "f817981ff4081cbf6a5aaaf625b79b731d1613b8f1f75fdf79fa7ac7baf7d8d2"
+    },
+    {
+      "id": "spdp-clausulas-contratos-2025",
+      "url": "https://spdp.gob.ec/wp-content/uploads/2025/05/06.01.01-SPDP-SPD-2025-0006-R-clausulas-para-contratos-en-Ecuador-signed.pdf",
+      "fileName": "spdp-clausulas-contratos-2025.pdf",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:24.990Z",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "bytes": 535143,
+      "sha256": "54ddcbf7421806f928e48582550ac577df19b25d7fb909e98d21341fa80cc4ac"
+    },
+    {
+      "id": "lotaip",
+      "url": "https://www.registroficial.gob.ec/segundo-suplemento-al-registro-oficial-no-245/",
+      "fileName": "lotaip.html",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:26.369Z",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 168762,
+      "sha256": "3da313801f877136e586996c04c297cfff66b3c412f41fc3d134e076bcb8dea6"
+    },
+    {
+      "id": "spdp-transferencias-2026",
+      "url": "https://spdp.gob.ec/wp-content/uploads/2026/01/04.01.01-SPSP-SPD-2026-0004-R-Norma-general-de-transferencias-signed.pdf",
+      "fileName": "spdp-transferencias-2026.pdf",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:26.732Z",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "bytes": 739073,
+      "sha256": "bb0cc1e734b8a7a371a621718d03067625247f9b6fffc2fb829eae6719a83bb1"
+    },
+    {
+      "id": "constitucion-republica",
+      "url": "https://www.asambleanacional.gob.ec/sites/default/files/private/asambleanacional/filesasambleanacionalnameuid-29/2018-08-01-constitucion-reformada.pdf",
+      "fileName": "constitucion-republica.pdf",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:28.610Z",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "bytes": 534822,
+      "sha256": "56b221af3b1d349300159195e178d64fd2d5b632cb5bed45c38335c7838d5c47"
+    },
+    {
+      "id": "codigo-trabajo",
+      "url": "https://www.asambleanacional.gob.ec/es/leyes-aprobadas?leyes-aprobadas=All&title=C%C3%B3digo+del+Trabajo",
+      "fileName": "codigo-trabajo.html",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:28.920Z",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 37518,
+      "sha256": "876830a718db635c8c828aaf9e4accb220cdf22fb6d94f43f9c3b2a158ef40e6"
+    },
+    {
+      "id": "codigo-tributario",
+      "url": "https://www.registroficial.gob.ec/",
+      "fileName": "codigo-tributario.html",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:29.621Z",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 186643,
+      "sha256": "783a2bf18dc44997cfedbe9169dcf7e045de60693a010539d6889323ee452d62"
+    },
+    {
+      "id": "marco-sector-financiero",
+      "url": "https://www.jprf.gob.ec/",
+      "fileName": "marco-sector-financiero.html",
+      "status": "inaccesible",
+      "checkedAt": "2026-09-09T15:30:30.067Z",
+      "error": "fetch failed"
+    },
+    {
+      "id": "marco-sector-salud",
+      "url": "https://www.salud.gob.ec/",
+      "fileName": "marco-sector-salud.html",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:30.104Z",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 68889,
+      "sha256": "5a3425e5c5d5a80eb67174ea320699f848bfbe2dd311f4859416c7578c8021dc"
+    },
+    {
+      "id": "marco-sector-educativo",
+      "url": "https://educacion.gob.ec/",
+      "fileName": "marco-sector-educativo.html",
+      "status": "descargado",
+      "checkedAt": "2026-09-09T15:30:30.599Z",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 71661,
+      "sha256": "62153b717560210c0307ab0246b14e623c1d1a12fd1851b87d82ba5c1f0ca43d"
+    }
+  ]
+}

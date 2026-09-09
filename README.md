@@ -479,9 +479,14 @@ npm run catalog:import
 npm run catalog:review
 npm run catalog:coverage
 npm run catalog:legal-review
+npm run catalog:download
 ```
 
 `catalog:legal-review` genera `data/legal-review-report.json`, consulta las fuentes registradas y detecta indicios textuales de reformas o derogaciones. Estos indicios nunca cambian automáticamente una norma a vigente, reformada o derogada. Para publicar un estado confirmado, la entrada debe incluir `verification.legalReviewedAt` y `verification.reviewer`; el servidor rechaza el catálogo si faltan.
+
+`catalog:download` intenta descargar el documento o página oficial de cada fuente HTTPS registrada en el catálogo. Guarda los archivos accesibles en `data/downloads/` y genera `data/download-manifest.json` con fuente, URL, fecha, HTTP, tipo MIME, tamaño, hash SHA-256 y error detallado cuando corresponde. La descarga está limitada a dominios oficiales `*.gob.ec`, 20 MiB por archivo y 20 segundos por solicitud.
+
+Una descarga exitosa demuestra que el recurso estaba accesible, pero no que su contenido sea un texto normativo consolidado ni que la norma esté vigente. Las páginas HTML de portales se conservan como evidencia de consulta; los PDF u otros documentos deben relacionarse manualmente con artículos, Registro Oficial, reformas y derogaciones antes de usarlos para confirmar cumplimiento.
 
 Informes:
 
