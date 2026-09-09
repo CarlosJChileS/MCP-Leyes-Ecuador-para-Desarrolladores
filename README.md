@@ -2,6 +2,37 @@
 
 Servidor [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) en TypeScript para gobernanza de datos y leyes tecnológicas del Ecuador aplicadas a proyectos de software.
 
+## ¿Qué es este proyecto?
+
+Este proyecto conecta un asistente de inteligencia artificial con información jurídica ecuatoriana y herramientas técnicas para desarrolladores. Funciona como un servidor MCP local: el cliente MCP inicia el proceso y se comunica con él mediante `stdio`, sin abrir puertos ni exponer una API pública.
+
+Su objetivo es ayudar a equipos de software a:
+
+- identificar normas ecuatorianas relacionadas con su producto;
+- traducir obligaciones jurídicas documentadas a controles técnicos y evidencias;
+- evaluar preliminarmente la gobernanza de datos;
+- auditar el repositorio y sus dependencias desde una perspectiva de seguridad y privacidad;
+- generar informes explicativos con brechas, responsables, fechas y acciones de remediación;
+- conservar el historial de auditorías y el estado de cada acción.
+
+No es un sistema de asesoría legal ni reemplaza a un abogado, delegado de protección de datos, auditor de seguridad o autoridad competente.
+
+## Cómo funciona
+
+```text
+Cliente MCP (Claude, Cursor, VS Code, etc.)
+             │ stdio
+             ▼
+Servidor MCP local
+   ├─ Catálogo jurídico verificable
+   ├─ Evaluaciones de gobernanza
+   ├─ Auditoría estática del repositorio
+   ├─ Informes JSON / Markdown / HTML / PDF
+   └─ Ciclo de vida persistente en .mcp-governance/
+```
+
+El servidor lee el catálogo incluido en `data/normativa.json`. Las auditorías de código son de solo lectura: no ejecutan el código del proyecto auditado. Las auditorías y acciones solo se guardan cuando se solicita explícitamente `persist: true`.
+
 El producto es exclusivamente un servidor MCP local por `stdio`. Se utiliza desde un asistente o cliente compatible con MCP. Las herramientas, recursos y el prompt constituyen su interfaz; los reportes se devuelven como contenido de las respuestas MCP. Los scripts de catálogo y los workflows son utilidades internas de mantenimiento.
 
 > **Aviso importante:** este proyecto es una herramienta de investigación y preauditoría. No constituye asesoría legal, dictamen, certificación ni garantía de cumplimiento. La vigencia y aplicación de cada norma debe confirmarse en la fuente oficial y con un profesional competente.
@@ -14,6 +45,76 @@ El producto es exclusivamente un servidor MCP local por `stdio`. Se utiliza desd
 - La publicación de `1.0.3` requiere autenticarse con `npm login` y ejecutar `npm publish --access public`.
 - Las pruebas, compilación, validación del paquete y escáneres locales pasan en el entorno de desarrollo.
 - La cobertura jurídica continúa siendo preliminar: el catálogo no representa toda la legislación ecuatoriana y requiere revisión humana especializada.
+
+## Instalación rápida desde npm
+
+Requiere Node.js 20 o superior. Para clientes MCP que admiten `npx`, puede usar el paquete publicado:
+
+```json
+{
+  "mcpServers": {
+    "leyes-ecuador-dev": {
+      "command": "npx",
+      "args": ["-y", "leyes-ecuador-dev-mcp"]
+    }
+  }
+}
+```
+
+Si `npx` no está disponible o desea controlar exactamente la versión, instale el paquete y use el ejecutable:
+
+```bash
+npm install -g leyes-ecuador-dev-mcp
+leyes-ecuador-dev-mcp
+```
+
+En Windows, si el cliente no encuentra `npx` o `node`, configure la ruta absoluta al ejecutable, por ejemplo `C:/Program Files/nodejs/npx.cmd` o `C:/Program Files/nodejs/node.exe`.
+
+## Instalación desde GitHub
+
+Úsela para desarrollar, modificar el catálogo o probar cambios que todavía no están publicados en npm:
+
+```bash
+git clone https://github.com/CarlosJChileS/leyes-ecuador-dev-mcp.git
+cd leyes-ecuador-dev-mcp
+npm ci
+npm run build
+npm run check
+```
+
+El cliente MCP debe apuntar a `dist/server.js`:
+
+```json
+{
+  "mcpServers": {
+    "leyes-ecuador-dev": {
+      "command": "node",
+      "args": ["C:/ruta/leyes-ecuador-dev-mcp/dist/server.js"]
+    }
+  }
+}
+```
+
+También se puede instalar y probar con pnpm 10 o Bun:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm run check
+
+bun install
+bun run check
+```
+
+## Configuración en clientes MCP
+
+La configuración exacta depende del cliente. En todos los casos se debe registrar un servidor local con un comando y sus argumentos, reiniciar el cliente y verificar que aparezcan las 13 herramientas, los recursos jurídicos y los dos prompts.
+
+- **Claude Desktop:** agregue la entrada en el archivo de configuración MCP de Claude Desktop.
+- **Cursor:** agregue el servidor en la sección MCP de Cursor.
+- **VS Code:** registre el servidor en la configuración MCP de la extensión compatible.
+- **Otros clientes:** use el mismo comando `node dist/server.js` o `npx -y leyes-ecuador-dev-mcp` siempre que soporten transporte MCP por `stdio`.
+
+El archivo [docs/clients.md](docs/clients.md) contiene ejemplos adicionales. Las rutas deben ser absolutas y usar la sintaxis de rutas aceptada por el sistema operativo.
 
 ## Qué resuelve
 
