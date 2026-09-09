@@ -45,6 +45,7 @@ El producto es exclusivamente un servidor MCP local por `stdio`. Se utiliza desd
 - La publicación de `1.0.3` requiere autenticarse con `npm login` y ejecutar `npm publish --access public`.
 - Las pruebas, compilación, validación del paquete y escáneres locales pasan en el entorno de desarrollo.
 - La cobertura jurídica continúa siendo preliminar: el catálogo no representa toda la legislación ecuatoriana y requiere revisión humana especializada.
+- El descargador revisa fuentes oficiales y, en la última ejecución, procesó 73 recursos: 60 documentos, 1 norma HTML, 5 fichas oficiales, 3 portales, 2 índices y 2 fuentes inaccesibles.
 
 ## Instalación rápida desde npm
 
@@ -485,6 +486,8 @@ npm run catalog:download
 `catalog:legal-review` genera `data/legal-review-report.json`, consulta las fuentes registradas y detecta indicios textuales de reformas o derogaciones. Estos indicios nunca cambian automáticamente una norma a vigente, reformada o derogada. Para publicar un estado confirmado, la entrada debe incluir `verification.legalReviewedAt` y `verification.reviewer`; el servidor rechaza el catálogo si faltan.
 
 `catalog:download` intenta descargar el documento o página oficial de cada fuente HTTPS registrada en el catálogo. Guarda los archivos accesibles en `data/downloads/` y genera `data/download-manifest.json` con fuente, URL, fecha, HTTP, tipo MIME, tamaño, hash SHA-256 y error detallado cuando corresponde. La descarga está limitada a dominios oficiales `*.gob.ec`, 20 MiB por archivo y 20 segundos por solicitud.
+
+El manifiesto clasifica cada recurso como `documento_normativo`, `norma_html`, `ficha_oficial`, `indice_normativo`, `portal_institucional` o `inaccesible`. Cuando una ficha o portal contiene enlaces oficiales a PDF, DOC o DOCX, el descargador los sigue y registra los documentos derivados por separado.
 
 Una descarga exitosa demuestra que el recurso estaba accesible, pero no que su contenido sea un texto normativo consolidado ni que la norma esté vigente. Las páginas HTML de portales se conservan como evidencia de consulta; los PDF u otros documentos deben relacionarse manualmente con artículos, Registro Oficial, reformas y derogaciones antes de usarlos para confirmar cumplimiento.
 
