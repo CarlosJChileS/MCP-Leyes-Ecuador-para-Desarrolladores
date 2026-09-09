@@ -6,6 +6,15 @@ El producto es exclusivamente un servidor MCP local por `stdio`. Se utiliza desd
 
 > **Aviso importante:** este proyecto es una herramienta de investigación y preauditoría. No constituye asesoría legal, dictamen, certificación ni garantía de cumplimiento. La vigencia y aplicación de cada norma debe confirmarse en la fuente oficial y con un profesional competente.
 
+## Estado actual
+
+- Código actualizado en GitHub: [`4d0da52`](https://github.com/CarlosJChileS/leyes-ecuador-dev-mcp/commit/4d0da52).
+- Versión local preparada: `1.0.3`.
+- Versión actualmente publicada en npm: `1.0.2`.
+- La publicación de `1.0.3` requiere autenticarse con `npm login` y ejecutar `npm publish --access public`.
+- Las pruebas, compilación, validación del paquete y escáneres locales pasan en el entorno de desarrollo.
+- La cobertura jurídica continúa siendo preliminar: el catálogo no representa toda la legislación ecuatoriana y requiere revisión humana especializada.
+
 ## Qué resuelve
 
 Conecta un asistente compatible con MCP con un catálogo jurídico ecuatoriano y un auditor estático local. Permite buscar normas, consultar obligaciones, revisar señales técnicas de riesgo y generar un checklist inicial para proyectos tecnológicos y de comercio electrónico.
@@ -82,6 +91,24 @@ Si se proporciona `repositoryPath`, la misma llamada ejecuta la auditoría, inco
 
 `gestionar_ciclo_gobernanza` permite `listar`, `actualizar_accion`, `agregar_evidencia` y `agregar_excepcion`. Conserva acciones abiertas y cerradas, responsables, fechas límite, evidencias, excepciones con expiración y un historial de actor, fecha y operación. Una excepción cambia la acción a `aceptada_temporalmente`.
 
+El almacenamiento es local y auditable. La primera auditoría crea `.mcp-governance/lifecycle.json` y una copia inmutable en `.mcp-governance/audits/`. Las auditorías posteriores actualizan o reutilizan las acciones por su identificador, sin eliminar el historial anterior. Para cerrar una acción, el responsable debe actualizarla explícitamente y conservar evidencias suficientes.
+
+Ejemplos conceptuales de operaciones:
+
+```json
+{
+  "repositoryPath": "C:/repos/api-ciudadana",
+  "operation": "actualizar_accion",
+  "actionId": "GOV-001",
+  "status": "en_progreso",
+  "owner": "Equipo de privacidad",
+  "dueDate": "2026-10-15",
+  "actor": "Carlos"
+}
+```
+
+Una evidencia requiere `description` y `uri`. Una excepción requiere `reason`, `approvedBy` y `expiresAt`; no equivale a cumplimiento permanente y debe revisarse antes de su vencimiento.
+
 Los títulos y textos normativos conservan el idioma de la fuente. Los identificadores, categorías y estados son valores estables del contrato y no se traducen; por ejemplo, `transporte_inseguro` y `pendiente`. Las evidencias, rutas, avisos de dependencias y detalles de errores conservan su contenido original. Los recursos jurídicos y el prompt `revision-privacidad` están en español.
 
 ## Auditoría de repositorios
@@ -121,7 +148,7 @@ El análisis estático no ejecuta código del repositorio: excluye dependencias 
 | `dependencyScan` | `false` | Activa los escáneres de dependencias instalados. |
 | `timeout` | 30000 | Tiempo máximo por comando externo, entre 1000 y 120000 ms. |
 
-El servidor no guarda reportes automáticamente. El cliente puede guardar el contenido que recibe; el HTML incluye estilos de impresión. Un error de auditoría devuelve `isError: true` y un objeto con `error`, `detail`, `language` y `disclaimer`.
+Por defecto, el servidor no guarda reportes automáticamente. Con `persist: true`, el informe consolidado se registra en el ciclo de vida local y el cliente recibe su `auditId`. El cliente también puede guardar el contenido que recibe; el HTML incluye estilos de impresión. Un error de auditoría devuelve `isError: true` y un objeto con `error`, `detail`, `language` y `disclaimer`.
 
 ### Configuración del repositorio auditado
 
@@ -167,11 +194,12 @@ Para una coincidencia intencional, agregue `mcp-audit-ignore` en esa línea y ex
 
 ## Instalación y uso
 
-Requiere Node.js 20 o superior.
+Requiere Node.js 20 o superior. Para usar la versión local actual, el proyecto ya incluye configuración compatible con npm, pnpm 10 y Bun.
 
 ```bash
 npm ci
 npm run check
+npm run verify:all
 ```
 
 También funciona con pnpm y Bun:
