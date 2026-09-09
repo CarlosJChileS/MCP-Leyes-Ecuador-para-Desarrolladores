@@ -105,6 +105,140 @@ bun install
 bun run check
 ```
 
+### Windows
+
+Instale Node.js 20 o superior desde [nodejs.org](https://nodejs.org/) y abra PowerShell:
+
+```powershell
+git clone https://github.com/CarlosJChileS/leyes-ecuador-dev-mcp.git
+Set-Location leyes-ecuador-dev-mcp
+npm ci
+npm run check
+```
+
+Opcionalmente, instale pnpm o Bun:
+
+```powershell
+corepack enable
+corepack prepare pnpm@10 --activate
+pnpm install --frozen-lockfile
+pnpm run check
+
+irm bun.sh/install.ps1 | iex
+bun install
+bun run check
+```
+
+Ejemplo de configuración MCP en Windows:
+
+```json
+{
+  "mcpServers": {
+    "leyes-ecuador-dev": {
+      "command": "C:/Program Files/nodejs/node.exe",
+      "args": ["C:/ruta/leyes-ecuador-dev-mcp/dist/server.js"]
+    }
+  }
+}
+```
+
+Si se usa npm instalado globalmente, también puede configurarse `npx.cmd` como comando.
+
+### macOS
+
+Con Homebrew, instale Node.js y Git:
+
+```bash
+brew install node git
+git clone https://github.com/CarlosJChileS/leyes-ecuador-dev-mcp.git
+cd leyes-ecuador-dev-mcp
+npm ci
+npm run check
+```
+
+Para pnpm y Bun:
+
+```bash
+corepack enable
+corepack prepare pnpm@10 --activate
+pnpm install --frozen-lockfile
+pnpm run check
+
+curl -fsSL https://bun.sh/install | bash
+bun install
+bun run check
+```
+
+Ejemplo de configuración MCP en macOS:
+
+```json
+{
+  "mcpServers": {
+    "leyes-ecuador-dev": {
+      "command": "/opt/homebrew/bin/node",
+      "args": ["/Users/tu-usuario/leyes-ecuador-dev-mcp/dist/server.js"]
+    }
+  }
+}
+```
+
+En Mac Intel, la ruta habitual puede ser `/usr/local/bin/node`. Compruébela con `which node`.
+
+### Linux
+
+En Ubuntu, Debian u otra distribución compatible, instale Git y Node.js 20 o superior. Por ejemplo, con `nvm`:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+source ~/.bashrc
+nvm install 20
+nvm use 20
+git clone https://github.com/CarlosJChileS/leyes-ecuador-dev-mcp.git
+cd leyes-ecuador-dev-mcp
+npm ci
+npm run check
+```
+
+Instalación alternativa de pnpm y Bun:
+
+```bash
+corepack enable
+corepack prepare pnpm@10 --activate
+pnpm install --frozen-lockfile
+pnpm run check
+
+curl -fsSL https://bun.sh/install | bash
+bun install
+bun run check
+```
+
+Ejemplo de configuración MCP en Linux:
+
+```json
+{
+  "mcpServers": {
+    "leyes-ecuador-dev": {
+      "command": "/usr/bin/node",
+      "args": ["/home/tu-usuario/leyes-ecuador-dev-mcp/dist/server.js"]
+    }
+  }
+}
+```
+
+Use `which node`, `which npm`, `which pnpm` o `which bun` para confirmar las rutas. En servidores sin entorno gráfico, el MCP funciona igualmente porque utiliza `stdio` y no necesita abrir un navegador ni un puerto.
+
+### Comprobación común en cualquier sistema
+
+Después de instalar, confirme las versiones y ejecute la verificación:
+
+```bash
+node --version
+npm --version
+npm run verify:all
+```
+
+El resultado esperado es una compilación correcta, 51 pruebas correctas y validación del paquete. Si el cliente no muestra las herramientas, revise la ruta absoluta de `node` y `dist/server.js`, vuelva a ejecutar `npm run build` y reinicie el cliente MCP.
+
 ## Configuración en clientes MCP
 
 La configuración exacta depende del cliente. En todos los casos se debe registrar un servidor local con un comando y sus argumentos, reiniciar el cliente y verificar que aparezcan las 13 herramientas, los recursos jurídicos y los dos prompts.
