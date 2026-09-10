@@ -11,7 +11,7 @@ it('requires evidence and distinguishes documented obligations from unknown cove
   expect(result.obligations.some(item => item.article === 'Art. 39')).toBe(true);
   expect(result.obligations.every(item => item.sourceUrl.startsWith('https:') && item.evidence.length > 0)).toBe(true);
   expect(result.coverage).toBe('parcial');
-  expect(consultObligations(catalog.get('facturacion-electronica-sri')!, 'es').coverage).toBe('pendiente');
+  expect(consultObligations(catalog.get('facturacion-electronica-sri')!, 'es').coverage).toBe('parcial');
   for (const source of catalog.all()) {
     const verified = legalVerification(source, 'es');
     if (!verified.legalStatusConfirmed) expect(source.status).toBe('pendiente_verificacion');

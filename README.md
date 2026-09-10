@@ -268,6 +268,8 @@ Las fuentes de descubrimiento son los índices oficiales de la [Asamblea Naciona
 
 ### Evaluación integral de cualquier proyecto
 
+El catálogo está especializado en proyectos tecnológicos que operan en Ecuador: aplicaciones web y móviles, SaaS, comercio electrónico, plataformas con usuarios, tratamiento de datos, proveedores cloud, pagos, facturación y sectores regulados.
+
 `evaluar_proyecto` acepta un perfil explícito o puede inferir señales técnicas desde un repositorio:
 
 ```json
