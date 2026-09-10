@@ -1,5 +1,13 @@
 # Historial de cambios
 
+## 1.0.1 — matriz integral y auditoría ampliada
+
+- Matriz de obligaciones con estados, prioridades, evidencias y plan de mejora.
+- Puntajes por dimensión y comparación histórica de auditorías persistidas.
+- Perfil técnico inferido y catálogo especializado para proyectos tecnológicos en Ecuador.
+- Filtrado de artefactos generados para reducir falsos positivos.
+- Escaneo de dependencias disponible bajo solicitud explícita.
+
 ## 1.0.0 — preparación de distribución
 
 - Contrato MCP local: seis herramientas, índice, fichas por plantilla y prompt de privacidad.

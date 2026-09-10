@@ -40,9 +40,9 @@ El producto es exclusivamente un servidor MCP local por `stdio`. Se utiliza desd
 ## Estado actual
 
 - Código actualizado en GitHub: [`4d0da52`](https://github.com/CarlosJChileS/eculegaldev/commit/4d0da52).
-- Versión local preparada: `1.0.3`.
-- Versión actualmente publicada en npm: `1.0.2`.
-- La publicación de `1.0.3` requiere autenticarse con `npm login` y ejecutar `npm publish --access public`.
+- Versión local preparada: `1.0.1`.
+- Versión actualmente publicada en npm: `1.0.0`.
+- La publicación de `1.0.1` requiere autenticarse con `npm login` y ejecutar `npm publish --access public`.
 - Las pruebas, compilación, validación del paquete y escáneres locales pasan en el entorno de desarrollo.
 - La cobertura jurídica continúa siendo preliminar: el catálogo no representa toda la legislación ecuatoriana y requiere revisión humana especializada.
 - El descargador revisa fuentes oficiales y, en la última ejecución, procesó 73 recursos: 60 documentos, 1 norma HTML, 5 fichas oficiales, 3 portales, 2 índices y 2 fuentes inaccesibles.

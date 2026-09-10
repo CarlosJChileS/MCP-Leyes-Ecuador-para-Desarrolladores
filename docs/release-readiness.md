@@ -27,7 +27,7 @@ Bun puede ejecutar el servidor, pero el runtime recomendado para clientes MCP es
 ```bash
 npm pack --dry-run
 npm publish --access public
-npm run checksum -- eculegaldev-1.0.0.tgz
+npm run checksum -- eculegaldev-1.0.1.tgz
 ```
 
 La publicación requiere revisión del catálogo jurídico, actualización de `version` y validación del `CHANGELOG.md`.
