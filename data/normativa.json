@@ -405,7 +405,28 @@
       "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal."
     },
     "relatedSourceIds": [],
-    "obligations": []
+    "obligations": [
+      {
+        "id": "servicios-conectividad",
+        "article": "Obligaciones sectoriales aplicables",
+        "sourceUrl": "https://www.registroficial.gob.ec/tercer-suplemento-al-registro-oficial-no-439-5/",
+        "requirement": {
+          "es": "Verificar si el servicio presta o intermedia servicios de telecomunicaciones sujetos a autorización o regulación sectorial.",
+          "en": "Verificar si el servicio presta o intermedia servicios de telecomunicaciones sujetos a autorización o regulación sectorial."
+        },
+        "appliesWhen": {
+          "es": "El proyecto ofrece servicios de telecomunicaciones o explota redes/servicios regulados.",
+          "en": "El proyecto ofrece servicios de telecomunicaciones o explota redes/servicios regulados."
+        },
+        "evidence": [
+          {
+            "es": "Análisis de alcance y autorización sectorial, si corresponde.",
+            "en": "Análisis de alcance y autorización sectorial, si corresponde."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-09"
+      }
+    ]
   },
   {
     "id": "transformacion-digital",
@@ -542,18 +563,40 @@
         "id": "informacion-consumidor",
         "article": "Arts. 4 y 46",
         "sourceUrl": "https://www.produccion.gob.ec/wp-content/uploads/2019/08/A2-LEY-ORGANICA-DE-DEFENSA-DEL-CONSUMIDOR.pdf",
-        "requirement": { "es": "Proporcionar información básica, clara, veraz y completa sobre el servicio, precio, condiciones y oferta, especialmente cuando la contratación se realiza por internet.", "en": "Provide clear, truthful and complete basic information about the service, price, terms and offer, especially for internet contracts." },
-        "appliesWhen": { "es": "Cuando el proyecto ofrezca bienes o servicios a consumidores.", "en": "When the project offers goods or services to consumers." },
-        "evidence": [ { "es": "Términos del servicio, precios, condiciones de contratación, política de reclamos y registro de aceptación.", "en": "Terms of service, prices, contracting terms, complaints policy and acceptance record." } ],
+        "requirement": {
+          "es": "Proporcionar información básica, clara, veraz y completa sobre el servicio, precio, condiciones y oferta, especialmente cuando la contratación se realiza por internet.",
+          "en": "Provide clear, truthful and complete basic information about the service, price, terms and offer, especially for internet contracts."
+        },
+        "appliesWhen": {
+          "es": "Cuando el proyecto ofrezca bienes o servicios a consumidores.",
+          "en": "When the project offers goods or services to consumers."
+        },
+        "evidence": [
+          {
+            "es": "Términos del servicio, precios, condiciones de contratación, política de reclamos y registro de aceptación.",
+            "en": "Terms of service, prices, contracting terms, complaints policy and acceptance record."
+          }
+        ],
         "documentaryReviewedAt": "2026-09-09"
       },
       {
         "id": "contrato-adhesion",
         "article": "Arts. 41 y 43",
         "sourceUrl": "https://www.produccion.gob.ec/wp-content/uploads/2019/08/A2-LEY-ORGANICA-DE-DEFENSA-DEL-CONSUMIDOR.pdf",
-        "requirement": { "es": "Revisar que los contratos de adhesión sean claros y no contengan cláusulas que causen indefensión o limiten indebidamente los derechos del consumidor.", "en": "Ensure adhesion contracts are clear and do not contain clauses that leave consumers defenseless or improperly limit their rights." },
-        "appliesWhen": { "es": "Cuando el servicio use términos contractuales predeterminados para sus usuarios.", "en": "When the service uses predetermined contractual terms for users." },
-        "evidence": [ { "es": "Versión vigente de términos y condiciones con revisión legal y mecanismo de actualización.", "en": "Current terms and conditions with legal review and update mechanism." } ],
+        "requirement": {
+          "es": "Revisar que los contratos de adhesión sean claros y no contengan cláusulas que causen indefensión o limiten indebidamente los derechos del consumidor.",
+          "en": "Ensure adhesion contracts are clear and do not contain clauses that leave consumers defenseless or improperly limit their rights."
+        },
+        "appliesWhen": {
+          "es": "Cuando el servicio use términos contractuales predeterminados para sus usuarios.",
+          "en": "When the service uses predetermined contractual terms for users."
+        },
+        "evidence": [
+          {
+            "es": "Versión vigente de términos y condiciones con revisión legal y mecanismo de actualización.",
+            "en": "Current terms and conditions with legal review and update mechanism."
+          }
+        ],
         "documentaryReviewedAt": "2026-09-09"
       }
     ]
@@ -606,7 +649,28 @@
     "relatedSourceIds": [
       "reforma-delitos-informaticos"
     ],
-    "obligations": []
+    "obligations": [
+      {
+        "id": "prevencion-acceso-ilicito",
+        "article": "Delitos informáticos aplicables",
+        "sourceUrl": "https://www.registroficial.gob.ec/suplemento-al-registro-oficial-no-180-8/",
+        "requirement": {
+          "es": "Implementar controles para prevenir acceso no autorizado, alteración, extracción o destrucción de información.",
+          "en": "Implementar controles para prevenir acceso no autorizado, alteración, extracción o destrucción de información."
+        },
+        "appliesWhen": {
+          "es": "El sistema almacena, procesa o expone información digital.",
+          "en": "El sistema almacena, procesa o expone información digital."
+        },
+        "evidence": [
+          {
+            "es": "Control de acceso, registros, pruebas de seguridad y respuesta a incidentes.",
+            "en": "Control de acceso, registros, pruebas de seguridad y respuesta a incidentes."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-09"
+      }
+    ]
   },
   {
     "id": "reforma-delitos-informaticos",
@@ -681,9 +745,20 @@
         "id": "comprobantes-autorizados",
         "article": "Base legal y requisitos técnicos publicados por el SRI",
         "sourceUrl": "https://www.sri.gob.ec/facturacion-electronica",
-        "requirement": { "es": "Emitir comprobantes de venta, retención y documentos complementarios conforme a la modalidad y requisitos autorizados por el SRI.", "en": "Issue sales, withholding and complementary documents according to the modality and requirements authorized by the SRI." },
-        "appliesWhen": { "es": "Cuando el proyecto opere por cuenta de un contribuyente obligado a emitir comprobantes.", "en": "When the project operates for a taxpayer required to issue receipts." },
-        "evidence": [ { "es": "RUC, régimen aplicable, autorización o configuración del facturador, XML/RIDE y constancias de autorización.", "en": "RUC, applicable regime, invoicing authorization or configuration, XML/RIDE and authorization records." } ],
+        "requirement": {
+          "es": "Emitir comprobantes de venta, retención y documentos complementarios conforme a la modalidad y requisitos autorizados por el SRI.",
+          "en": "Issue sales, withholding and complementary documents according to the modality and requirements authorized by the SRI."
+        },
+        "appliesWhen": {
+          "es": "Cuando el proyecto opere por cuenta de un contribuyente obligado a emitir comprobantes.",
+          "en": "When the project operates for a taxpayer required to issue receipts."
+        },
+        "evidence": [
+          {
+            "es": "RUC, régimen aplicable, autorización o configuración del facturador, XML/RIDE y constancias de autorización.",
+            "en": "RUC, applicable regime, invoicing authorization or configuration, XML/RIDE and authorization records."
+          }
+        ],
         "documentaryReviewedAt": "2026-09-09"
       }
     ]
@@ -884,14 +959,35 @@
     "verifiedAt": "2026-09-09",
     "status": "pendiente_verificacion",
     "url": "https://www.asambleanacional.gob.ec/es/contenido/constitucion-de-la-republica-del-ecuador",
-    "topics": ["derechos fundamentales", "privacidad", "información pública", "tecnología"],
+    "topics": [
+      "derechos fundamentales",
+      "privacidad",
+      "información pública",
+      "tecnología"
+    ],
     "summary": "Norma suprema que establece derechos, garantías y principios relevantes para el tratamiento de información y servicios digitales.",
     "sourceKind": "norma",
     "documentUrl": "https://www.asambleanacional.gob.ec/sites/default/files/private/asambleanacional/filesasambleanacionalnameuid-29/2018-08-01-constitucion-reformada.pdf",
-    "officialGazette": { "number": "449", "edition": "Registro Oficial" },
-    "history": [{ "type": "publicacion", "date": "2008-10-20", "title": "Publicación de la Constitución", "sourceUrl": "https://www.asambleanacional.gob.ec/es/contenido/constitucion-de-la-republica-del-ecuador" }],
-    "verification": { "documentaryStatus": "pendiente", "notes": "Fuente oficial identificada; reformas y texto consolidado requieren revisión jurídica humana." },
-    "relatedSourceIds": ["lopdp", "lotaip"],
+    "officialGazette": {
+      "number": "449",
+      "edition": "Registro Oficial"
+    },
+    "history": [
+      {
+        "type": "publicacion",
+        "date": "2008-10-20",
+        "title": "Publicación de la Constitución",
+        "sourceUrl": "https://www.asambleanacional.gob.ec/es/contenido/constitucion-de-la-republica-del-ecuador"
+      }
+    ],
+    "verification": {
+      "documentaryStatus": "pendiente",
+      "notes": "Fuente oficial identificada; reformas y texto consolidado requieren revisión jurídica humana."
+    },
+    "relatedSourceIds": [
+      "lopdp",
+      "lotaip"
+    ],
     "obligations": []
   },
   {
@@ -904,12 +1000,41 @@
     "verifiedAt": "2026-09-09",
     "status": "pendiente_verificacion",
     "url": "https://www.asambleanacional.gob.ec/es/leyes-aprobadas?leyes-aprobadas=All&title=C%C3%B3digo+del+Trabajo",
-    "topics": ["relaciones laborales", "teletrabajo", "empleados", "seguridad laboral"],
+    "topics": [
+      "relaciones laborales",
+      "teletrabajo",
+      "empleados",
+      "seguridad laboral"
+    ],
     "summary": "Marco laboral aplicable a equipos de desarrollo, contratación, trabajo remoto y gestión de personal.",
     "sourceKind": "norma",
-    "verification": { "documentaryStatus": "pendiente", "notes": "Entrada de cobertura; debe completarse con texto oficial, Registro Oficial, reformas y artículos aplicables." },
+    "verification": {
+      "documentaryStatus": "pendiente",
+      "notes": "Entrada de cobertura; debe completarse con texto oficial, Registro Oficial, reformas y artículos aplicables."
+    },
     "relatedSourceIds": [],
-    "obligations": []
+    "obligations": [
+      {
+        "id": "relaciones-laborales",
+        "article": "Obligaciones laborales aplicables",
+        "sourceUrl": "https://www.asambleanacional.gob.ec/es/leyes-aprobadas?leyes-aprobadas=All&title=C%C3%B3digo+del+Trabajo",
+        "requirement": {
+          "es": "Revisar contratos, jornada, remuneración y tratamiento de datos de trabajadores cuando el proyecto tenga personal.",
+          "en": "Revisar contratos, jornada, remuneración y tratamiento de datos de trabajadores cuando el proyecto tenga personal."
+        },
+        "appliesWhen": {
+          "es": "Existencia de empleados o relaciones laborales.",
+          "en": "Existencia de empleados o relaciones laborales."
+        },
+        "evidence": [
+          {
+            "es": "Contratos, roles, políticas y registros laborales.",
+            "en": "Contratos, roles, políticas y registros laborales."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-09"
+      }
+    ]
   },
   {
     "id": "codigo-tributario",
@@ -921,11 +1046,21 @@
     "verifiedAt": "2026-09-09",
     "status": "pendiente_verificacion",
     "url": "https://www.registroficial.gob.ec/",
-    "topics": ["tributación", "servicios digitales", "facturación", "SRI"],
+    "topics": [
+      "tributación",
+      "servicios digitales",
+      "facturación",
+      "SRI"
+    ],
     "summary": "Marco tributario que debe relacionarse con facturación electrónica y obligaciones fiscales de productos digitales.",
     "sourceKind": "norma",
-    "verification": { "documentaryStatus": "pendiente", "notes": "Debe validarse la versión consolidada y la normativa específica del SRI antes de usarla como base de cumplimiento." },
-    "relatedSourceIds": ["facturacion-electronica-sri"],
+    "verification": {
+      "documentaryStatus": "pendiente",
+      "notes": "Debe validarse la versión consolidada y la normativa específica del SRI antes de usarla como base de cumplimiento."
+    },
+    "relatedSourceIds": [
+      "facturacion-electronica-sri"
+    ],
     "obligations": []
   },
   {
@@ -938,12 +1073,40 @@
     "verifiedAt": "2026-09-09",
     "status": "pendiente_verificacion",
     "url": "https://www.registroficial.gob.ec/",
-    "topics": ["sociedades", "gobierno corporativo", "empresas tecnológicas"],
+    "topics": [
+      "sociedades",
+      "gobierno corporativo",
+      "empresas tecnológicas"
+    ],
     "summary": "Marco societario para constitución, administración y obligaciones de compañías que desarrollan o comercializan software.",
     "sourceKind": "norma",
-    "verification": { "documentaryStatus": "pendiente", "notes": "Debe completarse con texto consolidado, reformas y resoluciones de la Superintendencia de Compañías." },
+    "verification": {
+      "documentaryStatus": "pendiente",
+      "notes": "Debe completarse con texto consolidado, reformas y resoluciones de la Superintendencia de Compañías."
+    },
     "relatedSourceIds": [],
-    "obligations": []
+    "obligations": [
+      {
+        "id": "gobierno-societario",
+        "article": "Obligaciones societarias aplicables",
+        "sourceUrl": "https://www.registroficial.gob.ec/",
+        "requirement": {
+          "es": "Verificar constitución, representación, administración y obligaciones de la compañía cuando el proyecto opere mediante una sociedad.",
+          "en": "Verificar constitución, representación, administración y obligaciones de la compañía cuando el proyecto opere mediante una sociedad."
+        },
+        "appliesWhen": {
+          "es": "El titular del servicio es una compañía o sociedad.",
+          "en": "El titular del servicio es una compañía o sociedad."
+        },
+        "evidence": [
+          {
+            "es": "RUC, escritura, nombramientos y registros societarios.",
+            "en": "RUC, escritura, nombramientos y registros societarios."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-09"
+      }
+    ]
   },
   {
     "id": "marco-sector-financiero",
@@ -955,12 +1118,43 @@
     "verifiedAt": "2026-09-09",
     "status": "pendiente_verificacion",
     "url": "https://www.jprf.gob.ec/",
-    "topics": ["sector financiero", "fintech", "seguridad", "servicios financieros"],
+    "topics": [
+      "sector financiero",
+      "fintech",
+      "seguridad",
+      "servicios financieros"
+    ],
     "summary": "Conjunto sectorial para aplicaciones financieras, fintech, prevención de riesgos y tratamiento de datos financieros.",
     "sourceKind": "portal",
-    "verification": { "documentaryStatus": "pendiente", "notes": "Es un índice sectorial, no una norma única; requiere desagregar leyes, resoluciones y reguladores aplicables al caso." },
-    "relatedSourceIds": ["fintech"],
-    "obligations": []
+    "verification": {
+      "documentaryStatus": "pendiente",
+      "notes": "Es un índice sectorial, no una norma única; requiere desagregar leyes, resoluciones y reguladores aplicables al caso."
+    },
+    "relatedSourceIds": [
+      "fintech"
+    ],
+    "obligations": [
+      {
+        "id": "servicio-financiero-regulado",
+        "article": "Regulación financiera sectorial",
+        "sourceUrl": "https://www.jprf.gob.ec/",
+        "requirement": {
+          "es": "Revisar controles y autorización sectorial cuando el sistema opere para una entidad financiera o preste un servicio regulado.",
+          "en": "Revisar controles y autorización sectorial cuando el sistema opere para una entidad financiera o preste un servicio regulado."
+        },
+        "appliesWhen": {
+          "es": "El proyecto pertenece al sector financiero o presta servicios a entidades reguladas.",
+          "en": "El proyecto pertenece al sector financiero o presta servicios a entidades reguladas."
+        },
+        "evidence": [
+          {
+            "es": "Clasificación del servicio, contratos y controles sectoriales.",
+            "en": "Clasificación del servicio, contratos y controles sectoriales."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-09"
+      }
+    ]
   },
   {
     "id": "marco-sector-salud",
@@ -972,12 +1166,43 @@
     "verifiedAt": "2026-09-09",
     "status": "pendiente_verificacion",
     "url": "https://www.salud.gob.ec/",
-    "topics": ["sector salud", "datos sensibles", "historias clínicas", "sistemas de información"],
+    "topics": [
+      "sector salud",
+      "datos sensibles",
+      "historias clínicas",
+      "sistemas de información"
+    ],
     "summary": "Conjunto sectorial para software de salud y tratamientos de datos especialmente sensibles.",
     "sourceKind": "portal",
-    "verification": { "documentaryStatus": "pendiente", "notes": "Es un índice sectorial; requiere identificar la norma concreta según el servicio, datos y autoridad involucrada." },
-    "relatedSourceIds": ["lopdp"],
-    "obligations": []
+    "verification": {
+      "documentaryStatus": "pendiente",
+      "notes": "Es un índice sectorial; requiere identificar la norma concreta según el servicio, datos y autoridad involucrada."
+    },
+    "relatedSourceIds": [
+      "lopdp"
+    ],
+    "obligations": [
+      {
+        "id": "datos-salud",
+        "article": "Datos y servicios de salud",
+        "sourceUrl": "https://www.salud.gob.ec/",
+        "requirement": {
+          "es": "Aplicar revisión sectorial reforzada cuando el sistema trate información de salud o preste servicios sanitarios.",
+          "en": "Aplicar revisión sectorial reforzada cuando el sistema trate información de salud o preste servicios sanitarios."
+        },
+        "appliesWhen": {
+          "es": "Tratamiento de datos de salud o prestación de servicios sanitarios.",
+          "en": "Tratamiento de datos de salud o prestación de servicios sanitarios."
+        },
+        "evidence": [
+          {
+            "es": "Evaluación de impacto, controles de acceso y autorización sectorial.",
+            "en": "Evaluación de impacto, controles de acceso y autorización sectorial."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-09"
+      }
+    ]
   },
   {
     "id": "marco-sector-educativo",
@@ -989,11 +1214,42 @@
     "status": "pendiente_verificacion",
     "verifiedAt": "2026-09-09",
     "url": "https://educacion.gob.ec/",
-    "topics": ["sector educativo", "plataformas educativas", "datos de estudiantes", "educación superior"],
+    "topics": [
+      "sector educativo",
+      "plataformas educativas",
+      "datos de estudiantes",
+      "educación superior"
+    ],
     "summary": "Conjunto sectorial para plataformas educativas, sistemas académicos y tratamiento de datos de estudiantes.",
     "sourceKind": "portal",
-    "verification": { "documentaryStatus": "pendiente", "notes": "Es un índice sectorial; requiere desagregar LOEI, LOES y regulación institucional aplicable." },
-    "relatedSourceIds": ["lopdp"],
-    "obligations": []
+    "verification": {
+      "documentaryStatus": "pendiente",
+      "notes": "Es un índice sectorial; requiere desagregar LOEI, LOES y regulación institucional aplicable."
+    },
+    "relatedSourceIds": [
+      "lopdp"
+    ],
+    "obligations": [
+      {
+        "id": "datos-estudiantes",
+        "article": "Datos y servicios educativos",
+        "sourceUrl": "https://educacion.gob.ec/",
+        "requirement": {
+          "es": "Revisar obligaciones sectoriales y protección reforzada cuando el sistema trate datos de estudiantes o preste servicios educativos.",
+          "en": "Revisar obligaciones sectoriales y protección reforzada cuando el sistema trate datos de estudiantes o preste servicios educativos."
+        },
+        "appliesWhen": {
+          "es": "Plataformas educativas, instituciones o datos de estudiantes.",
+          "en": "Plataformas educativas, instituciones o datos de estudiantes."
+        },
+        "evidence": [
+          {
+            "es": "Autorización institucional, aviso, controles y protocolos para menores.",
+            "en": "Autorización institucional, aviso, controles y protocolos para menores."
+          }
+        ],
+        "documentaryReviewedAt": "2026-09-09"
+      }
+    ]
   }
 ]
