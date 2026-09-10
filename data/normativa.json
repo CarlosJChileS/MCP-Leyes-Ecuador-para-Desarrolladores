@@ -657,7 +657,17 @@
       "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal. Portal temático del SRI, no una norma individual: no tiene fecha única de publicación. Seleccionar las resoluciones aplicables en su sección Base legal."
     },
     "relatedSourceIds": [],
-    "obligations": []
+    "obligations": [
+      {
+        "id": "comprobantes-autorizados",
+        "article": "Base legal y requisitos técnicos publicados por el SRI",
+        "sourceUrl": "https://www.sri.gob.ec/facturacion-electronica",
+        "requirement": { "es": "Emitir comprobantes de venta, retención y documentos complementarios conforme a la modalidad y requisitos autorizados por el SRI.", "en": "Issue sales, withholding and complementary documents according to the modality and requirements authorized by the SRI." },
+        "appliesWhen": { "es": "Cuando el proyecto opere por cuenta de un contribuyente obligado a emitir comprobantes.", "en": "When the project operates for a taxpayer required to issue receipts." },
+        "evidence": [ { "es": "RUC, régimen aplicable, autorización o configuración del facturador, XML/RIDE y constancias de autorización.", "en": "RUC, applicable regime, invoicing authorization or configuration, XML/RIDE and authorization records." } ],
+        "documentaryReviewedAt": "2026-09-09"
+      }
+    ]
   },
   {
     "id": "spdp-transferencias-2025",
