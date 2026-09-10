@@ -35,6 +35,11 @@ export function assessProject(project: ProjectProfile, sources: LegalSource[], l
     dueDate: null,
     gap: localized(language, 'No se ha registrado evidencia de cumplimiento.', 'No compliance evidence has been recorded.'),
     closureCriterion: localized(language, 'Registrar la evidencia indicada y completar una revisión legal y técnica.', 'Record the indicated evidence and complete legal and technical review.'),
+    consequence: obligation.consequence?.[language] ?? localized(language, 'No documentada en el catálogo; requiere validación profesional.', 'Not documented in the catalog; professional validation required.'),
+    exposure: obligation.exposure ?? (source.topics.includes('datos personales') ? 'alta' : 'media'),
+    sanctionType: obligation.sanctionType?.[language] ?? localized(language, 'No documentado en el catálogo.', 'Not documented in the catalog.'),
+    authority: obligation.authority?.[language] ?? localized(language, 'Autoridad competente no documentada.', 'Competent authority not documented.'),
+    preventiveActions: obligation.preventiveActions?.map(item => item[language]) ?? [localized(language, 'Documentar controles, responsables y evidencia antes de operar.', 'Document controls, owners and evidence before operating.')],
   })));
   const dimensionTopics: Record<ScoreDimension, string[]> = { cumplimiento_legal: ['datos personales', 'privacidad', 'comercio electrónico', 'consumidores', 'facturación electrónica'], seguridad_tecnica: ['seguridad'], privacidad: ['datos personales', 'privacidad'], gobierno_datos: ['datos personales', 'encargados', 'transferencias internacionales'], tributacion: ['facturación electrónica'], comercio_electronico: ['comercio electrónico', 'consumidores'], gestion_documental: ['privacidad', 'contratos', 'documentacion'] };
   const complianceScores = Object.fromEntries(scoreDimensions.map(dimension => {

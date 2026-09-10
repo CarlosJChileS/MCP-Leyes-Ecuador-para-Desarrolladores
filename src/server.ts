@@ -81,7 +81,7 @@ export function createServer(catalog: LegalCatalog, injected: { auditRepository?
     if (persist) {
       if (!repositoryPath) return { ...text({ error: 'persist requiere repositoryPath para guardar el ciclo en el repositorio.', disclaimer }), isError: true };
       const lifecycle = await createGovernanceLifecycle(repositoryPath).recordAudit(report, lifecycleActor);
-      (report as any).lifecycle = { auditId: lifecycle.auditId, storage: '.mcp-governance/lifecycle.json', persisted: true };
+      (report as any).lifecycle = { auditId: lifecycle.auditId, storage: '.mcp-governance/lifecycle.json', persisted: true, evolution: await createGovernanceLifecycle(repositoryPath).evolution() };
     }
     if (format === 'markdown') return { content: [{ type: 'text' as const, text: renderGovernanceReportMarkdown(report) }] };
     if (format === 'html') return { content: [{ type: 'text' as const, text: renderGovernanceReportHtml(report) }] };

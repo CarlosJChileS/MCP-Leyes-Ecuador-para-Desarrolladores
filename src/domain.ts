@@ -31,6 +31,7 @@ export const legalSourceSchema = z.object({
   obligations: z.array(z.object({
     id: z.string().min(1), article: z.string().min(1), sourceUrl: httpsUrl,
     requirement: localizedText, appliesWhen: localizedText, evidence: z.array(localizedText).min(1),
+    consequence: localizedText.optional(), exposure: z.enum(['baja', 'media', 'alta', 'critica']).optional(), sanctionType: localizedText.optional(), authority: localizedText.optional(), preventiveActions: z.array(localizedText).optional(),
     documentaryReviewedAt: date,
   })).optional(),
 });
