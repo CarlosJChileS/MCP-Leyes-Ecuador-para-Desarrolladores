@@ -65,7 +65,7 @@ export function createServer(catalog: LegalCatalog, injected: { auditRepository?
   server.registerTool('generar_informe_gobernanza', {
     description: 'Consolida las cinco evaluaciones y explica cada brecha con riesgo, prioridad, responsable, pasos de solución, evidencia y criterio de cierre; exporta JSON, Markdown, HTML o PDF.',
     inputSchema: input({ ...governanceProperties, repositoryPath: { type: 'string', minLength: 1, maxLength: 4096 }, maxDepth: { type: 'integer', minimum: 1, maximum: 12 }, maxFiles: { type: 'integer', minimum: 1, maximum: 2000 }, maxFileSizeBytes: { type: 'integer', minimum: 1024, maximum: 1048576 }, dependencyScan: { type: 'boolean' }, timeout: { type: 'integer', minimum: 1000, maximum: 120000 }, persist: { type: 'boolean' }, lifecycleActor: { type: 'string', minLength: 1, maxLength: 200 }, format: { type: 'string', enum: ['json', 'markdown', 'html', 'pdf'] } }, ['name']),
-  }, async ({ format = 'json', repositoryPath, maxDepth, maxFiles, maxFileSizeBytes, dependencyScan = true, timeout, persist = false, lifecycleActor = 'sistema', ...project }: any) => {
+  }, async ({ format = 'json', repositoryPath, maxDepth, maxFiles, maxFileSizeBytes, dependencyScan = false, timeout, persist = false, lifecycleActor = 'sistema', ...project }: any) => {
     let technicalAudit: AuditReport | undefined;
     let dependencyAudit: DependencyScanReport | undefined;
     if (repositoryPath) {
@@ -111,7 +111,7 @@ export function createServer(catalog: LegalCatalog, injected: { auditRepository?
   server.registerTool('auditar_repositorio', {
     description: 'Ejecuta una auditoría estática local y de solo lectura sobre un repositorio con límites seguros.',
     inputSchema: auditInput,
-  }, async ({ path, maxDepth, maxFiles, maxFileSizeBytes, format = 'json', dependencyScan = true, timeout, language }: any) => {
+  }, async ({ path, maxDepth, maxFiles, maxFileSizeBytes, format = 'json', dependencyScan = false, timeout, language }: any) => {
     const lang = normalizeLanguage(language);
     try {
       const report = await runAudit(path, { maxDepth, maxFiles, maxFileSizeBytes });

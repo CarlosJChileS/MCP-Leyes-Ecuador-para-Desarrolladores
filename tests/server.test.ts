@@ -281,12 +281,12 @@ describe('MCP server contract', () => {
       maxFiles: undefined,
       maxFileSizeBytes: undefined,
     });
-    expect(scanDependencyVulnerabilities).toHaveBeenCalledWith('C:/demo-repo', { timeoutMs: undefined });
+    expect(scanDependencyVulnerabilities).not.toHaveBeenCalled();
     expect(payload.repository).toEqual({
       name: 'demo-repo',
       rootPath: 'C:/demo-repo',
     });
-    expect(payload.dependencyScan.enabled).toBe(true);
+    expect(payload.dependencyScan.enabled).toBe(false);
     expect(payload.disclaimer).toContain('Orientación preliminar');
   });
 
