@@ -150,6 +150,7 @@ export function buildGovernanceReport(profile: GovernanceProfile, sources: Legal
       totalActions: remediationPlan.length,
       criticalActions: remediationPlan.filter(action => action.priority === 'critica').length,
       highPriorityActions: remediationPlan.filter(action => action.priority === 'alta').length,
+      complianceScore: governance.coverageSummary.totalDomains ? Math.round((governance.coverageSummary.coveredDomains / governance.coverageSummary.totalDomains) * 100) : 0,
     },
     sections: { governance, inventory, transfers, impactAssessment, responsibilities, technicalAudit: audits.technical, dependencyAudit: audits.dependencies },
     remediationPlan,

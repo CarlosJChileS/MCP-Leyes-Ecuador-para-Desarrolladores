@@ -115,6 +115,10 @@ const DEFAULT_OPTIONS = {
 const EXCLUDED_DIRECTORIES = new Set([
   '.git',
   '.release-work',
+  '.agents',
+  '.claude',
+  '.playwright-mcp',
+  '.superpowers',
   '.hg',
   '.next',
   '.nuxt',
