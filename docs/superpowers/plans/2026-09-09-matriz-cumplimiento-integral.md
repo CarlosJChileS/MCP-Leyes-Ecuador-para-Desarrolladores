@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Exponer por el MCP una matriz detallada de obligaciones ecuatorianas aplicables a Demera, con estados, prioridades, riesgos, evidencias y criterios de cierre.
+**Goal:** Exponer por el MCP una matriz detallada de obligaciones ecuatorianas aplicables a cualquier proyecto, con estados, prioridades, riesgos, evidencias y criterios de cierre.
 
 **Architecture:** Mantener `assessProject` como agregador compatible y añadir una función pura de clasificación de obligaciones. La salida conservará los campos existentes y añadirá `obligations`; el checklist convertirá cada obligación en una acción trazable.
 
@@ -38,11 +38,11 @@
 - Modify: `README.md`
 
 - [ ] Add a stdio integration assertion for the detailed obligation fields.
-- [ ] Document the states, conservative interpretation and Demera example.
+- [ ] Document the states and conservative interpretation with a generic project example.
 - [ ] Run `npm run check` and verify all tests pass.
 
 ### Task 4: Revisión final
 
-- [ ] Build the package and run the real MCP client against `C:\Users\carlo\Videos\contableDemera`.
+- [ ] Build the package and run the real MCP client against a representative repository.
 - [ ] Confirm the response includes applicable norms, obligations, evidence and reasons.
 - [ ] Review the diff and commit the implementation.

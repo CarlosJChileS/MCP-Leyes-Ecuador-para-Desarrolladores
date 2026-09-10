@@ -2,13 +2,13 @@
 
 ## Objetivo
 
-Ampliar la evaluación del MCP para que un proyecto como Demera reciba una matriz accionable de cumplimiento, no solo una lista de referencias. La respuesta debe distinguir obligaciones aplicables, condicionales y no aplicables, explicar el motivo, indicar evidencia, prioridad, riesgo y criterio de cierre.
+Ampliar la evaluación del MCP para que cualquier proyecto reciba una matriz accionable de cumplimiento, no solo una lista de referencias. La respuesta debe distinguir obligaciones aplicables, condicionales y no aplicables, explicar el motivo, indicar evidencia, prioridad, riesgo y criterio de cierre.
 
 ## Alcance
 
 La evaluación cubrirá las normas disponibles en el catálogo relacionadas con protección de datos personales, privacidad, seguridad, encargados, proveedores, transferencias, contratos, comercio electrónico, consumidores y facturación electrónica. Las obligaciones tributarias o sectoriales solo se declararán aplicables cuando exista una fuente documentada en el catálogo y el perfil del proyecto active esa condición.
 
-Demera se evaluará como aplicación de uso personal que trata datos personales y financieros, utiliza proveedores tecnológicos y puede almacenar comprobantes. El MCP no declarará cumplimiento jurídico definitivo: estados y vigencia quedarán sujetos a evidencia y revisión humana.
+El MCP evaluará proyectos con datos personales o financieros, proveedores tecnológicos y comprobantes según el perfil declarado o inferido. No declarará cumplimiento jurídico definitivo: estados y vigencia quedarán sujetos a evidencia y revisión humana.
 
 ## Contrato de salida
 
