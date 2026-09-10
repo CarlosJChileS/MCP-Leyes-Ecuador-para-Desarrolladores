@@ -1,6 +1,8 @@
 import type { LegalSource } from './domain.js';
 import { type Language, localized } from './i18n.js';
 export type ProjectProfile = { name: string; processesPersonalData?: boolean; usesProviders?: boolean; sellsOnline?: boolean; storesSensitiveData?: boolean };
+export type ComplianceStatus = 'pendiente' | 'en_progreso' | 'cumple' | 'no_cumple' | 'no_aplica' | 'aceptada_temporalmente' | 'requiere_revision_legal';
+export type CompliancePriority = 'critica' | 'alta' | 'media' | 'baja';
 export function assessProject(project: ProjectProfile, sources: LegalSource[], language: Language = 'es') {
   const risks: string[] = [], controls: string[] = [], questions: string[] = [];
   if (project.processesPersonalData) { risks.push(localized(language, 'El proyecto trata datos personales y requiere identificar base jurídica, transparencia y medidas de seguridad.', 'The project processes personal data and requires a legal basis, transparency, and security measures.')); controls.push(localized(language, 'Inventariar tratamientos, finalidades, responsables, encargados y plazos de conservación.', 'Inventory processing activities, purposes, controllers, processors, and retention periods.')); }
@@ -14,6 +16,23 @@ export function assessProject(project: ProjectProfile, sources: LegalSource[], l
   if (project.processesPersonalData || project.storesSensitiveData || project.usesProviders) { topics.add('datos personales'); topics.add('privacidad'); }
   if (project.sellsOnline) { topics.add('comercio electrónico'); topics.add('consumidores'); topics.add('facturación electrónica'); }
   const relevant = sources.filter(source => source.topics.some(topic => topics.has(topic)));
-  return { project: project.name, language, risks, controls, questions, references: relevant.map(({ id, title, url, verifiedAt, status }) => ({ id, title, url, verifiedAt, status })), disclaimer: localized(language, 'Orientación preliminar; no constituye dictamen ni certificación jurídica.', 'Preliminary guidance; this is not a legal opinion or certification.') };
+  const obligations = relevant.flatMap(source => (source.obligations ?? []).map(obligation => ({
+    id: `${source.id}:${obligation.id}`,
+    normId: source.id,
+    normTitle: source.title,
+    article: obligation.article,
+    requirement: obligation.requirement[language],
+    whyItApplies: obligation.appliesWhen[language],
+    evidence: obligation.evidence.map(item => item[language]),
+    sourceUrl: obligation.sourceUrl,
+    status: (source.status === 'pendiente_verificacion' ? 'requiere_revision_legal' : 'pendiente') as ComplianceStatus,
+    priority: (source.topics.includes('datos personales') || source.topics.includes('privacidad') ? 'alta' : 'media') as CompliancePriority,
+    risk: localized(language, 'Riesgo de tratamiento sin controles o evidencia suficiente.', 'Risk of processing without sufficient controls or evidence.'),
+    owner: localized(language, 'Responsable del proyecto', 'Project owner'),
+    dueDate: null,
+    gap: localized(language, 'No se ha registrado evidencia de cumplimiento.', 'No compliance evidence has been recorded.'),
+    closureCriterion: localized(language, 'Registrar la evidencia indicada y completar una revisión legal y técnica.', 'Record the indicated evidence and complete legal and technical review.'),
+  })));
+  return { project: project.name, language, risks, controls, questions, references: relevant.map(({ id, title, url, verifiedAt, status, summary }) => ({ id, title, url, verifiedAt, status, summary })), obligations, disclaimer: localized(language, 'Orientación preliminar; no constituye dictamen ni certificación jurídica.', 'Preliminary guidance; this is not a legal opinion or certification.') };
 }
-export function auditChecklist(project: ProjectProfile, sources: LegalSource[], language: Language = 'es') { const a = assessProject(project, sources, language); return { project: a.project, language, items: [...a.controls.map((text) => ({ text, evidence: localized(language, 'Definir evidencia y responsable', 'Define evidence and owner'), status: localized(language, 'pendiente', 'pending') })), { text: localized(language, 'Revisar fuentes y vigencia', 'Review sources and legal status'), evidence: a.references.map((r) => r.url).join(', '), status: localized(language, 'pendiente', 'pending') }], disclaimer: a.disclaimer }; }
+export function auditChecklist(project: ProjectProfile, sources: LegalSource[], language: Language = 'es') { const a = assessProject(project, sources, language); return { project: a.project, language, items: [...a.obligations.map((obligation) => ({ id: obligation.id, text: obligation.requirement, norm: obligation.normTitle, article: obligation.article, whyItApplies: obligation.whyItApplies, evidence: obligation.evidence, gap: obligation.gap, status: obligation.status, priority: obligation.priority, risk: obligation.risk, owner: obligation.owner, dueDate: obligation.dueDate, closureCriterion: obligation.closureCriterion, sourceUrl: obligation.sourceUrl })), ...a.controls.map((text) => ({ text, evidence: localized(language, 'Definir evidencia y responsable', 'Define evidence and owner'), status: 'pendiente' as const, priority: 'media' as const })), { text: localized(language, 'Revisar fuentes y vigencia', 'Review sources and legal status'), evidence: a.references.map((r) => r.url).join(', '), status: 'requiere_revision_legal' as const, priority: 'alta' as const }], disclaimer: a.disclaimer }; }
