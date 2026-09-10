@@ -135,6 +135,7 @@ const EXCLUDED_DIRECTORIES = new Set([
   'tmp',
   'vendor',
 ]);
+const GENERATED_FILES = new Set(['public/sw.js', 'public/sw.js.map']);
 
 const CATEGORY_ORDER: AuditCategory[] = [
   'secretos',
@@ -507,6 +508,10 @@ async function walkDirectory(
 
     const entryPath = resolve(directoryPath, entry.name);
     const configPath = normalizeConfigPath(toRelativePath(rootRealPath, entryPath));
+    if (GENERATED_FILES.has(configPath)) {
+      state.skippedEntries += 1;
+      continue;
+    }
     if (excludedPaths.some(path => configPath === path || configPath.startsWith(`${path}/`))) {
       state.skippedEntries += 1;
       continue;
