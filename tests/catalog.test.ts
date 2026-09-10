@@ -26,4 +26,9 @@ describe('LegalCatalog', () => {
       }
     }
   });
+  it('covers the specialized technology catalog scope', async () => {
+    const sources = await LegalCatalog.load();
+    const topics = new Set(sources.all().flatMap(source => source.topics));
+    for (const topic of ['comercio electrónico', 'datos personales', 'facturación electrónica', 'proveedores', 'fintech', 'telecomunicaciones', 'sector salud', 'educación superior', 'contratos', 'seguridad']) expect(topics.has(topic), topic).toBe(true);
+  });
 });
