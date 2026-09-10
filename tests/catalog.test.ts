@@ -12,4 +12,18 @@ describe('LegalCatalog', () => {
     expect([...titles].some((title) => title.includes('sector salud'))).toBe(true);
     expect([...titles].some((title) => title.includes('sector educativo'))).toBe(true);
   });
+  it('requires actionable metadata for enriched legal groups', async () => {
+    const ids = ['comercio-electronico', 'propiedad-intelectual', 'telecomunicaciones', 'coip-delitos-informaticos', 'codigo-trabajo', 'ley-companias', 'fintech', 'marco-sector-financiero', 'marco-sector-salud', 'marco-sector-educativo', 'facturacion-electronica-sri', 'defensa-consumidor'];
+    const sources = await LegalCatalog.load();
+    for (const id of ids) {
+      const source = sources.get(id);
+      expect(source?.obligations?.length, id).toBeGreaterThan(0);
+      for (const obligation of source?.obligations ?? []) {
+        expect(obligation.article.length).toBeGreaterThan(0);
+        expect(obligation.sourceUrl.startsWith('https://')).toBe(true);
+        expect(obligation.evidence.length).toBeGreaterThan(0);
+        expect(obligation.documentaryReviewedAt).toMatch(/^2026-/);
+      }
+    }
+  });
 });
