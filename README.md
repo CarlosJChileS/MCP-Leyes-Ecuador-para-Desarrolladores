@@ -266,6 +266,23 @@ Las fuentes de descubrimiento son los índices oficiales de la [Asamblea Naciona
 
 ## Herramientas MCP
 
+### Evaluación integral de cualquier proyecto
+
+`evaluar_proyecto` acepta un perfil explícito o puede inferir señales técnicas desde un repositorio:
+
+```json
+{
+  "name": "Mi proyecto",
+  "repositoryPath": "C:/ruta/al/repositorio",
+  "inferProfile": true,
+  "language": "es"
+}
+```
+
+La respuesta incluye normas y obligaciones por artículo, aplicabilidad, evidencia, brecha, estado, prioridad, exposición, responsable, criterio de cierre y puntajes por cumplimiento legal, seguridad técnica, privacidad, gobierno de datos, tributación, comercio electrónico y gestión documental. Las inferencias se pueden corregir enviando valores explícitos del perfil; esos valores tienen prioridad.
+
+Los estados y consecuencias regulatorias son conservadores: una obligación sin evidencia no se marca como cumplida, y una consecuencia o sanción ausente del catálogo se devuelve como no documentada y requiere validación profesional. Con persistencia habilitada, el ciclo de gobernanza conserva evidencias, responsables, excepciones e historial para comparar evaluaciones.
+
 - `buscar_normativa`: búsqueda local por título, resumen, etiquetas y ámbito.
 - `consultar_obligacion`: consulta obligaciones asociadas a una norma.
 - `verificar_vigencia`: muestra estado, fechas, fuente y advertencias.
