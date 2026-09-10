@@ -537,7 +537,26 @@
       "notes": "Revisión documental asistida por Codex de la identificación y fuentes disponibles. No hay revisión jurídica humana documentada ni texto consolidado certificado. verifiedAt corresponde a esta revisión documental. Faltan comprobar exhaustivamente reformas, derogaciones y ámbito temporal. La descarga directa falló durante esta revisión; solo se contrastó la referencia indexada. No se añadieron obligaciones ni datos de publicación no corroborados."
     },
     "relatedSourceIds": [],
-    "obligations": []
+    "obligations": [
+      {
+        "id": "informacion-consumidor",
+        "article": "Arts. 4 y 46",
+        "sourceUrl": "https://www.produccion.gob.ec/wp-content/uploads/2019/08/A2-LEY-ORGANICA-DE-DEFENSA-DEL-CONSUMIDOR.pdf",
+        "requirement": { "es": "Proporcionar información básica, clara, veraz y completa sobre el servicio, precio, condiciones y oferta, especialmente cuando la contratación se realiza por internet.", "en": "Provide clear, truthful and complete basic information about the service, price, terms and offer, especially for internet contracts." },
+        "appliesWhen": { "es": "Cuando el proyecto ofrezca bienes o servicios a consumidores.", "en": "When the project offers goods or services to consumers." },
+        "evidence": [ { "es": "Términos del servicio, precios, condiciones de contratación, política de reclamos y registro de aceptación.", "en": "Terms of service, prices, contracting terms, complaints policy and acceptance record." } ],
+        "documentaryReviewedAt": "2026-09-09"
+      },
+      {
+        "id": "contrato-adhesion",
+        "article": "Arts. 41 y 43",
+        "sourceUrl": "https://www.produccion.gob.ec/wp-content/uploads/2019/08/A2-LEY-ORGANICA-DE-DEFENSA-DEL-CONSUMIDOR.pdf",
+        "requirement": { "es": "Revisar que los contratos de adhesión sean claros y no contengan cláusulas que causen indefensión o limiten indebidamente los derechos del consumidor.", "en": "Ensure adhesion contracts are clear and do not contain clauses that leave consumers defenseless or improperly limit their rights." },
+        "appliesWhen": { "es": "Cuando el servicio use términos contractuales predeterminados para sus usuarios.", "en": "When the service uses predetermined contractual terms for users." },
+        "evidence": [ { "es": "Versión vigente de términos y condiciones con revisión legal y mecanismo de actualización.", "en": "Current terms and conditions with legal review and update mechanism." } ],
+        "documentaryReviewedAt": "2026-09-09"
+      }
+    ]
   },
   {
     "id": "coip-delitos-informaticos",
